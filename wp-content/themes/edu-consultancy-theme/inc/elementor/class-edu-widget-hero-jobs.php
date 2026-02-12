@@ -8,6 +8,7 @@
  */
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -153,6 +154,154 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 				'default' => 4000,
 				'min'     => 1000,
 				'max'     => 15000,
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Style: Heading.
+		$this->start_controls_section(
+			'section_heading_style',
+			array(
+				'label' => esc_html__( 'Heading', 'edu-consultancy' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'title_typography',
+				'label'    => esc_html__( 'Title Typography', 'edu-consultancy' ),
+				'selector' => '{{WRAPPER}} .edu-hero__title',
+			)
+		);
+
+		$this->add_control(
+			'title_color',
+			array(
+				'label'     => esc_html__( 'Title Color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-hero__title' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'subtitle_typography',
+				'label'    => esc_html__( 'Subtitle Typography', 'edu-consultancy' ),
+				'selector' => '{{WRAPPER}} .edu-hero__subtitle',
+			)
+		);
+
+		$this->add_control(
+			'subtitle_color',
+			array(
+				'label'     => esc_html__( 'Subtitle Color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-hero__subtitle' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Style: Buttons.
+		$this->start_controls_section(
+			'section_buttons_style',
+			array(
+				'label' => esc_html__( 'Buttons', 'edu-consultancy' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'primary_button_bg',
+			array(
+				'label'     => esc_html__( 'Primary Button Background', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-btn-primary' => 'background-color: {{VALUE}}; border-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'primary_button_text_color',
+			array(
+				'label'     => esc_html__( 'Primary Button Text Color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-btn-primary' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'secondary_button_text_color',
+			array(
+				'label'     => esc_html__( 'Secondary Button Text Color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-btn-outline' => 'color: {{VALUE}}; border-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Style: Job Cards.
+		$this->start_controls_section(
+			'section_cards_style',
+			array(
+				'label' => esc_html__( 'Job Cards', 'edu-consultancy' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'job_title_typography',
+				'label'    => esc_html__( 'Job Title Typography', 'edu-consultancy' ),
+				'selector' => '{{WRAPPER}} .edu-hero-job-card__title',
+			)
+		);
+
+		$this->add_control(
+			'job_title_color',
+			array(
+				'label'     => esc_html__( 'Job Title Color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-hero-job-card__title a' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'job_card_background',
+			array(
+				'label'     => esc_html__( 'Card Background', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-hero-job-card' => 'background-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'job_meta_color',
+			array(
+				'label'     => esc_html__( 'Meta Text Color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-hero-job-card__meta' => 'color: {{VALUE}};',
+				),
 			)
 		);
 
