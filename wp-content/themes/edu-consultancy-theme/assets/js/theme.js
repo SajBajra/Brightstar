@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	});
 
-	// Vertical auto-scrolling hero jobs lists (seamless infinite loop).
+	// Vertical auto-scrolling hero jobs lists (infinite loop with fixed set of cards).
 	document.querySelectorAll('.edu-hero-jobs-list').forEach(function (listEl) {
 		var items = listEl.querySelectorAll('.edu-hero-job-card');
-		if (!items.length) {
+		if (items.length <= 1) {
 			return;
 		}
 
@@ -28,20 +28,17 @@ document.addEventListener('DOMContentLoaded', function () {
 			interval = 4000;
 		}
 
-		// Duplicate the items once so we can loop seamlessly.
-		items.forEach(function (item) {
-			listEl.appendChild(item.cloneNode(true));
-		});
-
-		// Height of a single full set of items.
-		var singleSetHeight = listEl.scrollHeight / 2;
-		if (!singleSetHeight) {
+		// Assume all hero job cards have same height; measure first.
+		var firstItem = items[0];
+		var styles = window.getComputedStyle(firstItem);
+		var marginBottom = parseFloat(styles.marginBottom || '0');
+		var stepHeight = firstItem.offsetHeight + marginBottom;
+		if (!stepHeight) {
 			return;
 		}
 
-		// Approximate speed so that roughly one item passes per interval.
-		var averageItemHeight = singleSetHeight / items.length;
-		var speed = averageItemHeight / interval; // px per ms.
+		// Speed so that one full card passes every "interval" ms.
+		var speed = stepHeight / interval; // px per ms.
 
 		var lastTime = performance.now();
 		var offset = 0;
@@ -52,10 +49,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			offset -= speed * dt;
 
-			// When we've scrolled past one full set, jump back by that height.
-			// Because the content is duplicated, the jump is visually seamless.
-			if (offset <= -singleSetHeight) {
-				offset += singleSetHeight;
+			// When a full card height has scrolled, move the first card to the end
+			// and reduce the offset, so motion continues smoothly with the same set of jobs.
+			while (offset <= -stepHeight) {
+				offset += stepHeight;
+				var first = listEl.querySelector('.edu-hero-job-card');
+				if (!first) {
+					break;
+				}
+				listEl.appendChild(first);
 			}
 
 			listEl.style.transform = 'translateY(' + offset + 'px)';
