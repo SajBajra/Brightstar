@@ -137,16 +137,38 @@
 }
 
 .site-footer {
+	position: relative;
 	background-color: #020617;
 	color: #e5e7eb;
 	margin-top: var(--edu-spacing-lg);
+	background-image: url('http://localhost/brightstar/wp-content/uploads/2026/02/fddfe27839f4a7d9348178f733d502ce.jpg');
+	background-size: cover;
+	background-position: center;
+}
+
+.site-footer__overlay {
+	position: absolute;
+	inset: 0;
+	background-color: rgba(2, 6, 23, 0.92);
+}
+
+.site-footer > .edu-container {
+	position: relative;
+	z-index: 1;
+}
+
+.site-footer__card {
+	background-color: rgba(15, 23, 42, 0.95);
+	border-radius: 18px;
+	padding: var(--edu-spacing-md);
+	box-shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
 }
 
 .site-footer__top {
 	display: grid;
 	grid-template-columns: repeat(1, minmax(0, 1fr));
 	gap: var(--edu-spacing-md);
-	padding-block: var(--edu-spacing-lg);
+	padding-block: var(--edu-spacing-md);
 }
 
 @media (min-width: 768px) {
@@ -190,8 +212,9 @@
 }
 
 .site-footer__bottom {
-	border-top: 1px solid #111827;
-	padding-block: 0.75rem;
+	border-top: 1px solid rgba(31, 41, 55, 0.9);
+	padding-top: 0.75rem;
+	margin-top: 0.75rem;
 }
 
 .site-footer__bottom-inner {
@@ -223,6 +246,7 @@
 	margin: 0;
 	font-size: 0.8rem;
 	color: #6b7280;
+	text-align: right;
 }
 
 .edu-hero {
