@@ -174,12 +174,9 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 		$secondary_button_text = isset( $settings['secondary_button_text'] ) ? $settings['secondary_button_text'] : '';
 		$secondary_button_url = ( isset( $settings['secondary_button_url']['url'] ) && $settings['secondary_button_url']['url'] ) ? $settings['secondary_button_url']['url'] : home_url( '/free-consultation/' );
 
-		$per_page      = isset( $settings['jobs_per_page'] ) ? (int) $settings['jobs_per_page'] : 6;
+		$per_page      = isset( $settings['jobs_per_page'] ) ? (int) $settings['jobs_per_page'] : -1;
 		$featured_only = ( isset( $settings['featured_only'] ) && 'yes' === $settings['featured_only'] );
 		$interval      = isset( $settings['scroll_interval'] ) ? (int) $settings['scroll_interval'] : 4000;
-		if ( $per_page <= 0 ) {
-			$per_page = 6;
-		}
 		if ( $interval < 1000 ) {
 			$interval = 1000;
 		}
@@ -187,9 +184,7 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 		$args = array(
 			'post_type'      => 'jobs',
 			'post_status'    => 'publish',
-			'posts_per_page' => $per_page,
-			'orderby'        => 'date',
-			'order'          => 'DESC',
+			'posts_per_page' => -1, // Show all jobs in the loop.
 		);
 
 		if ( $featured_only ) {
@@ -199,6 +194,16 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 					'value' => '1',
 				),
 			);
+			$args['orderby'] = 'date';
+			$args['order']   = 'DESC';
+		} else {
+			// Prioritise featured jobs first, then newest by date.
+			$args['meta_key'] = 'edu_featured_job';
+			$args['orderby']  = array(
+				'meta_value_num' => 'DESC',
+				'date'           => 'DESC',
+			);
+			$args['order']    = 'DESC';
 		}
 
 		$query   = new WP_Query( $args );
