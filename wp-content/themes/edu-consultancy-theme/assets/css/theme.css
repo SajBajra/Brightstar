@@ -664,9 +664,7 @@
 .edu-services-bento__grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	grid-auto-rows: minmax(160px, auto);
 	gap: var(--edu-spacing-md);
-	grid-auto-flow: dense;
 }
 
 @media (min-width: 900px) {
@@ -709,12 +707,6 @@
 	}
 }
 
-@media (min-width: 900px) {
-	.edu-services-bento__item--tall {
-		grid-row: span 2;
-	}
-}
-
 .edu-services-bento__media {
 	border-radius: 18px;
 	overflow: hidden;
@@ -740,7 +732,7 @@
 
 /* Make cards 2 and 3 visually taller */
 .edu-services-bento__item--tall .edu-services-bento__media {
-	aspect-ratio: 4 / 5;
+	aspect-ratio: 16 / 9;
 }
 
 .edu-services-bento__service-title {
