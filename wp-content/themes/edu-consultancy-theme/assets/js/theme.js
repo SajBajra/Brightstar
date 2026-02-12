@@ -16,48 +16,64 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	});
 
-	// Vertical auto-scrolling hero jobs lists.
+	// Vertical auto-scrolling hero jobs lists (smooth continuous loop).
 	document.querySelectorAll('.edu-hero-jobs-list').forEach(function (listEl) {
+		if (listEl.children.length <= 1) {
+			return;
+		}
+
 		var interval = parseInt(listEl.getAttribute('data-interval') || '4000', 10);
 		if (!interval || interval < 1000) {
 			interval = 4000;
 		}
 
-		var isAnimating = false;
+		function getStepHeight() {
+			var firstItem = listEl.querySelector('.edu-hero-job-card');
+			if (!firstItem) {
+				return 0;
+			}
+			var styles = window.getComputedStyle(firstItem);
+			var marginBottom = parseFloat(styles.marginBottom || '0');
+			return firstItem.offsetHeight + marginBottom;
+		}
 
-		if (listEl.children.length <= 1) {
+		var stepHeight = getStepHeight();
+		if (!stepHeight) {
 			return;
 		}
 
-		setInterval(function () {
-			if (isAnimating) {
-				return;
+		var lastTime = performance.now();
+		var travelled = 0;
+
+		function loop(now) {
+			var dt = now - lastTime;
+			lastTime = now;
+
+			// Pixels to move this frame: stepHeight over "interval" ms.
+			var distance = (stepHeight / interval) * dt;
+			travelled += distance;
+			listEl.style.transform = 'translateY(' + (-travelled) + 'px)';
+
+			// When we've moved one item height, recycle the first item.
+			while (travelled >= stepHeight) {
+				travelled -= stepHeight;
+				var first = listEl.firstElementChild;
+				if (!first) {
+					break;
+				}
+				listEl.appendChild(first);
+				stepHeight = getStepHeight();
+				if (!stepHeight) {
+					travelled = 0;
+					listEl.style.transform = '';
+					break;
+				}
 			}
 
-			var firstItem = listEl.querySelector('.edu-hero-job-card');
-			if (!firstItem) {
-				return;
-			}
+			requestAnimationFrame(loop);
+		}
 
-			var itemHeight = firstItem.offsetHeight;
-			var styles = window.getComputedStyle(firstItem);
-			var marginBottom = parseFloat(styles.marginBottom || '0');
-			var translateY = itemHeight + marginBottom;
-
-			isAnimating = true;
-			listEl.style.transition = 'transform 0.45s ease';
-			listEl.style.transform = 'translateY(' + (-translateY) + 'px)';
-
-			var handleTransitionEnd = function () {
-				listEl.style.transition = '';
-				listEl.style.transform = '';
-				listEl.appendChild(firstItem);
-				listEl.removeEventListener('transitionend', handleTransitionEnd);
-				isAnimating = false;
-			};
-
-			listEl.addEventListener('transitionend', handleTransitionEnd);
-		}, interval);
+		requestAnimationFrame(loop);
 	});
 });
 
