@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			// Move one card height every "interval" ms.
 			var distance = (stepHeight / interval) * dt;
 			travelled += distance;
-			listEl.style.transform = 'translateY(' + (-travelled) + 'px)';
 
 			// When first card has fully scrolled out of view,
 			// move it to the bottom and adjust offset so motion stays continuous.
@@ -63,13 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
 					break;
 				}
 				listEl.appendChild(first);
-				stepHeight = getStepHeight();
-				if (!stepHeight) {
-					travelled = 0;
-					listEl.style.transform = '';
-					break;
-				}
 			}
+
+			listEl.style.transform = 'translateY(' + (-travelled) + 'px)';
 
 			requestAnimationFrame(loop);
 		}
