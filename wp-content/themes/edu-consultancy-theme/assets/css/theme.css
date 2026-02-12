@@ -153,9 +153,11 @@
 	background-color: rgba(2, 6, 23, 0.92);
 }
 
-.site-footer > .edu-container {
+.site-footer__inner {
 	position: relative;
 	z-index: 1;
+	padding-inline: var(--edu-spacing-md);
+	width: 100%;
 }
 
 .site-footer__card {
