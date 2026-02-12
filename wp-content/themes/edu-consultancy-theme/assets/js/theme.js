@@ -58,6 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
 					break;
 				}
 				listEl.appendChild(first);
+
+				// Trigger a soft fade-in on the recycled card so it does not "pop" into view.
+				first.classList.add('edu-hero-job-card--enter');
+				requestAnimationFrame(function () {
+					first.classList.remove('edu-hero-job-card--enter');
+				});
 			}
 
 			listEl.style.transform = 'translateY(' + offset + 'px)';
