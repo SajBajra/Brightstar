@@ -719,7 +719,23 @@
 .edu-services-bento__image {
 	display: block;
 	width: 100%;
-	height: auto;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Default card image ratio */
+.edu-services-bento__media {
+	aspect-ratio: 16 / 9;
+}
+
+/* Flatter, less tall hero image on the first (featured) card */
+.edu-services-bento__item--featured .edu-services-bento__media {
+	aspect-ratio: 21 / 9;
+}
+
+/* Make cards 2 and 3 visually taller */
+.edu-services-bento__item--tall .edu-services-bento__media {
+	aspect-ratio: 4 / 5;
 }
 
 .edu-services-bento__service-title {
