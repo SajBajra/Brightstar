@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Vertical auto-scrolling hero jobs lists (smooth continuous loop).
 	document.querySelectorAll('.edu-hero-jobs-list').forEach(function (listEl) {
-		if (listEl.children.length <= 1) {
+		var items = listEl.querySelectorAll('.edu-hero-job-card');
+		if (!items.length) {
 			return;
 		}
 
@@ -27,48 +28,40 @@ document.addEventListener('DOMContentLoaded', function () {
 			interval = 4000;
 		}
 
-		function getStepHeight() {
-			var firstItem = listEl.querySelector('.edu-hero-job-card');
-			if (!firstItem) {
-				return 0;
-			}
-			var styles = window.getComputedStyle(firstItem);
-			var marginBottom = parseFloat(styles.marginBottom || '0');
-			return firstItem.offsetHeight + marginBottom;
-		}
-
-		var stepHeight = getStepHeight();
+		// Assume consistent height for hero job cards.
+		var firstItem = items[0];
+		var styles = window.getComputedStyle(firstItem);
+		var marginBottom = parseFloat(styles.marginBottom || '0');
+		var stepHeight = firstItem.offsetHeight + marginBottom;
 		if (!stepHeight) {
 			return;
 		}
 
+		// Duplicate all items once to allow seamless looping.
+		items.forEach(function (item) {
+			var clone = item.cloneNode(true);
+			listEl.appendChild(clone);
+		});
+
+		var originalHeight = stepHeight * items.length;
 		var lastTime = performance.now();
-		var travelled = 0;
+		var offset = 0;
 
 		function loop(now) {
 			var dt = now - lastTime;
 			lastTime = now;
 
-			// Pixels to move this frame: stepHeight over "interval" ms.
+			// Distance per ms: move one card height every "interval" ms.
 			var distance = (stepHeight / interval) * dt;
-			travelled += distance;
-			listEl.style.transform = 'translateY(' + (-travelled) + 'px)';
+			offset -= distance;
 
-			// When we've moved one item height, recycle the first item.
-			while (travelled >= stepHeight) {
-				travelled -= stepHeight;
-				var first = listEl.firstElementChild;
-				if (!first) {
-					break;
-				}
-				listEl.appendChild(first);
-				stepHeight = getStepHeight();
-				if (!stepHeight) {
-					travelled = 0;
-					listEl.style.transform = '';
-					break;
-				}
+			// When we've scrolled past the original list height, reset offset
+			// so the second (cloned) set becomes the new start with no visual jump.
+			if (offset <= -originalHeight) {
+				offset += originalHeight;
 			}
+
+			listEl.style.transform = 'translateY(' + offset + 'px)';
 
 			requestAnimationFrame(loop);
 		}
