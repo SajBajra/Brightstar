@@ -141,6 +141,7 @@
 	background-color: #020617;
 	color: #e5e7eb;
 	margin-top: var(--edu-spacing-lg);
+	padding-block: calc(var(--edu-spacing-lg) * 1.25);
 	background-image: url('http://localhost/brightstar/wp-content/uploads/2026/02/fddfe27839f4a7d9348178f733d502ce.jpg');
 	background-size: cover;
 	background-position: center;
@@ -158,10 +159,12 @@
 }
 
 .site-footer__card {
-	background-color: rgba(15, 23, 42, 0.95);
-	border-radius: 18px;
-	padding: var(--edu-spacing-md);
-	box-shadow: 0 18px 40px rgba(15, 23, 42, 0.55);
+	background-color: rgba(15, 23, 42, 0.9);
+	border-radius: 24px;
+	padding: clamp(1.75rem, 3vw, 2.4rem);
+	box-shadow: 0 24px 60px rgba(15, 23, 42, 0.75);
+	border: 1px solid rgba(148, 163, 184, 0.4);
+	backdrop-filter: blur(18px);
 }
 
 .site-footer__top {
@@ -169,17 +172,20 @@
 	grid-template-columns: repeat(1, minmax(0, 1fr));
 	gap: var(--edu-spacing-md);
 	padding-block: var(--edu-spacing-md);
+	align-items: flex-start;
 }
 
 @media (min-width: 768px) {
 	.site-footer__top {
-		grid-template-columns: 2fr 1fr 1fr 1.2fr;
+		grid-template-columns: 2.2fr 1.1fr 1.1fr 1.4fr;
 	}
 }
 
 .site-footer__title {
 	margin-top: 0;
-	margin-bottom: 0.5rem;
+	margin-bottom: 0.65rem;
+	font-size: 1.2rem;
+	letter-spacing: 0.03em;
 }
 
 .site-footer__text {
@@ -191,8 +197,10 @@
 .site-footer__heading {
 	margin-top: 0;
 	margin-bottom: 0.75rem;
-	font-size: 0.95rem;
+	font-size: 0.9rem;
 	color: #f9fafb;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
 }
 
 .site-footer__links {
@@ -205,10 +213,26 @@
 	color: #9ca3af;
 	text-decoration: none;
 	font-size: 0.9rem;
+	position: relative;
 }
 
 .site-footer__links a:hover {
 	color: #e5e7eb;
+}
+
+.site-footer__links a::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: -0.2rem;
+	width: 0;
+	height: 1px;
+	background-color: rgba(191, 219, 254, 0.9);
+	transition: width 0.18s ease;
+}
+
+.site-footer__links a:hover::after {
+	width: 100%;
 }
 
 .site-footer__bottom {
@@ -222,6 +246,13 @@
 	justify-content: space-between;
 	align-items: center;
 	gap: var(--edu-spacing-md);
+}
+
+@media (max-width: 640px) {
+	.site-footer__bottom-inner {
+		flex-direction: column;
+		align-items: flex-start;
+	}
 }
 
 .site-footer__bottom-links {
@@ -247,6 +278,39 @@
 	font-size: 0.8rem;
 	color: #6b7280;
 	text-align: right;
+}
+
+@media (max-width: 640px) {
+	.site-footer__copy {
+		text-align: left;
+	}
+}
+
+.site-footer__form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.7rem;
+	margin-top: 0.6rem;
+}
+
+.site-footer__form input[type='email'] {
+	flex: 1 1 180px;
+	min-width: 0;
+	border-radius: 999px;
+	border: 1px solid rgba(148, 163, 184, 0.7);
+	background-color: rgba(15, 23, 42, 0.9);
+	color: #e5e7eb;
+	font-size: 0.9rem;
+	padding: 0.55rem 0.9rem;
+}
+
+.site-footer__form input[type='email']::placeholder {
+	color: #6b7280;
+}
+
+.site-footer__submit {
+	padding-inline: 1.2rem;
+	white-space: nowrap;
 }
 
 .edu-hero {
