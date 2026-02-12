@@ -182,6 +182,11 @@ class Edu_Theme_Jobs {
 	public static function render_job_details_meta_box( $post ) {
 		wp_nonce_field( 'edu_save_job_meta', 'edu_job_meta_nonce' );
 
+		// Ensure media library scripts are available for image field.
+		if ( function_exists( 'wp_enqueue_media' ) ) {
+			wp_enqueue_media();
+		}
+
 		$fields = array(
 			'salary_range'         => esc_html__( 'Salary Range', 'edu-consultancy' ),
 			'job_type_meta'        => esc_html__( 'Job Type (meta)', 'edu-consultancy' ),
@@ -196,7 +201,8 @@ class Edu_Theme_Jobs {
 
 		$visa_sponsorship = get_post_meta( $post->ID, 'edu_visa_sponsorship', true );
 		$featured_job     = get_post_meta( $post->ID, 'edu_featured_job', true );
-		$company_logo_id  = get_post_meta( $post->ID, 'edu_company_logo_id', true );
+		$company_logo_id  = (int) get_post_meta( $post->ID, 'edu_company_logo_id', true );
+		$logo_src         = $company_logo_id ? wp_get_attachment_image_src( $company_logo_id, 'thumbnail' ) : false;
 		?>
 		<table class="form-table">
 			<tbody>
@@ -246,13 +252,65 @@ class Edu_Theme_Jobs {
 
 			<tr>
 				<th scope="row">
-					<label for="edu_company_logo_id"><?php esc_html_e( 'Company Logo (attachment ID)', 'edu-consultancy' ); ?></label>
+					<label for="edu_company_logo_id"><?php esc_html_e( 'Company Image', 'edu-consultancy' ); ?></label>
 				</th>
 				<td>
-					<input type="number" name="edu_company_logo_id" id="edu_company_logo_id" class="small-text" value="<?php echo esc_attr( $company_logo_id ); ?>" />
-					<p class="description">
-						<?php esc_html_e( 'Store the media attachment ID for the company logo. This keeps implementation ACF-ready and simple.', 'edu-consultancy' ); ?>
-					</p>
+					<div class="edu-company-logo-field">
+						<div class="edu-company-logo-preview" style="margin-bottom:8px;">
+							<?php
+							if ( $logo_src && isset( $logo_src[0] ) ) {
+								?>
+								<img src="<?php echo esc_url( $logo_src[0] ); ?>" alt="" style="max-width:80px;height:auto;border-radius:50%;" />
+								<?php
+							}
+							?>
+						</div>
+						<input type="hidden" name="edu_company_logo_id" id="edu_company_logo_id" value="<?php echo esc_attr( $company_logo_id ); ?>" />
+						<button type="button" class="button edu-company-logo-select">
+							<?php esc_html_e( 'Select Image', 'edu-consultancy' ); ?>
+						</button>
+						<button type="button" class="button-link-delete edu-company-logo-remove">
+							<?php esc_html_e( 'Remove', 'edu-consultancy' ); ?>
+						</button>
+						<p class="description">
+							<?php esc_html_e( 'Optional image used in job cards when there is no featured image.', 'edu-consultancy' ); ?>
+						</p>
+					</div>
+
+					<script>
+					jQuery(function ($) {
+						var frame;
+						$('.edu-company-logo-select').on('click', function (event) {
+							event.preventDefault();
+							if (frame) {
+								frame.open();
+								return;
+							}
+
+							frame = wp.media({
+								title: '<?php echo esc_js( __( 'Select Company Image', 'edu-consultancy' ) ); ?>',
+								button: { text: '<?php echo esc_js( __( 'Use this image', 'edu-consultancy' ) ); ?>' },
+								multiple: false
+							});
+
+							frame.on('select', function () {
+								var attachment = frame.state().get('selection').first().toJSON();
+								$('#edu_company_logo_id').val(attachment.id);
+
+								var url = attachment.sizes && attachment.sizes.thumbnail ? attachment.sizes.thumbnail.url : attachment.url;
+								$('.edu-company-logo-preview').html('<img src="' + url + '" alt="" style="max-width:80px;height:auto;border-radius:50%;" />');
+							});
+
+							frame.open();
+						});
+
+						$('.edu-company-logo-remove').on('click', function (event) {
+							event.preventDefault();
+							$('#edu_company_logo_id').val('');
+							$('.edu-company-logo-preview').empty();
+						});
+					});
+					</script>
 				</td>
 			</tr>
 			</tbody>
@@ -284,23 +342,52 @@ class Edu_Theme_Jobs {
 			return;
 		}
 
-		$text_keys = array(
-			'edu_salary_range',
-			'edu_job_type_meta',
-			'edu_location',
-			'edu_experience_required',
-			'edu_education_required',
-			'edu_application_deadline',
-			'edu_company_name',
-			'edu_vacancies',
-			'edu_benefits',
-			'edu_company_logo_id',
+		$fields = array(
+			'edu_salary_range'         => 'text',
+			'edu_job_type_meta'        => 'text',
+			'edu_location'             => 'text',
+			'edu_experience_required'  => 'text',
+			'edu_education_required'   => 'text',
+			'edu_application_deadline' => 'text',
+			'edu_company_name'         => 'text',
+			'edu_vacancies'            => 'int',
+			'edu_benefits'             => 'textarea',
+			'edu_company_logo_id'      => 'int',
 		);
 
-		foreach ( $text_keys as $key ) {
-			if ( isset( $_POST[ $key ] ) ) {
-				$value = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
-				update_post_meta( $post_id, $key, $value );
+		foreach ( $fields as $key => $type ) {
+			if ( ! isset( $_POST[ $key ] ) ) {
+				continue;
+			}
+
+			$raw = wp_unslash( $_POST[ $key ] );
+
+			switch ( $type ) {
+				case 'int':
+					$value = absint( $raw );
+					if ( $value > 0 ) {
+						update_post_meta( $post_id, $key, $value );
+					} else {
+						delete_post_meta( $post_id, $key );
+					}
+					break;
+				case 'textarea':
+					$value = sanitize_textarea_field( $raw );
+					if ( '' !== $value ) {
+						update_post_meta( $post_id, $key, $value );
+					} else {
+						delete_post_meta( $post_id, $key );
+					}
+					break;
+				case 'text':
+				default:
+					$value = sanitize_text_field( $raw );
+					if ( '' !== $value ) {
+						update_post_meta( $post_id, $key, $value );
+					} else {
+						delete_post_meta( $post_id, $key );
+					}
+					break;
 			}
 		}
 
