@@ -37,7 +37,6 @@ require_once EDU_THEME_DIR . '/inc/applications.php';
 require_once EDU_THEME_DIR . '/inc/job-search.php';
 require_once EDU_THEME_DIR . '/inc/dashboards.php';
 require_once EDU_THEME_DIR . '/inc/elementor-widgets.php';
-require_once EDU_THEME_DIR . '/inc/pages.php';
 
 /**
  * Initialise theme components.
@@ -91,10 +90,6 @@ add_action(
 
 		if ( class_exists( 'Edu_Theme_Elementor_Widgets' ) ) {
 			Edu_Theme_Elementor_Widgets::init();
-		}
-
-		if ( class_exists( 'Edu_Theme_Pages' ) ) {
-			Edu_Theme_Pages::init();
 		}
 	}
 );
