@@ -31,6 +31,12 @@ require_once EDU_THEME_DIR . '/inc/taxonomies.php';
 require_once EDU_THEME_DIR . '/inc/forms.php';
 require_once EDU_THEME_DIR . '/inc/admin.php';
 require_once EDU_THEME_DIR . '/inc/helpers.php';
+require_once EDU_THEME_DIR . '/inc/jobs.php';
+require_once EDU_THEME_DIR . '/inc/roles.php';
+require_once EDU_THEME_DIR . '/inc/applications.php';
+require_once EDU_THEME_DIR . '/inc/job-search.php';
+require_once EDU_THEME_DIR . '/inc/dashboards.php';
+require_once EDU_THEME_DIR . '/inc/elementor-widgets.php';
 
 /**
  * Initialise theme components.
@@ -60,6 +66,30 @@ add_action(
 
 		if ( class_exists( 'Edu_Theme_Helpers' ) ) {
 			Edu_Theme_Helpers::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Jobs' ) ) {
+			Edu_Theme_Jobs::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Roles' ) ) {
+			Edu_Theme_Roles::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Applications' ) ) {
+			Edu_Theme_Applications::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Job_Search' ) ) {
+			Edu_Theme_Job_Search::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Dashboards' ) ) {
+			Edu_Theme_Dashboards::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Elementor_Widgets' ) ) {
+			Edu_Theme_Elementor_Widgets::init();
 		}
 	}
 );

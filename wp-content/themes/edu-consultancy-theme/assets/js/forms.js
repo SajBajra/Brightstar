@@ -1,13 +1,13 @@
 /* global eduForms */
 
-(function () {
-	'use strict';
+'use strict';
 
-	function handleSubmit(event) {
+(function () {
+	function handleAjaxFormSubmit(event) {
 		event.preventDefault();
 
 		var form = event.target;
-		var messageEl = form.querySelector('.edu-consultation-message');
+		var messageEl = form.querySelector('.edu-consultation-message, .edu-job-application-message');
 
 		if (!messageEl) {
 			messageEl = document.createElement('div');
@@ -39,7 +39,10 @@
 				if (data && data.success) {
 					messageEl.textContent = data.data && data.data.message ? data.data.message : 'Thank you. Your request has been submitted.';
 					messageEl.classList.add('is-success');
-					form.reset();
+					// Only reset non-file forms automatically.
+					if (!form.classList.contains('edu-job-application-form')) {
+						form.reset();
+					}
 				} else {
 					var error = (data && data.data && data.data.message) ? data.data.message : 'Something went wrong. Please try again.';
 					messageEl.textContent = error;
@@ -53,9 +56,17 @@
 	}
 
 	document.addEventListener('submit', function (event) {
-		if (event.target && event.target.classList.contains('edu-consultation-form')) {
-			handleSubmit(event);
+		if (!event.target) {
+			return;
+		}
+
+		if (
+			event.target.classList.contains('edu-consultation-form') ||
+			event.target.classList.contains('edu-job-application-form')
+		) {
+			handleAjaxFormSubmit(event);
 		}
 	});
 })();
+
 
