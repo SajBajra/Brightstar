@@ -1,0 +1,30 @@
+/* Extra layout helpers for Elementor-based designs. Keep minimal. */
+
+.edu-section {
+	padding-block: var(--edu-spacing-lg);
+}
+
+.edu-section--light {
+	background-color: var(--edu-color-light);
+}
+
+.edu-section--dark {
+	background-color: var(--edu-color-dark);
+	color: #ffffff;
+}
+
+.edu-grid {
+	display: grid;
+	gap: var(--edu-spacing-md);
+}
+
+@media (min-width: 768px) {
+	.edu-grid--3 {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.edu-grid--2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+

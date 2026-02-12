@@ -1,0 +1,137 @@
+/*
+Theme Name: Edu Consultancy Theme
+Theme URI: https://example.com/edu-consultancy-theme
+Author: Your Name
+Author URI: https://example.com
+Description: Custom Elementor-ready education & migration consultancy theme for Interlace-style sites. Fully compatible with Elementor Theme Builder, with custom CPTs for services, countries, universities, testimonials, and consultations.
+Version: 1.0.0
+Text Domain: edu-consultancy
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+*/
+
+/* Minimal base styles & design system variables.
+ * Most styling should be handled via Elementor.
+ */
+
+:root {
+	--edu-color-primary: #1b73e8;
+	--edu-color-secondary: #f97316;
+	--edu-color-accent: #0f766e;
+	--edu-color-dark: #0f172a;
+	--edu-color-light: #f9fafb;
+	--edu-font-base: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--edu-radius-base: 8px;
+	--edu-spacing-xs: 0.5rem;
+	--edu-spacing-sm: 0.75rem;
+	--edu-spacing-md: 1.25rem;
+	--edu-spacing-lg: 2rem;
+	--edu-container-width: 1200px;
+}
+
+body {
+	margin: 0;
+	font-family: var(--edu-font-base);
+	background-color: #ffffff;
+	color: #111827;
+}
+
+.edu-container {
+	max-width: var(--edu-container-width);
+	margin-inline: auto;
+	padding-inline: var(--edu-spacing-md);
+}
+
+.edu-btn-primary {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.75rem 1.5rem;
+	border-radius: 999px;
+	border: none;
+	background: linear-gradient(135deg, var(--edu-color-primary), var(--edu-color-secondary));
+	color: #ffffff;
+	font-weight: 600;
+	text-decoration: none;
+	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.edu-btn-primary:hover,
+.edu-btn-primary:focus-visible {
+	transform: translateY(-1px);
+	box-shadow: 0 12px 24px rgba(15, 23, 42, 0.15);
+	opacity: 0.96;
+}
+
+.edu-card {
+	border-radius: var(--edu-radius-base);
+	border: 1px solid #e5e7eb;
+	background-color: #ffffff;
+	padding: var(--edu-spacing-md);
+	box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+}
+
+.edu-faq-item {
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.edu-faq-question {
+	cursor: pointer;
+	padding: var(--edu-spacing-sm) 0;
+	font-weight: 600;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.edu-faq-answer {
+	display: none;
+	padding-bottom: var(--edu-spacing-sm);
+	color: #4b5563;
+}
+
+.edu-faq-item.is-open .edu-faq-answer {
+	display: block;
+}
+
+.edu-consultation-form {
+	display: grid;
+	gap: var(--edu-spacing-sm);
+}
+
+.edu-consultation-form label {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #374151;
+}
+
+.edu-consultation-form input,
+.edu-consultation-form textarea,
+.edu-consultation-form select {
+	width: 100%;
+	padding: 0.6rem 0.75rem;
+	border-radius: 6px;
+	border: 1px solid #d1d5db;
+	font-family: inherit;
+	font-size: 0.95rem;
+}
+
+.edu-consultation-form textarea {
+	min-height: 120px;
+	resize: vertical;
+}
+
+.edu-consultation-message {
+	margin-top: 0.5rem;
+	font-size: 0.9rem;
+}
+
+.edu-consultation-message.is-success {
+	color: #15803d;
+}
+
+.edu-consultation-message.is-error {
+	color: #b91c1c;
+}
+
