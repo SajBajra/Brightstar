@@ -696,7 +696,6 @@
 @media (min-width: 900px) {
 	.edu-services-bento__item--featured {
 		grid-column: span 2;
-		grid-row: span 2;
 	}
 }
 
@@ -712,9 +711,10 @@
 	margin-bottom: 0.9rem;
 	/* Base minimum height for regular cards */
 	min-height: 180px;
-	/* Allow the image block to grow to fill extra vertical space in taller cards */
+	/* Keep image prominent but not overpowering */
+	max-height: 260px;
 	height: auto;
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
 .edu-services-bento__image {
