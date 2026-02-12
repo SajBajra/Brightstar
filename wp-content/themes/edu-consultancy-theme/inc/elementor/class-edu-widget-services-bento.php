@@ -198,11 +198,6 @@ class Edu_Elementor_Widget_Services_Bento extends Widget_Base {
 								<?php echo esc_html( $service['text'] ); ?>
 							</p>
 						</div>
-						<footer class="edu-services-bento__footer">
-							<span class="edu-services-bento__link">
-								<?php esc_html_e( 'Included in consultation', 'edu-consultancy' ); ?>
-							</span>
-						</footer>
 					</article>
 					<?php
 				endforeach;
