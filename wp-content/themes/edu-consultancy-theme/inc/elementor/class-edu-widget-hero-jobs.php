@@ -151,8 +151,8 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 			array(
 				'label'   => esc_html__( 'Scroll Interval (ms)', 'edu-consultancy' ),
 				'type'    => Controls_Manager::NUMBER,
-				'default' => 4000,
-				'min'     => 1000,
+				'default' => 7000,
+				'min'     => 2000,
 				'max'     => 15000,
 			)
 		);
