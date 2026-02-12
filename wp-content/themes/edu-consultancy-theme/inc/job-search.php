@@ -278,9 +278,23 @@ class Edu_Theme_Job_Search {
 			$visa_label      = ( 'yes' === $visa_sponsor ) ? esc_html__( 'Visa Sponsorship Available', 'edu-consultancy' ) : '';
 			$job_type_terms  = get_the_terms( $job_id, 'job_type' );
 			$job_type_labels = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'name' ) : array();
+			$company_logo_id = (int) get_post_meta( $job_id, 'edu_company_logo_id', true );
+			$company_logo    = $company_logo_id ? wp_get_attachment_image_url( $company_logo_id, 'thumbnail' ) : '';
 			?>
 			<article <?php post_class( 'edu-card edu-job-card' ); ?>>
 				<header class="edu-job-card__header">
+					<?php if ( has_post_thumbnail( $job_id ) || $company_logo ) : ?>
+						<div class="edu-job-card__media">
+							<?php
+							if ( has_post_thumbnail( $job_id ) ) {
+								echo get_the_post_thumbnail( $job_id, 'medium', array( 'class' => 'edu-job-card__image' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							} elseif ( $company_logo ) {
+								echo '<img class="edu-job-card__image edu-job-card__image--logo" src="' . esc_url( $company_logo ) . '" alt="' . esc_attr( $company_name ) . '"/>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							}
+							?>
+						</div>
+					<?php endif; ?>
+
 					<h3 class="edu-job-card__title">
 						<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 					</h3>
