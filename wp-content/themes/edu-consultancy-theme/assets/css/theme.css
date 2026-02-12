@@ -141,7 +141,7 @@
 	background-color: #020617;
 	color: #e5e7eb;
 	margin-top: var(--edu-spacing-lg);
-	padding-block: calc(var(--edu-spacing-lg) * 1.25);
+	padding-block: calc(var(--edu-spacing-lg) * 1.5);
 	background-image: url('http://localhost/brightstar/wp-content/uploads/2026/02/fddfe27839f4a7d9348178f733d502ce.jpg');
 	background-size: cover;
 	background-position: center;
@@ -161,8 +161,8 @@
 .site-footer__card {
 	background-color: rgba(15, 23, 42, 0.9);
 	border-radius: 24px;
-	padding: clamp(1.75rem, 3vw, 2.4rem);
-	box-shadow: 0 24px 60px rgba(15, 23, 42, 0.75);
+	padding: clamp(2rem, 3.4vw, 2.75rem);
+	box-shadow: 0 22px 50px rgba(15, 23, 42, 0.7);
 	border: 1px solid rgba(148, 163, 184, 0.4);
 	backdrop-filter: blur(18px);
 }
@@ -170,28 +170,29 @@
 .site-footer__top {
 	display: grid;
 	grid-template-columns: repeat(1, minmax(0, 1fr));
-	gap: var(--edu-spacing-md);
+	gap: calc(var(--edu-spacing-md) * 1.25);
 	padding-block: var(--edu-spacing-md);
 	align-items: flex-start;
 }
 
 @media (min-width: 768px) {
 	.site-footer__top {
-		grid-template-columns: 2.2fr 1.1fr 1.1fr 1.4fr;
+		grid-template-columns: 2.4fr 1.1fr 1.1fr 1.4fr;
 	}
 }
 
 .site-footer__title {
 	margin-top: 0;
-	margin-bottom: 0.65rem;
+	margin-bottom: 0.75rem;
 	font-size: 1.2rem;
 	letter-spacing: 0.03em;
 }
 
 .site-footer__text {
-	margin: 0 0 0.4rem;
+	margin: 0 0 0.5rem;
 	font-size: 0.9rem;
 	color: #9ca3af;
+	max-width: 26rem;
 }
 
 .site-footer__heading {
@@ -207,6 +208,10 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+.site-footer__links li + li {
+	margin-top: 0.4rem;
 }
 
 .site-footer__links a {
@@ -237,15 +242,15 @@
 
 .site-footer__bottom {
 	border-top: 1px solid rgba(31, 41, 55, 0.9);
-	padding-top: 0.75rem;
-	margin-top: 0.75rem;
+	padding-top: 1rem;
+	margin-top: 1.25rem;
 }
 
 .site-footer__bottom-inner {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: var(--edu-spacing-md);
+	gap: calc(var(--edu-spacing-md) * 0.75);
 }
 
 @media (max-width: 640px) {
@@ -290,7 +295,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.7rem;
-	margin-top: 0.6rem;
+	margin-top: 0.8rem;
 }
 
 .site-footer__form input[type='email'] {
@@ -311,6 +316,30 @@
 .site-footer__submit {
 	padding-inline: 1.2rem;
 	white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+	.site-footer {
+		padding-block: var(--edu-spacing-lg);
+	}
+
+	.site-footer__card {
+		padding: 1.5rem 1.4rem;
+	}
+
+	.site-footer__top {
+		gap: var(--edu-spacing-md);
+	}
+
+	.site-footer__form {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.site-footer__submit {
+		width: 100%;
+		text-align: center;
+	}
 }
 
 .edu-hero {
