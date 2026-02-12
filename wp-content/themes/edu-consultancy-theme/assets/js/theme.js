@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				listEl.style.transition = '';
 				listEl.style.transform = '';
 				listEl.appendChild(firstItem);
-				isAnimating = false;
 				listEl.removeEventListener('transitionend', handleTransitionEnd);
+				isAnimating = false;
 			};
 
 			listEl.addEventListener('transitionend', handleTransitionEnd);
