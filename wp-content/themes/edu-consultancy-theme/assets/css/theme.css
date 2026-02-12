@@ -673,6 +673,11 @@
 	.edu-services-bento__grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
+
+	/* Center a single card on the last row when the grid is not full */
+	.edu-services-bento__grid > .edu-services-bento__item:last-child {
+		grid-column: 2;
+	}
 }
 
 .edu-services-bento__item {
