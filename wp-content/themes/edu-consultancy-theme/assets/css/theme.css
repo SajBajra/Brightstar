@@ -251,6 +251,10 @@
 
 .edu-hero {
 	background-color: #eff6ff;
+	background-image: url('http://localhost/brightstar/wp-content/uploads/2026/02/bg-pattern-1.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 	padding-block: var(--edu-spacing-lg);
 }
 
