@@ -673,61 +673,17 @@
 	}
 }
 
-@media (min-width: 1200px) {
-	/* 3-column Japanese bento grid on large screens */
+@media (min-width: 1024px) {
+	/* Reset to simple hero + balanced grid:
+	 * Row 1: card 1 spans full width
+	 * Rows 2–3: regular 3-column cards
+	 */
 	.edu-services-bento__grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		grid-auto-rows: 220px;
 	}
 
-	/* Make all cards fill their grid cell */
-	.edu-services-bento__item {
-		height: 100%;
-	}
-
-	/* Bento mapping for 7 tiles:
-	 * [1][2][3]
-	 * [1][4][5]
-	 * [6][6][7]
-	 */
-
-	/* Large hero tile (tall) */
-	.edu-services-bento__item:nth-child(1) {
-		grid-column: 1;
-		grid-row: 1 / span 2;
-	}
-
-	/* Top-right tiles */
-	.edu-services-bento__item:nth-child(2) {
-		grid-column: 2;
-		grid-row: 1;
-	}
-
-	.edu-services-bento__item:nth-child(3) {
-		grid-column: 3;
-		grid-row: 1;
-	}
-
-	/* Middle row right tiles */
-	.edu-services-bento__item:nth-child(4) {
-		grid-column: 2;
-		grid-row: 2;
-	}
-
-	.edu-services-bento__item:nth-child(5) {
-		grid-column: 3;
-		grid-row: 2;
-	}
-
-	/* Bottom row: wide + single */
-	.edu-services-bento__item:nth-child(6) {
-		grid-column: 3;
-		grid-row: 3;
-	}
-
-	.edu-services-bento__item:nth-child(7) {
-		grid-column: 1 / span 2;
-		grid-row: 3;
+	.edu-services-bento__item:first-child {
+		grid-column: 1 / -1;
 	}
 }
 
@@ -748,9 +704,6 @@
 	border-radius: 18px;
 	overflow: hidden;
 	margin-bottom: 0.9rem;
-	/* Allow the media block to grow with the card height */
-	flex: 1 0 auto;
-	min-height: 140px;
 }
 
 .edu-services-bento__image {
@@ -758,6 +711,16 @@
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+}
+
+/* Default card image ratio */
+.edu-services-bento__media {
+	aspect-ratio: 16 / 9;
+}
+
+/* Flatter, less tall hero image on the first card */
+.edu-services-bento__item:first-child .edu-services-bento__media {
+	aspect-ratio: 21 / 9;
 }
 
 .edu-services-bento__service-title {
