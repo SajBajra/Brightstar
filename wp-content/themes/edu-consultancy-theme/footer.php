@@ -23,7 +23,7 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 <footer class="site-footer">
 	<div class="site-footer__overlay"></div>
 
-	<div class="site-footer__inner">
+	<div class="edu-container">
 		<div class="site-footer__card">
 			<div class="site-footer__top">
 				<div class="site-footer__col site-footer__brand">
