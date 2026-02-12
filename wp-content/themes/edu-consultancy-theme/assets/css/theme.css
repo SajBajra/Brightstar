@@ -690,18 +690,20 @@
 
 .edu-services-bento__item--featured {
 	grid-column: span 2;
-	grid-row: span 2;
 	background-color: #ffffff;
 }
 
 @media (min-width: 900px) {
 	.edu-services-bento__item--featured {
 		grid-column: span 2;
+		grid-row: span 2;
 	}
 }
 
-.edu-services-bento__item--tall {
-	grid-row: span 2;
+@media (min-width: 900px) {
+	.edu-services-bento__item--tall {
+		grid-row: span 2;
+	}
 }
 
 .edu-services-bento__media {
@@ -736,6 +738,7 @@
 	margin: 0;
 	color: #4b5563;
 	font-size: 0.93rem;
+	line-height: 1.5;
 }
 
 .edu-services-bento__footer {

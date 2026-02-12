@@ -116,30 +116,37 @@ class Edu_Elementor_Widget_Services_Bento extends Widget_Base {
 			array(
 				'title' => __( 'Study Abroad Admissions', 'edu-consultancy' ),
 				'text'  => __( 'Shortlist the right universities and colleges based on your profile, budget, and long‑term goals. We handle applications, SOPs, and documentation from start to finish.', 'edu-consultancy' ),
+				'image' => 'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=900&q=80',
 			),
 			array(
 				'title' => __( 'Student Visa Processing', 'edu-consultancy' ),
 				'text'  => __( 'End‑to‑end support for student visas, including document checklists, financials, interview preparation, and compliance with each country’s latest rules.', 'edu-consultancy' ),
+				'image' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80',
 			),
 			array(
 				'title' => __( 'PR & Skilled Migration Pathways', 'edu-consultancy' ),
 				'text'  => __( 'Assessment of your profile against current immigration programs (PR, work permits, skill‑based visas), with guidance on points, documentation, and timelines.', 'edu-consultancy' ),
+				'image' => 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80',
 			),
 			array(
 				'title' => __( 'Work & Job Placement Abroad', 'edu-consultancy' ),
 				'text'  => __( 'Connect with trusted overseas employers across hospitality, construction, healthcare, and corporate roles, with transparent offers and visa guidance.', 'edu-consultancy' ),
+				'image' => 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80',
 			),
 			array(
 				'title' => __( 'Family, Spouse & Dependent Visas', 'edu-consultancy' ),
 				'text'  => __( 'Assistance with partner, spouse, and dependent visas so your family can join you abroad with the correct documentation and sponsorship structure.', 'edu-consultancy' ),
+				'image' => 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=80',
 			),
 			array(
 				'title' => __( 'Career & Education Counselling', 'edu-consultancy' ),
 				'text'  => __( 'One‑to‑one strategy sessions to map your education, skills and experience to a realistic study or migration plan, including course and country selection.', 'edu-consultancy' ),
+				'image' => 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80',
 			),
 			array(
 				'title' => __( 'Test Preparation & Language Coaching', 'edu-consultancy' ),
 				'text'  => __( 'Preparation support for IELTS, PTE and other language or admission tests, with focused strategies to achieve the scores your application needs.', 'edu-consultancy' ),
+				'image' => 'https://images.unsplash.com/photo-1523580846011-485a21c868ed?auto=format&fit=crop&w=900&q=80',
 			),
 		);
 
@@ -173,6 +180,16 @@ class Edu_Elementor_Widget_Services_Bento extends Widget_Base {
 
 					?>
 					<article class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $classes ) ) ); ?>">
+						<?php if ( ! empty( $service['image'] ) ) : ?>
+							<div class="edu-services-bento__media">
+								<img
+									src="<?php echo esc_url( $service['image'] ); ?>"
+									alt="<?php echo esc_attr( $service['title'] ); ?>"
+									class="edu-services-bento__image"
+									loading="lazy"
+								/>
+							</div>
+						<?php endif; ?>
 						<div class="edu-services-bento__body">
 							<h3 class="edu-services-bento__service-title">
 								<?php echo esc_html( $service['title'] ); ?>
