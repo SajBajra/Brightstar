@@ -32,14 +32,14 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 ?>
 
 <header class="site-header">
-	<div class="edu-container">
-		<div class="site-branding">
+	<div class="edu-container site-header__inner">
+		<div class="site-header__brand">
 			<?php
 			if ( has_custom_logo() ) {
 				the_custom_logo();
 			} else {
 				?>
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-title">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__title">
 					<?php echo esc_html( get_bloginfo( 'name' ) ); ?>
 				</a>
 				<?php
@@ -47,7 +47,7 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 			?>
 		</div>
 
-		<nav class="site-navigation" aria-label="<?php esc_attr_e( 'Primary Menu', 'edu-consultancy' ); ?>">
+		<nav class="site-header__nav" aria-label="<?php esc_attr_e( 'Primary Menu', 'edu-consultancy' ); ?>">
 			<?php
 			wp_nav_menu(
 				array(
@@ -59,6 +59,18 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 			);
 			?>
 		</nav>
+
+		<div class="site-header__actions">
+			<a class="site-header__link" href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>">
+				<?php esc_html_e( 'Find Jobs', 'edu-consultancy' ); ?>
+			</a>
+			<a class="edu-btn-outline site-header__btn" href="<?php echo esc_url( wp_login_url() ); ?>">
+				<?php esc_html_e( 'Login', 'edu-consultancy' ); ?>
+			</a>
+			<a class="edu-btn-primary site-header__btn" href="<?php echo esc_url( wp_registration_url() ); ?>">
+				<?php esc_html_e( 'Register', 'edu-consultancy' ); ?>
+			</a>
+		</div>
 	</div>
 </header>
 
