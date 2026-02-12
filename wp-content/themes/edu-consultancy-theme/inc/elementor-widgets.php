@@ -38,6 +38,7 @@ class Edu_Theme_Elementor_Widgets {
 		require_once __DIR__ . '/elementor/class-edu-widget-apply-button.php';
 		require_once __DIR__ . '/elementor/class-edu-widget-company-card.php';
 		require_once __DIR__ . '/elementor/class-edu-widget-hero-jobs.php';
+		require_once __DIR__ . '/elementor/class-edu-widget-services-bento.php';
 
 		$widgets_manager->register( new \Edu_Elementor_Widget_Job_Grid() );
 		$widgets_manager->register( new \Edu_Elementor_Widget_Featured_Jobs() );
@@ -45,6 +46,7 @@ class Edu_Theme_Elementor_Widgets {
 		$widgets_manager->register( new \Edu_Elementor_Widget_Apply_Button() );
 		$widgets_manager->register( new \Edu_Elementor_Widget_Company_Card() );
 		$widgets_manager->register( new \Edu_Elementor_Widget_Hero_Jobs() );
+		$widgets_manager->register( new \Edu_Elementor_Widget_Services_Bento() );
 	}
 }
 
