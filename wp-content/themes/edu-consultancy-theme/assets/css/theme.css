@@ -525,7 +525,8 @@
 }
 
 .edu-job-card__media {
-	border-radius: var(--edu-radius-base);
+	/* Slightly smaller than outer card radius for better visual hierarchy */
+	border-radius: calc(var(--edu-radius-base) - 2px);
 	overflow: hidden;
 	max-height: 200px;
 }
