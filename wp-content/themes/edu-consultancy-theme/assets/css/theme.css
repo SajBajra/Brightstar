@@ -206,7 +206,7 @@
 }
 
 .edu-hero {
-	background: radial-gradient(circle at top left, #e0ecff, #ffffff 55%);
+	background-color: #eff6ff;
 	padding-block: var(--edu-spacing-lg);
 }
 
@@ -413,7 +413,7 @@
 }
 
 .edu-section--accent {
-	background: linear-gradient(135deg, #0f172a, #1b73e8);
+	background-color: #1b73e8;
 	color: #e5e7eb;
 }
 
