@@ -709,7 +709,11 @@
 	border-radius: 18px;
 	overflow: hidden;
 	margin-bottom: 0.9rem;
-	height: 180px;
+	/* Base minimum height for regular cards */
+	min-height: 180px;
+	/* Allow the image block to grow to fill extra vertical space in taller cards */
+	height: auto;
+	flex: 1 1 auto;
 }
 
 .edu-services-bento__image {
