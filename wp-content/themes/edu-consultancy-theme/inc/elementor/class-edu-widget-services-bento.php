@@ -162,6 +162,11 @@ class Edu_Elementor_Widget_Services_Bento extends Widget_Base {
 					$excerpt = get_the_excerpt();
 					?>
 					<article <?php post_class( implode( ' ', array_map( 'sanitize_html_class', $classes ) ) ); ?>>
+						<?php if ( has_post_thumbnail() ) : ?>
+							<div class="edu-services-bento__media">
+								<?php the_post_thumbnail( 'large', array( 'class' => 'edu-services-bento__image' ) ); ?>
+							</div>
+						<?php endif; ?>
 						<div class="edu-services-bento__body">
 							<h3 class="edu-services-bento__service-title">
 								<a href="<?php the_permalink(); ?>">
