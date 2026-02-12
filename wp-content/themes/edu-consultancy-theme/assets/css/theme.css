@@ -641,8 +641,6 @@
 
 .edu-services-bento {
 	margin-block: var(--edu-spacing-lg);
-	background-color: #f3f4f6;
-	border-radius: 24px;
 	padding: var(--edu-spacing-lg);
 }
 
