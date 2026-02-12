@@ -188,8 +188,6 @@ class Edu_Theme_Jobs {
 		}
 
 		$fields = array(
-			'salary_range'         => esc_html__( 'Salary Range', 'edu-consultancy' ),
-			'job_type_meta'        => esc_html__( 'Job Type (meta)', 'edu-consultancy' ),
 			'location'             => esc_html__( 'Location', 'edu-consultancy' ),
 			'experience_required'  => esc_html__( 'Experience Required', 'edu-consultancy' ),
 			'education_required'   => esc_html__( 'Education Required', 'edu-consultancy' ),
@@ -202,10 +200,61 @@ class Edu_Theme_Jobs {
 		$visa_sponsorship = get_post_meta( $post->ID, 'edu_visa_sponsorship', true );
 		$featured_job     = get_post_meta( $post->ID, 'edu_featured_job', true );
 		$company_logo_id  = (int) get_post_meta( $post->ID, 'edu_company_logo_id', true );
+		$salary_min       = get_post_meta( $post->ID, 'edu_salary_min', true );
+		$salary_max       = get_post_meta( $post->ID, 'edu_salary_max', true );
+		$job_type_meta    = get_post_meta( $post->ID, 'edu_job_type_meta', true );
 		$logo_src         = $company_logo_id ? wp_get_attachment_image_src( $company_logo_id, 'thumbnail' ) : false;
 		?>
 		<table class="form-table">
 			<tbody>
+			<tr>
+				<th scope="row">
+					<label><?php esc_html_e( 'Salary Range', 'edu-consultancy' ); ?></label>
+				</th>
+				<td>
+					<input
+						type="number"
+						min="0"
+						step="1"
+						name="edu_salary_min"
+						id="edu_salary_min"
+						class="small-text"
+						value="<?php echo esc_attr( $salary_min ); ?>"
+					/>
+					<span>&ndash;</span>
+					<input
+						type="number"
+						min="0"
+						step="1"
+						name="edu_salary_max"
+						id="edu_salary_max"
+						class="small-text"
+						value="<?php echo esc_attr( $salary_max ); ?>"
+					/>
+					<p class="description">
+						<?php esc_html_e( 'Enter minimum and maximum salary as numbers only (e.g. 800 and 1200).', 'edu-consultancy' ); ?>
+					</p>
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row">
+					<label for="edu_job_type_meta"><?php esc_html_e( 'Job Type', 'edu-consultancy' ); ?></label>
+				</th>
+				<td>
+					<select name="edu_job_type_meta" id="edu_job_type_meta">
+						<option value=""><?php esc_html_e( 'Select type', 'edu-consultancy' ); ?></option>
+						<option value="full_time" <?php selected( $job_type_meta, 'full_time' ); ?>><?php esc_html_e( 'Full-time', 'edu-consultancy' ); ?></option>
+						<option value="part_time" <?php selected( $job_type_meta, 'part_time' ); ?>><?php esc_html_e( 'Part-time', 'edu-consultancy' ); ?></option>
+						<option value="contract" <?php selected( $job_type_meta, 'contract' ); ?>><?php esc_html_e( 'Contract', 'edu-consultancy' ); ?></option>
+						<option value="internship" <?php selected( $job_type_meta, 'internship' ); ?>><?php esc_html_e( 'Internship', 'edu-consultancy' ); ?></option>
+					</select>
+					<p class="description">
+						<?php esc_html_e( 'This complements the Job Type taxonomy and is used for labels in cards.', 'edu-consultancy' ); ?>
+					</p>
+				</td>
+			</tr>
+
 			<?php foreach ( $fields as $key => $label ) : ?>
 				<?php
 				$meta_key = 'edu_' . $key;
@@ -344,7 +393,6 @@ class Edu_Theme_Jobs {
 
 		$fields = array(
 			'edu_salary_range'         => 'text',
-			'edu_job_type_meta'        => 'text',
 			'edu_location'             => 'text',
 			'edu_experience_required'  => 'text',
 			'edu_education_required'   => 'text',
@@ -353,6 +401,9 @@ class Edu_Theme_Jobs {
 			'edu_vacancies'            => 'int',
 			'edu_benefits'             => 'textarea',
 			'edu_company_logo_id'      => 'int',
+			'edu_salary_min'           => 'int',
+			'edu_salary_max'           => 'int',
+			'edu_job_type_meta'        => 'choice',
 		);
 
 		foreach ( $fields as $key => $type ) {
@@ -374,6 +425,15 @@ class Edu_Theme_Jobs {
 				case 'textarea':
 					$value = sanitize_textarea_field( $raw );
 					if ( '' !== $value ) {
+						update_post_meta( $post_id, $key, $value );
+					} else {
+						delete_post_meta( $post_id, $key );
+					}
+					break;
+				case 'choice':
+					$allowed = array( 'full_time', 'part_time', 'contract', 'internship' );
+					$value   = sanitize_text_field( $raw );
+					if ( in_array( $value, $allowed, true ) ) {
 						update_post_meta( $post_id, $key, $value );
 					} else {
 						delete_post_meta( $post_id, $key );

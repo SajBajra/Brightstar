@@ -270,7 +270,9 @@ class Edu_Theme_Job_Search {
 			$job_id          = get_the_ID();
 			$company_name    = get_post_meta( $job_id, 'edu_company_name', true );
 			$location        = get_post_meta( $job_id, 'edu_location', true );
-			$salary_range    = get_post_meta( $job_id, 'edu_salary_range', true );
+			$salary_min      = get_post_meta( $job_id, 'edu_salary_min', true );
+			$salary_max      = get_post_meta( $job_id, 'edu_salary_max', true );
+			$legacy_range    = get_post_meta( $job_id, 'edu_salary_range', true );
 			$featured_job    = get_post_meta( $job_id, 'edu_featured_job', true );
 			$experience      = get_post_meta( $job_id, 'edu_experience_required', true );
 			$visa_sponsor    = get_post_meta( $job_id, 'edu_visa_sponsorship', true );
@@ -280,6 +282,19 @@ class Edu_Theme_Job_Search {
 			$job_type_labels = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'name' ) : array();
 			$company_logo_id = (int) get_post_meta( $job_id, 'edu_company_logo_id', true );
 			$company_logo    = $company_logo_id ? wp_get_attachment_image_url( $company_logo_id, 'thumbnail' ) : '';
+
+			$salary_range = '';
+			if ( '' !== $salary_min || '' !== $salary_max ) {
+				if ( '' !== $salary_min && '' !== $salary_max ) {
+					$salary_range = trim( $salary_min ) . ' - ' . trim( $salary_max );
+				} elseif ( '' !== $salary_min ) {
+					$salary_range = trim( $salary_min );
+				} else {
+					$salary_range = trim( $salary_max );
+				}
+			} elseif ( $legacy_range ) {
+				$salary_range = $legacy_range;
+			}
 			?>
 			<article <?php post_class( 'edu-card edu-job-card' ); ?>>
 				<header class="edu-job-card__header">
