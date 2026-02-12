@@ -678,6 +678,11 @@
 	.edu-services-bento__grid > .edu-services-bento__item:last-child {
 		grid-column: 1 / -1;
 	}
+
+	/* Keep the last card's image from being too tall when full-width */
+	.edu-services-bento__grid > .edu-services-bento__item:last-child .edu-services-bento__media {
+		aspect-ratio: 21 / 9;
+	}
 }
 
 .edu-services-bento__item {
