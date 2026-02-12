@@ -110,25 +110,38 @@ class Edu_Elementor_Widget_Services_Bento extends Widget_Base {
 
 		$heading     = isset( $settings['heading'] ) ? $settings['heading'] : '';
 		$description = isset( $settings['description'] ) ? $settings['description'] : '';
-		$limit       = isset( $settings['posts_per_page'] ) ? (int) $settings['posts_per_page'] : 6;
 
-		if ( $limit < 1 ) {
-			$limit = 6;
-		}
-
-		$query = new WP_Query(
+		// Static services for this project – no CPT query.
+		$services = array(
 			array(
-				'post_type'      => 'services',
-				'post_status'    => 'publish',
-				'posts_per_page' => $limit,
-				'orderby'        => 'menu_order title',
-				'order'          => 'ASC',
-			)
+				'title' => __( 'Study Abroad Admissions', 'edu-consultancy' ),
+				'text'  => __( 'Shortlist the right universities and colleges based on your profile, budget, and long‑term goals. We handle applications, SOPs, and documentation from start to finish.', 'edu-consultancy' ),
+			),
+			array(
+				'title' => __( 'Student Visa Processing', 'edu-consultancy' ),
+				'text'  => __( 'End‑to‑end support for student visas, including document checklists, financials, interview preparation, and compliance with each country’s latest rules.', 'edu-consultancy' ),
+			),
+			array(
+				'title' => __( 'PR & Skilled Migration Pathways', 'edu-consultancy' ),
+				'text'  => __( 'Assessment of your profile against current immigration programs (PR, work permits, skill‑based visas), with guidance on points, documentation, and timelines.', 'edu-consultancy' ),
+			),
+			array(
+				'title' => __( 'Work & Job Placement Abroad', 'edu-consultancy' ),
+				'text'  => __( 'Connect with trusted overseas employers across hospitality, construction, healthcare, and corporate roles, with transparent offers and visa guidance.', 'edu-consultancy' ),
+			),
+			array(
+				'title' => __( 'Family, Spouse & Dependent Visas', 'edu-consultancy' ),
+				'text'  => __( 'Assistance with partner, spouse, and dependent visas so your family can join you abroad with the correct documentation and sponsorship structure.', 'edu-consultancy' ),
+			),
+			array(
+				'title' => __( 'Career & Education Counselling', 'edu-consultancy' ),
+				'text'  => __( 'One‑to‑one strategy sessions to map your education, skills and experience to a realistic study or migration plan, including course and country selection.', 'edu-consultancy' ),
+			),
+			array(
+				'title' => __( 'Test Preparation & Language Coaching', 'edu-consultancy' ),
+				'text'  => __( 'Preparation support for IELTS, PTE and other language or admission tests, with focused strategies to achieve the scores your application needs.', 'edu-consultancy' ),
+			),
 		);
-
-		if ( ! $query->have_posts() ) {
-			return;
-		}
 
 		?>
 		<section class="edu-services-bento">
@@ -146,8 +159,7 @@ class Edu_Elementor_Widget_Services_Bento extends Widget_Base {
 			<div class="edu-services-bento__grid">
 				<?php
 				$index = 0;
-				while ( $query->have_posts() ) :
-					$query->the_post();
+				foreach ( $services as $service ) :
 					$index++;
 
 					$classes = array( 'edu-services-bento__item' );
@@ -159,35 +171,24 @@ class Edu_Elementor_Widget_Services_Bento extends Widget_Base {
 						$classes[] = 'edu-services-bento__item--tall';
 					}
 
-					$excerpt = get_the_excerpt();
 					?>
-					<article <?php post_class( implode( ' ', array_map( 'sanitize_html_class', $classes ) ) ); ?>>
-						<?php if ( has_post_thumbnail() ) : ?>
-							<div class="edu-services-bento__media">
-								<?php the_post_thumbnail( 'large', array( 'class' => 'edu-services-bento__image' ) ); ?>
-							</div>
-						<?php endif; ?>
+					<article class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $classes ) ) ); ?>">
 						<div class="edu-services-bento__body">
 							<h3 class="edu-services-bento__service-title">
-								<a href="<?php the_permalink(); ?>">
-									<?php the_title(); ?>
-								</a>
+								<?php echo esc_html( $service['title'] ); ?>
 							</h3>
-							<?php if ( $excerpt ) : ?>
-								<p class="edu-services-bento__service-text">
-									<?php echo esc_html( wp_trim_words( $excerpt, 20, '…' ) ); ?>
-								</p>
-							<?php endif; ?>
+							<p class="edu-services-bento__service-text">
+								<?php echo esc_html( $service['text'] ); ?>
+							</p>
 						</div>
 						<footer class="edu-services-bento__footer">
-							<a class="edu-services-bento__link" href="<?php the_permalink(); ?>">
-								<?php esc_html_e( 'Learn more', 'edu-consultancy' ); ?>
-							</a>
+							<span class="edu-services-bento__link">
+								<?php esc_html_e( 'Included in consultation', 'edu-consultancy' ); ?>
+							</span>
 						</footer>
 					</article>
 					<?php
-				endwhile;
-				wp_reset_postdata();
+				endforeach;
 				?>
 			</div>
 		</section>
