@@ -1075,7 +1075,7 @@
 	min-width: 0;
 }
 
-/* Always 3 columns so 3 cards show at a time (smaller cards on narrow screens) */
+/* Always 3 columns so 3 cards show at a time (same as archive) */
 .edu-related-jobs__slide .edu-related-jobs__grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1083,22 +1083,9 @@
 	margin-bottom: 0;
 }
 
-/* Slightly smaller cards in carousel to keep 3 visible and match archive proportion */
+/* Cards identical to archive: no overrides, same .edu-job-card styles */
 .edu-related-jobs__grid .edu-job-card {
-	max-width: 100%;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.edu-related-jobs__grid .edu-job-card__media {
-	aspect-ratio: 16 / 10;
-}
-
-.edu-related-jobs__grid .edu-job-card__title {
-	font-size: 1rem;
-}
-
-.edu-related-jobs__grid .edu-job-card__meta {
-	font-size: 0.8rem;
 }
 
 .edu-related-jobs__pagination {
