@@ -977,9 +977,13 @@
 }
 
 .edu-job-application-form__input,
-.edu-job-application-form__textarea {
-	width: 100%;
+.edu-job-application-form__textarea,
+.edu-job-application-form_input,
+.edu-job-application-form_textarea {
+	width: 100% !important;
+	max-width: 100%;
 	min-width: 0;
+	box-sizing: border-box;
 	padding: 0.65rem 0.875rem;
 	font-size: 0.9375rem;
 	font-family: inherit;
