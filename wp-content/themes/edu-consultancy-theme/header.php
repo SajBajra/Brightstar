@@ -61,15 +61,21 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 		</nav>
 
 		<div class="site-header__actions">
-			<a class="site-header__link" href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>">
+			<a class="site-header__link" href="<?php echo esc_url( get_post_type_archive_link( 'jobs' ) ); ?>">
 				<?php esc_html_e( 'Find Jobs', 'edu-consultancy' ); ?>
 			</a>
-			<a class="edu-btn-outline site-header__btn" href="<?php echo esc_url( wp_login_url() ); ?>">
-				<?php esc_html_e( 'Login', 'edu-consultancy' ); ?>
-			</a>
-			<a class="edu-btn-primary site-header__btn" href="<?php echo esc_url( wp_registration_url() ); ?>">
-				<?php esc_html_e( 'Register', 'edu-consultancy' ); ?>
-			</a>
+			<?php if ( is_user_logged_in() ) : ?>
+				<a class="edu-btn-outline site-header__btn" href="<?php echo esc_url( wp_logout_url( get_permalink() ) ); ?>">
+					<?php esc_html_e( 'Logout', 'edu-consultancy' ); ?>
+				</a>
+			<?php else : ?>
+				<a class="edu-btn-outline site-header__btn" href="<?php echo esc_url( wp_login_url() ); ?>">
+					<?php esc_html_e( 'Login', 'edu-consultancy' ); ?>
+				</a>
+				<a class="edu-btn-primary site-header__btn" href="<?php echo esc_url( wp_registration_url() ); ?>">
+					<?php esc_html_e( 'Register', 'edu-consultancy' ); ?>
+				</a>
+			<?php endif; ?>
 		</div>
 	</div>
 </header>
