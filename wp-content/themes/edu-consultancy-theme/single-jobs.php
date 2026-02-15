@@ -226,8 +226,9 @@ get_header();
 					<div class="edu-related-jobs__carousel">
 						<div class="edu-related-jobs__track" data-slides="<?php echo esc_attr( (string) $total_slides ); ?>" style="width: <?php echo esc_attr( (string) ( $total_slides * 100 ) ); ?>%;">
 							<?php
+							$slide_width_pct = $total_slides > 0 ? ( 100 / $total_slides ) : 100;
 							foreach ( $related_slides as $slide_posts ) {
-								echo '<div class="edu-related-jobs__slide">';
+								echo '<div class="edu-related-jobs__slide" style="flex: 0 0 ' . esc_attr( $slide_width_pct ) . '%; width: ' . esc_attr( $slide_width_pct ) . '%;">';
 								echo '<div class="edu-related-jobs__grid edu-grid edu-grid--3">';
 								foreach ( $slide_posts as $post ) {
 									setup_postdata( $post );
@@ -269,7 +270,8 @@ get_header();
 						if (page < 1) page = 1;
 						if (page > total) page = total;
 						current = page;
-						track.style.transform = 'translateX(-' + (current - 1) * 100 + '%)';
+						var pct = total > 0 ? (current - 1) * (100 / total) : 0;
+						track.style.transform = 'translateX(-' + pct + '%)';
 						nav.querySelectorAll('.page-numbers').forEach(function(a) {
 							a.classList.remove('current');
 							if (a.getAttribute('data-page') === String(current)) a.classList.add('current');

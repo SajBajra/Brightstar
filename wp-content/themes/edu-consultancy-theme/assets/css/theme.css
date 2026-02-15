@@ -1069,22 +1069,25 @@
 	transition: transform 0.35s ease;
 }
 
+/* Each slide = 100% of carousel viewport (width set inline: 100/n slides % of track) */
 .edu-related-jobs__slide {
-	flex: 0 0 100%;
-	width: 100%;
 	min-width: 0;
+	box-sizing: border-box;
 }
 
-/* Always 3 columns so 3 cards show at a time (same as archive) */
+/* Always 3 columns so 3 cards fit (same as archive) */
 .edu-related-jobs__slide .edu-related-jobs__grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: var(--edu-spacing-md);
 	margin-bottom: 0;
+	width: 100%;
+	min-width: 0;
 }
 
-/* Cards identical to archive: no overrides, same .edu-job-card styles */
+/* Cards identical to archive; min-width 0 so they fit in grid */
 .edu-related-jobs__grid .edu-job-card {
+	min-width: 0;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
