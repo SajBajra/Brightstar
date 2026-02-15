@@ -397,7 +397,14 @@ class Edu_Theme_Job_Search {
 				</div>
 
 				<div class="edu-job-card__summary">
-					<?php the_excerpt(); ?>
+					<?php
+					$excerpt = get_the_excerpt();
+					if ( $excerpt ) {
+						echo '<p>' . wp_kses_post( $excerpt ) . '</p>';
+					} else {
+						echo '<p>' . esc_html__( 'View job details for more information.', 'edu-consultancy' ) . '</p>';
+					}
+					?>
 
 					<?php if ( $experience ) : ?>
 						<p class="edu-job-card__experience">

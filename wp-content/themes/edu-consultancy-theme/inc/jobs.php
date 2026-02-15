@@ -21,6 +21,35 @@ class Edu_Theme_Jobs {
 		add_action( 'init', array( __CLASS__, 'register_job_taxonomies' ) );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'add_job_meta_boxes' ) );
 		add_action( 'save_post_jobs', array( __CLASS__, 'save_job_meta' ) );
+		add_filter( 'excerpt_length', array( __CLASS__, 'job_excerpt_length' ), 10, 2 );
+		add_filter( 'excerpt_more', array( __CLASS__, 'job_excerpt_more' ), 10, 1 );
+	}
+
+	/**
+	 * Excerpt length for job cards (archive and related).
+	 *
+	 * @param int    $length Default length.
+	 * @param string $context Unused.
+	 * @return int
+	 */
+	public static function job_excerpt_length( $length, $context = '' ) {
+		if ( is_post_type_archive( 'jobs' ) || ( in_the_loop() && get_post_type() === 'jobs' ) ) {
+			return 10;
+		}
+		return $length;
+	}
+
+	/**
+	 * Excerpt more string for jobs.
+	 *
+	 * @param string $more Default more string.
+	 * @return string
+	 */
+	public static function job_excerpt_more( $more ) {
+		if ( in_the_loop() && get_post_type() === 'jobs' ) {
+			return ' ...';
+		}
+		return $more;
 	}
 
 	/**
