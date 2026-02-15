@@ -63,11 +63,25 @@
 }
 
 .site-header__brand {
+	flex-shrink: 0;
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 	font-weight: 700;
 	font-size: 1.05rem;
+}
+
+.site-header__center {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+	min-width: 0;
+}
+
+.site-header__center .primary-menu {
+	gap: 1.5rem;
 }
 
 .site-header__title {
@@ -95,6 +109,7 @@
 }
 
 .site-header__actions {
+	flex-shrink: 0;
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
@@ -1102,6 +1117,21 @@
 	border-top: 1px solid #e2e8f0;
 }
 
+/* Elementor Jobs Grid Carousel widget: centered heading, no top/bottom borders */
+.edu-jobs-carousel-widget.edu-related-jobs {
+	border-top: none;
+	padding-top: 0;
+}
+
+.edu-jobs-carousel-widget .edu-related-jobs__title {
+	text-align: center;
+}
+
+.edu-jobs-carousel-widget .edu-related-jobs__pagination {
+	border-top: none;
+	padding-top: 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	.edu-related-jobs__grid .edu-job-card:hover {
 		transform: translateY(-2px);
@@ -1410,6 +1440,57 @@
 
 .edu-find-jobs-hero__description a {
 	color: #93c5fd;
+}
+
+/* Blog hero: optional different background (same structure as Find Jobs) */
+.edu-blog-hero {
+	background-image: url("https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80");
+}
+
+/* Blog archive list (no search) */
+.edu-blog-list {
+	margin-top: var(--edu-spacing-lg);
+	margin-bottom: var(--edu-spacing-lg);
+}
+
+.edu-blog-list__grid {
+	gap: var(--edu-spacing-md);
+	margin-bottom: var(--edu-spacing-lg);
+}
+
+.edu-blog-list__grid .edu-card {
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edu-blog-list__grid .edu-card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.edu-blog-list__grid .entry-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.15rem;
+	line-height: 1.3;
+}
+
+.edu-blog-list__grid .entry-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.edu-blog-list__grid .entry-title a:hover {
+	text-decoration: underline;
+}
+
+.edu-blog-list__grid .entry-excerpt {
+	margin: 0;
+	font-size: 0.9375rem;
+	color: #4b5563;
+	line-height: 1.5;
+}
+
+.edu-blog-pagination {
+	margin-top: var(--edu-spacing-lg);
 }
 
 /* Find Jobs / Job Search page */
