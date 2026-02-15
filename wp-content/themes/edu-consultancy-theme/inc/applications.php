@@ -119,27 +119,43 @@ class Edu_Theme_Applications {
 			<input type="hidden" name="edu_nonce" value="<?php echo esc_attr( $nonce ); ?>" />
 			<input type="hidden" name="job_id" value="<?php echo esc_attr( $job_id ); ?>" />
 
-			<div>
-				<label for="edu_cover_letter"><?php esc_html_e( 'Cover Letter', 'edu-consultancy' ); ?></label>
-				<textarea id="edu_cover_letter" name="cover_letter" rows="5"></textarea>
+			<div class="edu-job-application-form__field">
+				<label for="edu_cover_letter" class="edu-job-application-form__label"><?php esc_html_e( 'Cover Letter', 'edu-consultancy' ); ?></label>
+				<textarea id="edu_cover_letter" name="cover_letter" class="edu-job-application-form__input edu-job-application-form__textarea" rows="5" placeholder="<?php esc_attr_e( 'Write a short cover letter...', 'edu-consultancy' ); ?>"></textarea>
 			</div>
 
-			<div>
-				<label for="edu_cv_file"><?php esc_html_e( 'Upload CV (PDF, DOC, DOCX)', 'edu-consultancy' ); ?> *</label>
-				<input type="file" id="edu_cv_file" name="cv_file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required />
+			<div class="edu-job-application-form__field">
+				<label for="edu_cv_file" class="edu-job-application-form__label"><?php esc_html_e( 'Upload CV (PDF, DOC, DOCX)', 'edu-consultancy' ); ?> <span class="edu-job-application-form__required">*</span></label>
+				<div class="edu-job-application-form__file-wrap">
+					<input type="file" id="edu_cv_file" name="cv_file" class="edu-job-application-form__file-input" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required />
+					<span class="edu-job-application-form__file-text" data-default="<?php esc_attr_e( 'No file chosen', 'edu-consultancy' ); ?>"><?php esc_html_e( 'No file chosen', 'edu-consultancy' ); ?></span>
+				</div>
 			</div>
 
-			<div>
-				<label for="edu_portfolio"><?php esc_html_e( 'Portfolio URL (optional)', 'edu-consultancy' ); ?></label>
-				<input type="url" id="edu_portfolio" name="portfolio_url" />
+			<div class="edu-job-application-form__field">
+				<label for="edu_portfolio" class="edu-job-application-form__label"><?php esc_html_e( 'Portfolio URL (optional)', 'edu-consultancy' ); ?></label>
+				<input type="url" id="edu_portfolio" name="portfolio_url" class="edu-job-application-form__input" placeholder="https://..." />
 			</div>
 
-			<button type="submit" class="edu-btn-primary">
-				<?php esc_html_e( 'Submit Application', 'edu-consultancy' ); ?>
-			</button>
+			<div class="edu-job-application-form__actions">
+				<button type="submit" class="edu-btn-primary edu-job-application-form__submit">
+					<?php esc_html_e( 'Submit Application', 'edu-consultancy' ); ?>
+				</button>
+			</div>
 
 			<div class="edu-consultation-message edu-job-application-message" aria-live="polite"></div>
 		</form>
+		<script>
+		(function() {
+			var el = document.getElementById('edu_cv_file');
+			var text = el && el.closest('.edu-job-application-form') && el.closest('.edu-job-application-form').querySelector('.edu-job-application-form__file-text');
+			if (el && text) {
+				el.addEventListener('change', function() {
+					text.textContent = this.files && this.files[0] ? this.files[0].name : text.getAttribute('data-default') || '<?php echo esc_js( __( 'No file chosen', 'edu-consultancy' ) ); ?>';
+				});
+			}
+		})();
+		</script>
 		<?php
 
 		return (string) ob_get_clean();
