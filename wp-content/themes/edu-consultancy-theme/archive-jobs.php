@@ -1,6 +1,7 @@
 <?php
 /**
  * Archive template for Jobs post type.
+ * Merged with job search: one "Find Jobs" page with filters and results.
  *
  * @package Edu_Consultancy
  */
@@ -15,25 +16,11 @@ get_header();
 <main id="primary" class="site-main">
 	<div class="edu-container">
 		<header class="page-header edu-section__header">
-			<?php
-			the_archive_title( '<h1 class="page-title">', '</h1>' );
-			the_archive_description( '<div class="archive-description">', '</div>' );
-			?>
+			<h1 class="page-title"><?php esc_html_e( 'Find Jobs', 'edu-consultancy' ); ?></h1>
+			<?php the_archive_description( '<div class="archive-description">', '</div>' ); ?>
 		</header>
 
-		<?php if ( have_posts() ) : ?>
-			<div class="edu-job-grid edu-grid edu-grid--3">
-				<?php
-				while ( have_posts() ) {
-					the_post();
-					get_template_part( 'template-parts/content', 'job' );
-				}
-				?>
-			</div>
-			<?php the_posts_pagination(); ?>
-		<?php else : ?>
-			<?php get_template_part( 'template-parts/content', 'none' ); ?>
-		<?php endif; ?>
+		<?php echo do_shortcode( '[edu_job_search]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</div>
 </main>
 
