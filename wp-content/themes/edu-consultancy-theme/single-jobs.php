@@ -181,10 +181,11 @@ get_header();
 			</article>
 
 			<?php
-			// Related / similar jobs (same category or type, then latest).
-			$category_ids = $category_terms && ! is_wp_error( $category_terms ) ? wp_list_pluck( $category_terms, 'term_id' ) : array();
-			$job_type_ids = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'term_id' ) : array();
-			$related_tax  = array();
+			// Related / similar jobs (same category or type, then latest). 3 per page with pagination.
+			$category_ids   = $category_terms && ! is_wp_error( $category_terms ) ? wp_list_pluck( $category_terms, 'term_id' ) : array();
+			$job_type_ids   = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'term_id' ) : array();
+			$related_tax    = array();
+			$related_paged  = isset( $_GET['related_page'] ) ? max( 1, (int) $_GET['related_page'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			if ( ! empty( $category_ids ) ) {
 				$related_tax[] = array(
@@ -208,7 +209,8 @@ get_header();
 				'post_type'      => 'jobs',
 				'post_status'    => 'publish',
 				'post__not_in'   => array( $job_id ),
-				'posts_per_page' => 6,
+				'posts_per_page' => 3,
+				'paged'          => $related_paged,
 			);
 			if ( ! empty( $related_tax ) ) {
 				$related_args['tax_query'] = $related_tax;
@@ -216,6 +218,8 @@ get_header();
 			$related_jobs = new WP_Query( $related_args );
 
 			if ( $related_jobs->have_posts() ) :
+				$related_total_pages = (int) $related_jobs->max_num_pages;
+				$current_job_url    = get_permalink( $job_id );
 				?>
 				<section class="edu-related-jobs">
 					<h2 class="edu-related-jobs__title"><?php esc_html_e( 'Similar jobs', 'edu-consultancy' ); ?></h2>
@@ -228,6 +232,29 @@ get_header();
 						wp_reset_postdata();
 						?>
 					</div>
+					<?php
+					if ( $related_total_pages > 1 ) {
+						$big = 999999;
+						$base = add_query_arg( 'related_page', $big, $current_job_url );
+						$base = str_replace( (string) $big, '%#%', esc_url( $base ) );
+						$pagination = paginate_links(
+							array(
+								'base'      => $base,
+								'format'    => '',
+								'current'   => $related_paged,
+								'total'     => $related_total_pages,
+								'type'      => 'list',
+								'prev_text' => '&larr; ' . esc_html__( 'Previous', 'edu-consultancy' ),
+								'next_text' => esc_html__( 'Next', 'edu-consultancy' ) . ' &rarr;',
+							)
+						);
+						if ( $pagination ) {
+							echo '<nav class="edu-related-jobs__pagination edu-job-pagination" aria-label="' . esc_attr__( 'Similar jobs pagination', 'edu-consultancy' ) . '">';
+							echo $pagination; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo '</nav>';
+						}
+					}
+					?>
 				</section>
 				<?php
 			endif;
