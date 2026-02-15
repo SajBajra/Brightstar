@@ -120,6 +120,11 @@ class Edu_Theme_Applications {
 			<input type="hidden" name="job_id" value="<?php echo esc_attr( $job_id ); ?>" />
 
 			<div class="edu-job-application-form__field">
+				<label for="edu_application_email" class="edu-job-application-form__label"><?php esc_html_e( 'Email', 'edu-consultancy' ); ?> <span class="edu-job-application-form__required">*</span></label>
+				<input type="email" id="edu_application_email" name="application_email" class="edu-job-application-form__input" value="<?php echo esc_attr( $current_user->user_email ); ?>" placeholder="<?php esc_attr_e( 'your@email.com', 'edu-consultancy' ); ?>" required />
+			</div>
+
+			<div class="edu-job-application-form__field">
 				<label for="edu_cover_letter" class="edu-job-application-form__label"><?php esc_html_e( 'Cover Letter', 'edu-consultancy' ); ?></label>
 				<textarea id="edu_cover_letter" name="cover_letter" class="edu-job-application-form__input edu-job-application-form__textarea" rows="5" placeholder="<?php esc_attr_e( 'Write a short cover letter...', 'edu-consultancy' ); ?>"></textarea>
 			</div>
@@ -193,6 +198,16 @@ class Edu_Theme_Applications {
 			wp_send_json_error(
 				array(
 					'message' => esc_html__( 'Invalid job selected.', 'edu-consultancy' ),
+				),
+				400
+			);
+		}
+
+		$application_email = isset( $_POST['application_email'] ) ? sanitize_email( wp_unslash( $_POST['application_email'] ) ) : '';
+		if ( empty( $application_email ) || ! is_email( $application_email ) ) {
+			wp_send_json_error(
+				array(
+					'message' => esc_html__( 'Please enter a valid email address.', 'edu-consultancy' ),
 				),
 				400
 			);
@@ -308,6 +323,7 @@ class Edu_Theme_Applications {
 				'meta_input'  => array(
 					'edu_job_id'             => $job_id,
 					'edu_applicant_id'       => $user_id,
+					'edu_application_email'  => $application_email,
 					'edu_cover_letter'       => $cover_letter,
 					'edu_cv_attachment_id'   => $attachment_id,
 					'edu_portfolio_url'      => $portfolio_url,
