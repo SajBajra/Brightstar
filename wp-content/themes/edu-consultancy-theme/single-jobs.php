@@ -48,6 +48,7 @@ get_header();
 			} elseif ( $legacy_range ) {
 				$salary_range = $legacy_range;
 			}
+				$date_posted = get_the_date();
 			?>
 			<article id="job-<?php echo esc_attr( $job_id ); ?>" <?php post_class( 'edu-single-job' ); ?>>
 				<a href="<?php echo esc_url( get_post_type_archive_link( 'jobs' ) ); ?>" class="edu-single-job__back">
@@ -55,39 +56,42 @@ get_header();
 				</a>
 
 				<header class="edu-single-job__header">
-					<?php if ( get_post_meta( $job_id, 'edu_featured_job', true ) === '1' ) : ?>
-						<span class="edu-badge edu-badge--featured"><?php esc_html_e( 'Featured', 'edu-consultancy' ); ?></span>
-					<?php endif; ?>
-
-					<h1 class="edu-single-job__title"><?php the_title(); ?></h1>
-
-					<div class="edu-single-job__meta">
-						<?php if ( $company_name ) : ?>
-							<span class="edu-single-job__meta-item"><?php echo esc_html( $company_name ); ?></span>
-						<?php endif; ?>
-						<?php if ( $location ) : ?>
-							<span class="edu-single-job__meta-item"><?php echo esc_html( $location ); ?></span>
-						<?php endif; ?>
-						<?php if ( $salary_range ) : ?>
-							<span class="edu-single-job__meta-item"><?php echo esc_html( $salary_range ); ?></span>
-						<?php endif; ?>
-						<?php if ( ! empty( $job_type_labels ) ) : ?>
-							<span class="edu-single-job__meta-item"><?php echo esc_html( implode( ', ', $job_type_labels ) ); ?></span>
-						<?php endif; ?>
-					</div>
-
-					<?php if ( has_post_thumbnail( $job_id ) || $company_logo ) : ?>
-						<div class="edu-single-job__media">
-							<?php
-							if ( has_post_thumbnail( $job_id ) ) {
-								$thumb_id = get_post_thumbnail_id( $job_id );
-								echo wp_get_attachment_image( $thumb_id, 'large', false, array( 'class' => 'edu-single-job__image' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							} elseif ( $company_logo ) {
-								echo '<img class="edu-single-job__image" src="' . esc_url( $company_logo ) . '" alt="' . esc_attr( $company_name ? $company_name : get_the_title() ) . '" />'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							}
-							?>
+					<div class="edu-single-job__header-inner">
+						<div class="edu-single-job__header-left">
+							<?php if ( $company_logo || has_post_thumbnail( $job_id ) ) : ?>
+								<div class="edu-single-job__logo">
+									<?php
+									if ( has_post_thumbnail( $job_id ) ) {
+										$thumb_id = get_post_thumbnail_id( $job_id );
+										echo wp_get_attachment_image( $thumb_id, 'thumbnail', false, array( 'class' => 'edu-single-job__logo-img' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									} elseif ( $company_logo ) {
+										echo '<img class="edu-single-job__logo-img" src="' . esc_url( $company_logo ) . '" alt="' . esc_attr( $company_name ? $company_name : get_the_title() ) . '" />'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									}
+									?>
+								</div>
+							<?php endif; ?>
+							<div class="edu-single-job__header-content">
+								<h1 class="edu-single-job__title"><?php the_title(); ?></h1>
+								<div class="edu-single-job__meta-line">
+									<?php if ( $company_name ) : ?>
+										<span class="edu-single-job__meta-item"><?php echo esc_html( $company_name ); ?></span>
+									<?php endif; ?>
+									<?php if ( $date_posted ) : ?>
+										<span class="edu-single-job__meta-item"><?php echo esc_html( $date_posted ); ?></span>
+									<?php endif; ?>
+								</div>
+								<?php if ( ! empty( $job_type_labels ) ) : ?>
+									<span class="edu-single-job__type-tag"><?php echo esc_html( implode( ', ', $job_type_labels ) ); ?></span>
+								<?php endif; ?>
+							</div>
 						</div>
-					<?php endif; ?>
+						<div class="edu-single-job__header-right">
+							<?php if ( $deadline ) : ?>
+								<p class="edu-single-job__deadline"><?php echo esc_html__( 'Application ends:', 'edu-consultancy' ); ?> <?php echo esc_html( $deadline ); ?></p>
+							<?php endif; ?>
+							<a href="#apply" class="edu-btn-primary edu-single-job__apply-now"><?php esc_html_e( 'Apply Now', 'edu-consultancy' ); ?></a>
+						</div>
+					</div>
 				</header>
 
 				<div class="edu-single-job__body">
@@ -98,50 +102,70 @@ get_header();
 					</div>
 
 					<aside class="edu-single-job__sidebar">
-						<div class="edu-single-job__details-card">
-							<h2 class="edu-single-job__details-title"><?php esc_html_e( 'Job Details', 'edu-consultancy' ); ?></h2>
-							<dl class="edu-single-job__details-list">
-								<?php if ( $company_name ) : ?>
-									<dt><?php esc_html_e( 'Company', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( $company_name ); ?></dd>
-								<?php endif; ?>
-								<?php if ( $location ) : ?>
-									<dt><?php esc_html_e( 'Location', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( $location ); ?></dd>
-								<?php endif; ?>
-								<?php if ( $salary_range ) : ?>
-									<dt><?php esc_html_e( 'Salary', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( $salary_range ); ?></dd>
-								<?php endif; ?>
-								<?php if ( ! empty( $job_type_labels ) ) : ?>
-									<dt><?php esc_html_e( 'Job Type', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( implode( ', ', $job_type_labels ) ); ?></dd>
-								<?php endif; ?>
-								<?php if ( ! empty( $category_labels ) ) : ?>
-									<dt><?php esc_html_e( 'Category', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( implode( ', ', $category_labels ) ); ?></dd>
-								<?php endif; ?>
-								<?php if ( $experience ) : ?>
-									<dt><?php esc_html_e( 'Experience', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( $experience ); ?></dd>
-								<?php endif; ?>
-								<?php if ( $education ) : ?>
-									<dt><?php esc_html_e( 'Education', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( $education ); ?></dd>
-								<?php endif; ?>
-								<?php if ( $vacancies ) : ?>
-									<dt><?php esc_html_e( 'Vacancies', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( $vacancies ); ?></dd>
+						<div class="edu-single-job__overview">
+							<h2 class="edu-single-job__overview-title"><?php esc_html_e( 'Job Overview', 'edu-consultancy' ); ?></h2>
+							<ul class="edu-single-job__overview-list">
+								<?php if ( $date_posted ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Date Posted', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( $date_posted ); ?></span>
+									</li>
 								<?php endif; ?>
 								<?php if ( $deadline ) : ?>
-									<dt><?php esc_html_e( 'Application Deadline', 'edu-consultancy' ); ?></dt>
-									<dd><?php echo esc_html( $deadline ); ?></dd>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Expiration date', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( $deadline ); ?></span>
+									</li>
+								<?php endif; ?>
+								<?php if ( $experience ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Experience', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( $experience ); ?></span>
+									</li>
+								<?php endif; ?>
+								<?php if ( $education ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Qualification', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( $education ); ?></span>
+									</li>
+								<?php endif; ?>
+								<?php if ( $company_name ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Company', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( $company_name ); ?></span>
+									</li>
+								<?php endif; ?>
+								<?php if ( $location ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Location', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( $location ); ?></span>
+									</li>
+								<?php endif; ?>
+								<?php if ( $salary_range ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Salary', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( $salary_range ); ?></span>
+									</li>
+								<?php endif; ?>
+								<?php if ( ! empty( $job_type_labels ) ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Job Type', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( implode( ', ', $job_type_labels ) ); ?></span>
+									</li>
+								<?php endif; ?>
+								<?php if ( ! empty( $category_labels ) ) : ?>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Category', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php echo esc_html( implode( ', ', $category_labels ) ); ?></span>
+									</li>
 								<?php endif; ?>
 								<?php if ( 'yes' === $visa_sponsor ) : ?>
-									<dt><?php esc_html_e( 'Visa', 'edu-consultancy' ); ?></dt>
-									<dd><?php esc_html_e( 'Visa Sponsorship Available', 'edu-consultancy' ); ?></dd>
+									<li class="edu-single-job__overview-item">
+										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Visa', 'edu-consultancy' ); ?></span>
+										<span class="edu-single-job__overview-value"><?php esc_html_e( 'Sponsorship available', 'edu-consultancy' ); ?></span>
+									</li>
 								<?php endif; ?>
-							</dl>
+							</ul>
 							<?php if ( $benefits ) : ?>
 								<h3 class="edu-single-job__benefits-title"><?php esc_html_e( 'Benefits', 'edu-consultancy' ); ?></h3>
 								<div class="edu-single-job__benefits"><?php echo wp_kses_post( wpautop( $benefits ) ); ?></div>
