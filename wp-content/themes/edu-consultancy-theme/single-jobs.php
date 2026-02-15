@@ -179,6 +179,59 @@ get_header();
 					</aside>
 				</div>
 			</article>
+
+			<?php
+			// Related / similar jobs (same category or type, then latest).
+			$category_ids = $category_terms && ! is_wp_error( $category_terms ) ? wp_list_pluck( $category_terms, 'term_id' ) : array();
+			$job_type_ids = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'term_id' ) : array();
+			$related_tax  = array();
+
+			if ( ! empty( $category_ids ) ) {
+				$related_tax[] = array(
+					'taxonomy' => 'job_category',
+					'field'    => 'term_id',
+					'terms'    => $category_ids,
+				);
+			}
+			if ( ! empty( $job_type_ids ) ) {
+				$related_tax[] = array(
+					'taxonomy' => 'job_type',
+					'field'    => 'term_id',
+					'terms'    => $job_type_ids,
+				);
+			}
+			if ( count( $related_tax ) > 1 ) {
+				$related_tax['relation'] = 'OR';
+			}
+
+			$related_args = array(
+				'post_type'      => 'jobs',
+				'post_status'    => 'publish',
+				'post__not_in'   => array( $job_id ),
+				'posts_per_page' => 6,
+			);
+			if ( ! empty( $related_tax ) ) {
+				$related_args['tax_query'] = $related_tax;
+			}
+			$related_jobs = new WP_Query( $related_args );
+
+			if ( $related_jobs->have_posts() ) :
+				?>
+				<section class="edu-related-jobs">
+					<h2 class="edu-related-jobs__title"><?php esc_html_e( 'Similar jobs', 'edu-consultancy' ); ?></h2>
+					<div class="edu-related-jobs__grid edu-grid edu-grid--3">
+						<?php
+						while ( $related_jobs->have_posts() ) {
+							$related_jobs->the_post();
+							get_template_part( 'template-parts/content', 'job' );
+						}
+						wp_reset_postdata();
+						?>
+					</div>
+				</section>
+				<?php
+			endif;
+			?>
 			<?php
 		}
 		?>

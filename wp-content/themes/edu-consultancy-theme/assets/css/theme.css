@@ -1044,6 +1044,36 @@
 	letter-spacing: -0.01em;
 }
 
+/* Related / similar jobs */
+.edu-related-jobs {
+	margin-top: var(--edu-spacing-lg);
+	padding-top: var(--edu-spacing-lg);
+	border-top: 1px solid #e5e7eb;
+}
+
+.edu-related-jobs__title {
+	margin-top: 0;
+	margin-bottom: var(--edu-spacing-md);
+	font-size: 1.35rem;
+	font-weight: 600;
+	color: var(--edu-color-dark);
+}
+
+.edu-related-jobs__grid {
+	margin-bottom: 0;
+}
+
+.edu-related-jobs__grid .edu-job-card {
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.edu-related-jobs__grid .edu-job-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+	}
+}
+
 /* Job application form */
 .edu-job-application-form {
 	display: flex;
