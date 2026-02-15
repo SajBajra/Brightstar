@@ -19,6 +19,8 @@ class Edu_Theme_Setup {
 	public static function init() {
 		add_action( 'after_setup_theme', array( __CLASS__, 'theme_supports' ) );
 		add_action( 'after_setup_theme', array( __CLASS__, 'register_menus' ) );
+		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_blog_page' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_create_blog_page_once' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'disable_gutenberg_styles' ), 100 );
 		add_action( 'init', array( __CLASS__, 'cleanup_wp_head' ) );
@@ -59,6 +61,60 @@ class Edu_Theme_Setup {
 
 		// Let Elementor control the full page width.
 		add_theme_support( 'elementor' );
+	}
+
+	/**
+	 * Create the Blog page on theme activation.
+	 *
+	 * @return void
+	 */
+	public static function maybe_create_blog_page() {
+		self::create_blog_page_if_missing();
+	}
+
+	/**
+	 * Create the Blog page once (for existing installs).
+	 *
+	 * @return void
+	 */
+	public static function maybe_create_blog_page_once() {
+		if ( get_option( 'edu_blog_page_created', false ) ) {
+			return;
+		}
+		self::create_blog_page_if_missing();
+		if ( get_page_by_path( 'blog' ) ) {
+			update_option( 'edu_blog_page_created', true );
+		}
+	}
+
+	/**
+	 * Create a page with slug "blog" and title "Blog" if it doesn't exist.
+	 *
+	 * @return int|false Page ID or false.
+	 */
+	private static function create_blog_page_if_missing() {
+		$slug = 'blog';
+		if ( get_page_by_path( $slug ) ) {
+			return (int) get_page_by_path( $slug )->ID;
+		}
+
+		$page_id = wp_insert_post(
+			array(
+				'post_title'   => _x( 'Blog', 'Page title', 'edu-consultancy' ),
+				'post_name'    => $slug,
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_author'  => 1,
+				'post_content' => '',
+			),
+			true
+		);
+
+		if ( ! is_wp_error( $page_id ) && $page_id > 0 ) {
+			return $page_id;
+		}
+
+		return false;
 	}
 
 	/**
