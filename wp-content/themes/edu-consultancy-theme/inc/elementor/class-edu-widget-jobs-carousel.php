@@ -388,8 +388,12 @@ class Edu_Elementor_Widget_Jobs_Carousel extends Widget_Base {
 						var track = section.querySelector('.edu-related-jobs__track');
 						var nav = section.querySelector('.edu-related-jobs-carousel-pagination');
 						if (!track || !nav) return;
+						var MOBILE_BREAK = 767;
+						var originalTrackHtml = null;
+						var isMobileView = false;
 						var total = parseInt(track.getAttribute('data-slides') || '1', 10);
 						var current = 1;
+
 						function goTo(page) {
 							if (page === 'prev') page = current - 1;
 							else if (page === 'next') page = current + 1;
@@ -399,11 +403,62 @@ class Edu_Elementor_Widget_Jobs_Carousel extends Widget_Base {
 							current = page;
 							var pct = total > 0 ? (current - 1) * (100 / total) : 0;
 							track.style.transform = 'translateX(-' + pct + '%)';
-							nav.querySelectorAll('.page-numbers').forEach(function(a) {
+							var pages = nav.querySelectorAll('a.page-numbers[data-page]:not([data-page="prev"]):not([data-page="next"])');
+							pages.forEach(function(a) {
 								a.classList.remove('current');
 								if (a.getAttribute('data-page') === String(current)) a.classList.add('current');
 							});
 						}
+
+						function expandForMobile() {
+							if (originalTrackHtml === null) originalTrackHtml = track.innerHTML;
+							var cards = track.querySelectorAll('.edu-job-card');
+							if (cards.length <= 1) return;
+							var slideWidthPct = 100 / cards.length;
+							var newHtml = '';
+							for (var i = 0; i < cards.length; i++) {
+								newHtml += '<div class="edu-related-jobs__slide" style="flex: 0 0 ' + slideWidthPct + '%; width: ' + slideWidthPct + '%;">';
+								newHtml += '<div class="edu-related-jobs__grid edu-grid edu-grid--1">';
+								newHtml += cards[i].outerHTML;
+								newHtml += '</div></div>';
+							}
+							track.innerHTML = newHtml;
+							track.setAttribute('data-slides', String(cards.length));
+							track.style.width = (cards.length * 100) + '%';
+							total = cards.length;
+							current = 1;
+							var ul = nav.querySelector('ul');
+							var nums = '';
+							for (var j = 1; j <= cards.length; j++) {
+								nums += '<li><a href="#" class="page-numbers' + (j === 1 ? ' current' : '') + '" data-page="' + j + '">' + j + '</a></li>';
+							}
+							ul.innerHTML = '<li><a href="#" class="prev page-numbers" data-page="prev" aria-label="<?php echo esc_js( __( 'Previous', 'edu-consultancy' ) ); ?>">&larr; <?php echo esc_js( __( 'Previous', 'edu-consultancy' ) ); ?></a></li>' + nums + '<li><a href="#" class="next page-numbers" data-page="next" aria-label="<?php echo esc_js( __( 'Next', 'edu-consultancy' ) ); ?>"><?php echo esc_js( __( 'Next', 'edu-consultancy' ) ); ?> &rarr;</a></li>';
+							goTo(1);
+							isMobileView = true;
+						}
+
+						function restoreDesktop() {
+							if (originalTrackHtml === null) return;
+							track.innerHTML = originalTrackHtml;
+							track.setAttribute('data-slides', '<?php echo (int) $total_slides; ?>');
+							track.style.width = '<?php echo (int) ( $total_slides * 100 ); ?>%';
+							total = <?php echo (int) $total_slides; ?>;
+							current = 1;
+							var ul = nav.querySelector('ul');
+							ul.innerHTML = '<li><a href="#" class="prev page-numbers" data-page="prev" aria-label="<?php echo esc_js( __( 'Previous', 'edu-consultancy' ) ); ?>">&larr; <?php echo esc_js( __( 'Previous', 'edu-consultancy' ) ); ?></a></li><?php for ( $i = 1; $i <= $total_slides; $i++ ) { ?><li><a href="#" class="page-numbers<?php echo 1 === $i ? ' current' : ''; ?>" data-page="<?php echo (int) $i; ?>"><?php echo (int) $i; ?></a></li><?php } ?><li><a href="#" class="next page-numbers" data-page="next" aria-label="<?php echo esc_js( __( 'Next', 'edu-consultancy' ) ); ?>"><?php echo esc_js( __( 'Next', 'edu-consultancy' ) ); ?> &rarr;</a></li>';
+							goTo(1);
+							isMobileView = false;
+						}
+
+						function checkViewport() {
+							var mobile = window.innerWidth <= MOBILE_BREAK;
+							if (mobile && !isMobileView) expandForMobile();
+							else if (!mobile && isMobileView) restoreDesktop();
+							else if (!mobile && originalTrackHtml === null) originalTrackHtml = track.innerHTML;
+						}
+
+						checkViewport();
+						window.addEventListener('resize', function() { checkViewport(); });
 						nav.addEventListener('click', function(e) {
 							var a = e.target.closest('a.page-numbers');
 							if (!a) return;
