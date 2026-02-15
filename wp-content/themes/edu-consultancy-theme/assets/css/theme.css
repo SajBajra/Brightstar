@@ -1075,7 +1075,7 @@
 	box-sizing: border-box;
 }
 
-/* Always 3 columns so 3 cards fit (same as archive) */
+/* Default 3 columns so 3 cards fit (same as archive / single page) */
 .edu-related-jobs__slide .edu-related-jobs__grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1084,6 +1084,11 @@
 	width: 100%;
 	min-width: 0;
 }
+
+/* Elementor Jobs Carousel widget: 4–6 columns when set */
+.edu-related-jobs__grid.edu-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.edu-related-jobs__grid.edu-grid--5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.edu-related-jobs__grid.edu-grid--6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 
 /* Cards identical to archive; min-width 0 so they fit in grid */
 .edu-related-jobs__grid .edu-job-card {
