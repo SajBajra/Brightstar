@@ -33,7 +33,7 @@ class Edu_Theme_Jobs {
 	 * @return int
 	 */
 	public static function job_excerpt_length( $length, $context = '' ) {
-		if ( is_post_type_archive( 'jobs' ) || ( in_the_loop() && get_post_type() === 'jobs' ) ) {
+		if ( is_post_type_archive( 'jobs' ) || get_post_type() === 'jobs' ) {
 			return 10;
 		}
 		return $length;
@@ -46,7 +46,7 @@ class Edu_Theme_Jobs {
 	 * @return string
 	 */
 	public static function job_excerpt_more( $more ) {
-		if ( in_the_loop() && get_post_type() === 'jobs' ) {
+		if ( get_post_type() === 'jobs' ) {
 			return ' ...';
 		}
 		return $more;
