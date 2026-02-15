@@ -20,7 +20,7 @@ get_header();
 			<?php the_archive_description( '<div class="archive-description">', '</div>' ); ?>
 		</header>
 
-		<?php echo do_shortcode( '[edu_job_search]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo do_shortcode( '[edu_job_search per_page="6"]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</div>
 </main>
 
