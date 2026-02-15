@@ -868,14 +868,6 @@
 	min-width: 0;
 }
 
-.edu-single-job__content-title {
-	margin-top: 0;
-	margin-bottom: 0.75rem;
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: var(--edu-color-dark);
-}
-
 .edu-single-job__content {
 	font-size: 1rem;
 	line-height: 1.6;

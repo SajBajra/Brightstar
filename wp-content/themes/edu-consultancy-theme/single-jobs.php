@@ -93,7 +93,6 @@ get_header();
 				<div class="edu-single-job__body">
 					<div class="edu-single-job__main">
 						<div class="edu-single-job__content">
-							<h2 class="edu-single-job__content-title"><?php esc_html_e( 'About the role', 'edu-consultancy' ); ?></h2>
 							<?php the_content(); ?>
 						</div>
 					</div>
