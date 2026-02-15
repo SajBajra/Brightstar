@@ -181,11 +181,10 @@ get_header();
 			</article>
 
 			<?php
-			// Related / similar jobs (same category or type, then latest). 3 per page with pagination.
-			$category_ids   = $category_terms && ! is_wp_error( $category_terms ) ? wp_list_pluck( $category_terms, 'term_id' ) : array();
-			$job_type_ids   = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'term_id' ) : array();
-			$related_tax    = array();
-			$related_paged  = isset( $_GET['related_page'] ) ? max( 1, (int) $_GET['related_page'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			// Related / similar jobs carousel: 3 cards per slide, pagination-style controls (no arrows/dots).
+			$category_ids = $category_terms && ! is_wp_error( $category_terms ) ? wp_list_pluck( $category_terms, 'term_id' ) : array();
+			$job_type_ids = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'term_id' ) : array();
+			$related_tax  = array();
 
 			if ( ! empty( $category_ids ) ) {
 				$related_tax[] = array(
@@ -209,53 +208,82 @@ get_header();
 				'post_type'      => 'jobs',
 				'post_status'    => 'publish',
 				'post__not_in'   => array( $job_id ),
-				'posts_per_page' => 3,
-				'paged'          => $related_paged,
+				'posts_per_page' => 12,
 			);
 			if ( ! empty( $related_tax ) ) {
 				$related_args['tax_query'] = $related_tax;
 			}
 			$related_jobs = new WP_Query( $related_args );
+			$related_posts = $related_jobs->have_posts() ? $related_jobs->posts : array();
+			$related_slides = array_chunk( $related_posts, 3 );
+			$related_jobs->reset_postdata();
 
-			if ( $related_jobs->have_posts() ) :
-				$related_total_pages = (int) $related_jobs->max_num_pages;
-				$current_job_url    = get_permalink( $job_id );
+			if ( ! empty( $related_slides ) ) :
+				$total_slides = count( $related_slides );
 				?>
-				<section class="edu-related-jobs">
+				<section class="edu-related-jobs" id="edu-related-jobs">
 					<h2 class="edu-related-jobs__title"><?php esc_html_e( 'Similar jobs', 'edu-consultancy' ); ?></h2>
-					<div class="edu-related-jobs__grid edu-grid edu-grid--3">
-						<?php
-						while ( $related_jobs->have_posts() ) {
-							$related_jobs->the_post();
-							get_template_part( 'template-parts/content', 'job' );
-						}
-						wp_reset_postdata();
-						?>
+					<div class="edu-related-jobs__carousel">
+						<div class="edu-related-jobs__track" data-slides="<?php echo esc_attr( (string) $total_slides ); ?>" style="width: <?php echo esc_attr( (string) ( $total_slides * 100 ) ); ?>%;">
+							<?php
+							foreach ( $related_slides as $slide_posts ) {
+								echo '<div class="edu-related-jobs__slide">';
+								echo '<div class="edu-related-jobs__grid edu-grid edu-grid--3">';
+								foreach ( $slide_posts as $post ) {
+									setup_postdata( $post );
+									get_template_part( 'template-parts/content', 'job' );
+								}
+								echo '</div>';
+								echo '</div>';
+							}
+							wp_reset_postdata();
+							?>
+						</div>
 					</div>
-					<?php
-					if ( $related_total_pages > 1 ) {
-						$big = 999999;
-						$base = add_query_arg( 'related_page', $big, $current_job_url );
-						$base = str_replace( (string) $big, '%#%', esc_url( $base ) );
-						$pagination = paginate_links(
-							array(
-								'base'      => $base,
-								'format'    => '',
-								'current'   => $related_paged,
-								'total'     => $related_total_pages,
-								'type'      => 'list',
-								'prev_text' => '&larr; ' . esc_html__( 'Previous', 'edu-consultancy' ),
-								'next_text' => esc_html__( 'Next', 'edu-consultancy' ) . ' &rarr;',
-							)
-						);
-						if ( $pagination ) {
-							echo '<nav class="edu-related-jobs__pagination edu-job-pagination" aria-label="' . esc_attr__( 'Similar jobs pagination', 'edu-consultancy' ) . '">';
-							echo $pagination; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo '</nav>';
-						}
-					}
-					?>
+					<?php if ( $total_slides > 1 ) : ?>
+						<nav class="edu-related-jobs__pagination edu-job-pagination edu-related-jobs-carousel-pagination" aria-label="<?php esc_attr_e( 'Similar jobs carousel', 'edu-consultancy' ); ?>">
+							<ul>
+								<li><a href="#" class="prev page-numbers" data-page="prev" aria-label="<?php esc_attr_e( 'Previous', 'edu-consultancy' ); ?>">&larr; <?php esc_html_e( 'Previous', 'edu-consultancy' ); ?></a></li>
+								<?php for ( $i = 1; $i <= $total_slides; $i++ ) : ?>
+									<li><a href="#" class="page-numbers<?php echo 1 === $i ? ' current' : ''; ?>" data-page="<?php echo esc_attr( (string) $i ); ?>"><?php echo esc_html( (string) $i ); ?></a></li>
+								<?php endfor; ?>
+								<li><a href="#" class="next page-numbers" data-page="next" aria-label="<?php esc_attr_e( 'Next', 'edu-consultancy' ); ?>"><?php esc_html_e( 'Next', 'edu-consultancy' ); ?> &rarr;</a></li>
+							</ul>
+						</nav>
+					<?php endif; ?>
 				</section>
+				<?php if ( ! empty( $total_slides ) && $total_slides > 1 ) : ?>
+				<script>
+				(function() {
+					var section = document.getElementById('edu-related-jobs');
+					if (!section) return;
+					var track = section.querySelector('.edu-related-jobs__track');
+					var nav = section.querySelector('.edu-related-jobs-carousel-pagination');
+					if (!track || !nav) return;
+					var total = parseInt(track.getAttribute('data-slides') || '1', 10);
+					var current = 1;
+					function goTo(page) {
+						if (page === 'prev') page = current - 1;
+						else if (page === 'next') page = current + 1;
+						else page = parseInt(page, 10);
+						if (page < 1) page = 1;
+						if (page > total) page = total;
+						current = page;
+						track.style.transform = 'translateX(-' + (current - 1) * 100 + '%)';
+						nav.querySelectorAll('.page-numbers').forEach(function(a) {
+							a.classList.remove('current');
+							if (a.getAttribute('data-page') === String(current)) a.classList.add('current');
+						});
+					}
+					nav.addEventListener('click', function(e) {
+						var a = e.target.closest('a.page-numbers');
+						if (!a) return;
+						e.preventDefault();
+						goTo(a.getAttribute('data-page'));
+					});
+				})();
+				</script>
+				<?php endif; ?>
 				<?php
 			endif;
 			?>

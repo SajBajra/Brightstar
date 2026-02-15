@@ -1059,6 +1059,26 @@
 	color: var(--edu-color-dark);
 }
 
+/* Carousel: one slide = 3 cards, track slides horizontally */
+.edu-related-jobs__carousel {
+	overflow: hidden;
+}
+
+.edu-related-jobs__track {
+	display: flex;
+	transition: transform 0.35s ease;
+}
+
+.edu-related-jobs__slide {
+	flex: 0 0 100%;
+	width: 100%;
+	min-width: 0;
+}
+
+.edu-related-jobs__slide .edu-related-jobs__grid {
+	margin-bottom: 0;
+}
+
 .edu-related-jobs__grid {
 	margin-bottom: 0;
 }
@@ -1077,6 +1097,12 @@
 	.edu-related-jobs__grid .edu-job-card:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.edu-related-jobs__track {
+		transition: none;
 	}
 }
 
