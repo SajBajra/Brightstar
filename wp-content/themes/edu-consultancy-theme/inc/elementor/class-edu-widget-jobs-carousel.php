@@ -6,6 +6,7 @@
  */
 
 use Elementor\Controls_Manager;
+use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -136,6 +137,141 @@ class Edu_Elementor_Widget_Jobs_Carousel extends Widget_Base {
 					'date'  => esc_html__( 'Date', 'edu-consultancy' ),
 					'title' => esc_html__( 'Title', 'edu-consultancy' ),
 					'rand'  => esc_html__( 'Random', 'edu-consultancy' ),
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Style: Section title.
+		$this->start_controls_section(
+			'section_style_title',
+			array(
+				'label' => esc_html__( 'Section title', 'edu-consultancy' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'title_typography',
+				'label'    => esc_html__( 'Typography', 'edu-consultancy' ),
+				'selector' => '{{WRAPPER}} .edu-related-jobs__title',
+			)
+		);
+
+		$this->add_control(
+			'title_color',
+			array(
+				'label'     => esc_html__( 'Color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-related-jobs__title' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Style: Job cards.
+		$this->start_controls_section(
+			'section_style_cards',
+			array(
+				'label' => esc_html__( 'Job cards', 'edu-consultancy' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'card_title_typography',
+				'label'    => esc_html__( 'Card title typography', 'edu-consultancy' ),
+				'selector' => '{{WRAPPER}} .edu-job-card__title',
+			)
+		);
+
+		$this->add_control(
+			'card_title_color',
+			array(
+				'label'     => esc_html__( 'Card title color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-job-card__title' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'card_text_typography',
+				'label'    => esc_html__( 'Card text / excerpt typography', 'edu-consultancy' ),
+				'selector' => '{{WRAPPER}} .edu-job-card__summary',
+			)
+		);
+
+		$this->add_control(
+			'card_text_color',
+			array(
+				'label'     => esc_html__( 'Card text color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-job-card__summary' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'card_meta_color',
+			array(
+				'label'     => esc_html__( 'Card meta (type, location) color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-job-card__type, {{WRAPPER}} .edu-job-card__company' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
+
+		// Style: Pagination.
+		$this->start_controls_section(
+			'section_style_pagination',
+			array(
+				'label' => esc_html__( 'Pagination', 'edu-consultancy' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			array(
+				'name'     => 'pagination_typography',
+				'label'    => esc_html__( 'Typography', 'edu-consultancy' ),
+				'selector' => '{{WRAPPER}} .edu-related-jobs__pagination a, {{WRAPPER}} .edu-related-jobs__pagination .current',
+			)
+		);
+
+		$this->add_control(
+			'pagination_color',
+			array(
+				'label'     => esc_html__( 'Text color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-related-jobs__pagination a' => 'color: {{VALUE}}; border-color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'pagination_hover_color',
+			array(
+				'label'     => esc_html__( 'Hover / current color', 'edu-consultancy' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => array(
+					'{{WRAPPER}} .edu-related-jobs__pagination a:hover, {{WRAPPER}} .edu-related-jobs__pagination .current' => 'background-color: {{VALUE}}; border-color: {{VALUE}}; color: #fff;',
 				),
 			)
 		);
