@@ -47,23 +47,32 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 			?>
 		</div>
 
-		<nav class="site-header__nav" aria-label="<?php esc_attr_e( 'Primary Menu', 'edu-consultancy' ); ?>">
+		<div class="site-header__center">
+			<nav class="site-header__nav" aria-label="<?php esc_attr_e( 'Primary Menu', 'edu-consultancy' ); ?>">
+				<?php
+				wp_nav_menu(
+					array(
+						'theme_location' => 'primary',
+						'container'      => false,
+						'menu_class'     => 'primary-menu',
+						'fallback_cb'    => false,
+					)
+				);
+				?>
+			</nav>
 			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'primary',
-					'container'      => false,
-					'menu_class'     => 'primary-menu',
-					'fallback_cb'    => false,
-				)
-			);
+			$blog_page_id = (int) get_option( 'page_for_posts' );
+			$blog_url     = $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/' );
 			?>
-		</nav>
-
-		<div class="site-header__actions">
 			<a class="site-header__link" href="<?php echo esc_url( get_post_type_archive_link( 'jobs' ) ); ?>">
 				<?php esc_html_e( 'Find Jobs', 'edu-consultancy' ); ?>
 			</a>
+			<a class="site-header__link" href="<?php echo esc_url( $blog_url ); ?>">
+				<?php esc_html_e( 'Blog', 'edu-consultancy' ); ?>
+			</a>
+		</div>
+
+		<div class="site-header__actions">
 			<?php if ( is_user_logged_in() ) : ?>
 				<a class="edu-btn-outline site-header__btn" href="<?php echo esc_url( wp_logout_url( get_permalink() ) ); ?>">
 					<?php esc_html_e( 'Logout', 'edu-consultancy' ); ?>
