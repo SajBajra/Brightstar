@@ -201,6 +201,7 @@
 	margin-bottom: 0.75rem;
 	font-size: 1.2rem;
 	letter-spacing: 0.03em;
+	color: #ffffff;
 }
 
 .site-footer__text {
@@ -333,27 +334,69 @@
 	white-space: nowrap;
 }
 
+/* Footer: mobile responsive (newsletter and layout) */
+@media (max-width: 767px) {
+	.site-footer__top {
+		gap: var(--edu-spacing-lg);
+	}
+
+	.site-footer__subscribe {
+		grid-column: 1 / -1;
+		max-width: 100%;
+	}
+
+	.site-footer__form {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.6rem;
+		margin-top: 0.5rem;
+	}
+
+	.site-footer__form input[type='email'] {
+		flex: 1 1 auto;
+		width: 100%;
+		min-width: 0;
+		min-height: 2.75rem;
+		padding: 0.6rem 1rem;
+		font-size: 1rem;
+		box-sizing: border-box;
+	}
+
+	.site-footer__submit {
+		width: 100%;
+		min-height: 2.75rem;
+		text-align: center;
+		padding: 0.6rem 1rem;
+	}
+}
+
 @media (max-width: 480px) {
 	.site-footer {
 		padding-block: var(--edu-spacing-md);
 	}
 
 	.site-footer__card {
-		padding: 1rem 1.25rem;
+		padding: 1rem 1rem;
 	}
 
 	.site-footer__top {
 		gap: var(--edu-spacing-md);
 	}
 
-	.site-footer__form {
-		flex-direction: column;
-		align-items: stretch;
+	.site-footer__title {
+		font-size: 1.1rem;
+	}
+
+	.site-footer__heading {
+		font-size: 0.85rem;
+	}
+
+	.site-footer__form input[type='email'] {
+		min-height: 2.5rem;
 	}
 
 	.site-footer__submit {
-		width: 100%;
-		text-align: center;
+		min-height: 2.5rem;
 	}
 }
 
@@ -1130,6 +1173,36 @@
 .edu-jobs-carousel-widget .edu-related-jobs__pagination {
 	border-top: none;
 	padding-top: 0;
+}
+
+/* Jobs Grid Carousel: mobile responsive */
+@media (max-width: 767px) {
+	.edu-jobs-carousel-widget .edu-related-jobs__title {
+		font-size: 1.2rem;
+		margin-bottom: var(--edu-spacing-sm);
+	}
+
+	.edu-jobs-carousel-widget .edu-related-jobs__slide .edu-related-jobs__grid {
+		grid-template-columns: 1fr !important;
+		gap: var(--edu-spacing-sm);
+	}
+
+	.edu-jobs-carousel-widget .edu-related-jobs__pagination ul {
+		gap: 0.35rem;
+	}
+
+	.edu-jobs-carousel-widget .edu-related-jobs__pagination a,
+	.edu-jobs-carousel-widget .edu-related-jobs__pagination .current {
+		min-width: 2rem;
+		min-height: 2rem;
+		padding: 0 0.4rem;
+		font-size: 0.8rem;
+	}
+
+	.edu-jobs-carousel-widget .edu-related-jobs__pagination .prev,
+	.edu-jobs-carousel-widget .edu-related-jobs__pagination .next {
+		font-size: 0.75rem;
+	}
 }
 
 @media (prefers-reduced-motion: no-preference) {
