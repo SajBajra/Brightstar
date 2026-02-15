@@ -30,7 +30,7 @@ class Edu_Theme_Job_Search {
 	public static function render_search_form_and_results( $atts ) {
 		$atts = shortcode_atts(
 			array(
-				'per_page' => 10,
+				'per_page' => 6,
 			),
 			$atts,
 			'edu_job_search'
@@ -38,7 +38,7 @@ class Edu_Theme_Job_Search {
 
 		$per_page = (int) $atts['per_page'];
 		if ( $per_page <= 0 ) {
-			$per_page = 10;
+			$per_page = 6;
 		}
 
 		$keyword          = isset( $_GET['job_keyword'] ) ? sanitize_text_field( wp_unslash( $_GET['job_keyword'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -104,94 +104,124 @@ class Edu_Theme_Job_Search {
 
 		$query = new WP_Query( $query_args );
 
+		$has_filters = $keyword || $category || $location || $type || $experience_level;
+		$current_query_args = array_filter( array(
+			'job_keyword'      => $keyword,
+			'job_category'     => $category,
+			'job_location'     => $location,
+			'job_type'         => $type,
+			'experience_level' => $experience_level,
+		) );
+
 		ob_start();
 		?>
 		<div class="edu-job-search">
-			<form method="get" class="edu-job-search__form">
-				<div>
-					<label for="edu_job_keyword"><?php esc_html_e( 'Keyword', 'edu-consultancy' ); ?></label>
-					<input type="text" name="job_keyword" id="edu_job_keyword" value="<?php echo esc_attr( $keyword ); ?>" />
-				</div>
-
-				<div>
-					<label for="edu_job_category"><?php esc_html_e( 'Category', 'edu-consultancy' ); ?></label>
-					<?php
-					wp_dropdown_categories(
-						array(
-							'taxonomy'        => 'job_category',
-							'name'            => 'job_category',
-							'id'              => 'edu_job_category',
-							'show_option_all' => esc_html__( 'All Categories', 'edu-consultancy' ),
-							'hide_empty'      => false,
-							'orderby'         => 'name',
-							'selected'        => $category,
-							'value_field'     => 'slug',
-						)
-					);
-					?>
-				</div>
-
-				<div>
-					<label for="edu_job_location"><?php esc_html_e( 'Location', 'edu-consultancy' ); ?></label>
-					<?php
-					wp_dropdown_categories(
-						array(
-							'taxonomy'        => 'job_location',
-							'name'            => 'job_location',
-							'id'              => 'edu_job_location',
-							'show_option_all' => esc_html__( 'All Locations', 'edu-consultancy' ),
-							'hide_empty'      => false,
-							'orderby'         => 'name',
-							'selected'        => $location,
-							'value_field'     => 'slug',
-						)
-					);
-					?>
-				</div>
-
-				<div>
-					<label for="edu_job_type"><?php esc_html_e( 'Job Type', 'edu-consultancy' ); ?></label>
-					<?php
-					wp_dropdown_categories(
-						array(
-							'taxonomy'        => 'job_type',
-							'name'            => 'job_type',
-							'id'              => 'edu_job_type',
-							'show_option_all' => esc_html__( 'All Types', 'edu-consultancy' ),
-							'hide_empty'      => false,
-							'orderby'         => 'name',
-							'selected'        => $type,
-							'value_field'     => 'slug',
-						)
-					);
-					?>
-				</div>
-
-				<div>
-					<label for="edu_experience_level"><?php esc_html_e( 'Experience Level', 'edu-consultancy' ); ?></label>
-					<?php
-					wp_dropdown_categories(
-						array(
-							'taxonomy'        => 'experience_level',
-							'name'            => 'experience_level',
-							'id'              => 'edu_experience_level',
-							'show_option_all' => esc_html__( 'All Levels', 'edu-consultancy' ),
-							'hide_empty'      => false,
-							'orderby'         => 'name',
-							'selected'        => $experience_level,
-							'value_field'     => 'slug',
-						)
-					);
-					?>
-				</div>
-
-				<button type="submit" class="edu-btn-primary">
-					<?php esc_html_e( 'Search Jobs', 'edu-consultancy' ); ?>
-				</button>
-			</form>
+			<div class="edu-job-search__filter-bar">
+				<form method="get" class="edu-job-search__form" action="<?php echo esc_url( get_post_type_archive_link( 'jobs' ) ); ?>" role="search" aria-label="<?php esc_attr_e( 'Filter jobs', 'edu-consultancy' ); ?>">
+					<div class="edu-job-search__form-row edu-job-search__form-row--main">
+						<div class="edu-job-search__filter-group edu-job-search__filter-group--keyword">
+							<label for="edu_job_keyword" class="edu-job-search__label"><?php esc_html_e( 'Keyword', 'edu-consultancy' ); ?></label>
+							<input type="search" name="job_keyword" id="edu_job_keyword" class="edu-job-search__input" value="<?php echo esc_attr( $keyword ); ?>" placeholder="<?php esc_attr_e( 'Job title or keyword', 'edu-consultancy' ); ?>" />
+						</div>
+						<div class="edu-job-search__filter-group">
+							<label for="edu_job_category" class="edu-job-search__label"><?php esc_html_e( 'Category', 'edu-consultancy' ); ?></label>
+							<?php
+							wp_dropdown_categories(
+								array(
+									'taxonomy'        => 'job_category',
+									'name'            => 'job_category',
+									'id'              => 'edu_job_category',
+									'show_option_all' => esc_html__( 'All Categories', 'edu-consultancy' ),
+									'hide_empty'      => false,
+									'orderby'         => 'name',
+									'selected'        => $category,
+									'value_field'     => 'slug',
+									'class'           => 'edu-job-search__select',
+								)
+							);
+							?>
+						</div>
+						<div class="edu-job-search__filter-group">
+							<label for="edu_job_location" class="edu-job-search__label"><?php esc_html_e( 'Location', 'edu-consultancy' ); ?></label>
+							<?php
+							wp_dropdown_categories(
+								array(
+									'taxonomy'        => 'job_location',
+									'name'            => 'job_location',
+									'id'              => 'edu_job_location',
+									'show_option_all' => esc_html__( 'All Locations', 'edu-consultancy' ),
+									'hide_empty'      => false,
+									'orderby'         => 'name',
+									'selected'        => $location,
+									'value_field'     => 'slug',
+									'class'           => 'edu-job-search__select',
+								)
+							);
+							?>
+						</div>
+					</div>
+					<div class="edu-job-search__form-row edu-job-search__form-row--sub">
+						<div class="edu-job-search__filter-group">
+							<label for="edu_job_type" class="edu-job-search__label"><?php esc_html_e( 'Job Type', 'edu-consultancy' ); ?></label>
+							<?php
+							wp_dropdown_categories(
+								array(
+									'taxonomy'        => 'job_type',
+									'name'            => 'job_type',
+									'id'              => 'edu_job_type',
+									'show_option_all' => esc_html__( 'All Types', 'edu-consultancy' ),
+									'hide_empty'      => false,
+									'orderby'         => 'name',
+									'selected'        => $type,
+									'value_field'     => 'slug',
+									'class'           => 'edu-job-search__select',
+								)
+							);
+							?>
+						</div>
+						<div class="edu-job-search__filter-group">
+							<label for="edu_experience_level" class="edu-job-search__label"><?php esc_html_e( 'Experience', 'edu-consultancy' ); ?></label>
+							<?php
+							wp_dropdown_categories(
+								array(
+									'taxonomy'        => 'experience_level',
+									'name'            => 'experience_level',
+									'id'              => 'edu_experience_level',
+									'show_option_all' => esc_html__( 'All Levels', 'edu-consultancy' ),
+									'hide_empty'      => false,
+									'orderby'         => 'name',
+									'selected'        => $experience_level,
+									'value_field'     => 'slug',
+									'class'           => 'edu-job-search__select',
+								)
+							);
+							?>
+						</div>
+						<div class="edu-job-search__actions">
+							<button type="submit" class="edu-btn-primary edu-job-search__submit">
+								<?php esc_html_e( 'Search', 'edu-consultancy' ); ?>
+							</button>
+							<?php if ( $has_filters ) : ?>
+								<a href="<?php echo esc_url( get_post_type_archive_link( 'jobs' ) ); ?>" class="edu-job-search__clear">
+									<?php esc_html_e( 'Clear filters', 'edu-consultancy' ); ?>
+								</a>
+							<?php endif; ?>
+						</div>
+					</div>
+				</form>
+			</div>
 
 			<div class="edu-job-search__results">
-				<?php self::render_job_loop( $query ); ?>
+				<?php
+				$total = $query->found_posts;
+				if ( $total > 0 ) {
+					echo '<p class="edu-job-search__count">';
+					echo '<strong>' . absint( $total ) . '</strong> ';
+					echo esc_html( _n( 'job found', 'jobs found', $total, 'edu-consultancy' ) );
+					echo '</p>';
+				}
+				?>
+				<?php self::render_job_loop( $query, $paged, $current_query_args, $per_page ); ?>
 			</div>
 		</div>
 		<?php
@@ -254,15 +284,24 @@ class Edu_Theme_Job_Search {
 	/**
 	 * Render loop markup.
 	 *
-	 * @param WP_Query $query Query object.
+	 * @param WP_Query $query              Query object.
+	 * @param int     $paged              Current page number.
+	 * @param array   $current_query_args  Current GET args to preserve in pagination.
+	 * @param int     $per_page           Posts per page.
 	 *
 	 * @return void
 	 */
-	private static function render_job_loop( WP_Query $query ) {
+	private static function render_job_loop( WP_Query $query, $paged = 1, $current_query_args = array(), $per_page = 10 ) {
 		if ( ! $query->have_posts() ) {
-			echo '<p>' . esc_html__( 'No jobs found matching your criteria.', 'edu-consultancy' ) . '</p>';
+			echo '<div class="edu-job-search__empty">';
+			echo '<p class="edu-job-search__empty-title">' . esc_html__( 'No jobs found', 'edu-consultancy' ) . '</p>';
+			echo '<p class="edu-job-search__empty-text">' . esc_html__( 'Try adjusting your filters or search keyword, or browse all jobs.', 'edu-consultancy' ) . '</p>';
+			echo '<a href="' . esc_url( get_post_type_archive_link( 'jobs' ) ) . '" class="edu-btn-primary">' . esc_html__( 'View all jobs', 'edu-consultancy' ) . '</a>';
+			echo '</div>';
 			return;
 		}
+
+		echo '<div class="edu-job-search__grid edu-grid edu-grid--3">';
 
 		while ( $query->have_posts() ) {
 			$query->the_post();
@@ -276,12 +315,14 @@ class Edu_Theme_Job_Search {
 			$featured_job    = get_post_meta( $job_id, 'edu_featured_job', true );
 			$experience      = get_post_meta( $job_id, 'edu_experience_required', true );
 			$visa_sponsor    = get_post_meta( $job_id, 'edu_visa_sponsorship', true );
-			$featured_badge  = ( '1' === $featured_job ) ? '<span class="edu-badge edu-badge--featured">' . esc_html__( 'Featured', 'edu-consultancy' ) . '</span>' : '';
-			$visa_label      = ( 'yes' === $visa_sponsor ) ? esc_html__( 'Visa Sponsorship Available', 'edu-consultancy' ) : '';
+				$is_featured    = ( '1' === $featured_job );
+			$featured_badge = $is_featured ? '<span class="edu-badge edu-badge--featured">' . esc_html__( 'Featured', 'edu-consultancy' ) . '</span>' : '';
+			$visa_label     = ( 'yes' === $visa_sponsor ) ? esc_html__( 'Visa Sponsorship Available', 'edu-consultancy' ) : '';
 			$job_type_terms  = get_the_terms( $job_id, 'job_type' );
 			$job_type_labels = $job_type_terms && ! is_wp_error( $job_type_terms ) ? wp_list_pluck( $job_type_terms, 'name' ) : array();
 			$company_logo_id = (int) get_post_meta( $job_id, 'edu_company_logo_id', true );
-			$company_logo    = $company_logo_id ? wp_get_attachment_image_url( $company_logo_id, 'thumbnail' ) : '';
+			$company_logo    = $company_logo_id ? wp_get_attachment_image_url( $company_logo_id, 'medium' ) : '';
+			$has_media       = has_post_thumbnail( $job_id ) || $company_logo;
 
 			$salary_range = '';
 			if ( '' !== $salary_min || '' !== $salary_max ) {
@@ -295,30 +336,38 @@ class Edu_Theme_Job_Search {
 			} elseif ( $legacy_range ) {
 				$salary_range = $legacy_range;
 			}
+
+			$card_classes = array( 'edu-card', 'edu-job-card' );
+			if ( $is_featured ) {
+				$card_classes[] = 'edu-job-card--featured';
+			}
 			?>
-			<article <?php post_class( 'edu-card edu-job-card' ); ?>>
-				<header class="edu-job-card__header">
-					<?php if ( has_post_thumbnail( $job_id ) || $company_logo ) : ?>
-						<div class="edu-job-card__media">
-							<?php
-							if ( has_post_thumbnail( $job_id ) ) {
-								echo get_the_post_thumbnail( $job_id, 'medium', array( 'class' => 'edu-job-card__image' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							} elseif ( $company_logo ) {
-								echo '<img class="edu-job-card__image edu-job-card__image--logo" src="' . esc_url( $company_logo ) . '" alt="' . esc_attr( $company_name ) . '"/>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							}
+			<article <?php post_class( $card_classes ); ?>>
+				<div class="edu-job-card__featured-section">
+					<div class="edu-job-card__media<?php echo $has_media ? '' : ' edu-job-card__media--placeholder'; ?>">
+						<?php
+						if ( has_post_thumbnail( $job_id ) ) {
+							$thumb_id = get_post_thumbnail_id( $job_id );
+							echo wp_get_attachment_image( $thumb_id, 'medium_large', false, array( 'class' => 'edu-job-card__image' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						} elseif ( $company_logo ) {
+							echo '<img class="edu-job-card__image edu-job-card__image--logo" src="' . esc_url( $company_logo ) . '" alt="' . esc_attr( $company_name ) . '"/>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						} else {
 							?>
+							<span class="edu-job-card__placeholder" aria-hidden="true"></span>
+							<?php
+						}
+						?>
+					</div>
+					<?php if ( $featured_badge ) : ?>
+						<div class="edu-job-card__featured-badge">
+							<?php echo $featured_badge; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					<?php endif; ?>
-
+				</div>
+				<header class="edu-job-card__header">
 					<h3 class="edu-job-card__title">
 						<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 					</h3>
-					<?php
-					if ( $featured_badge ) {
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						echo $featured_badge;
-					}
-					?>
 				</header>
 
 				<div class="edu-job-card__meta">
@@ -372,26 +421,34 @@ class Edu_Theme_Job_Search {
 			</article>
 			<?php
 		}
+		echo '</div>';
 
-		// Basic pagination (querystring preserved).
-		$big = 999999;
-		$pagination = paginate_links(
-			array(
-				'base'      => str_replace( $big, '%#%', esc_url( add_query_arg( 'job_page', $big ) ) ),
-				'format'    => '',
-				'current'   => max( 1, (int) get_query_var( 'paged', 1 ) ),
-				'total'     => (int) $query->max_num_pages,
-				'type'      => 'list',
-				'prev_text' => esc_html__( 'Previous', 'edu-consultancy' ),
-				'next_text' => esc_html__( 'Next', 'edu-consultancy' ),
-			)
-		);
+		// Pagination with preserved filter query args.
+		$total_pages = (int) $query->max_num_pages;
+		if ( $total_pages > 1 ) {
+			$big   = 999999;
+			$base  = add_query_arg( array_merge( $current_query_args, array( 'job_page' => $big ) ) );
+			$base  = str_replace( $big, '%#%', esc_url( $base ) );
+			$paged = max( 1, (int) $paged );
 
-		if ( $pagination ) {
-			echo '<nav class="edu-job-pagination" aria-label="' . esc_attr__( 'Job navigation', 'edu-consultancy' ) . '">';
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $pagination;
-			echo '</nav>';
+			$pagination = paginate_links(
+				array(
+					'base'      => $base,
+					'format'    => '',
+					'current'   => $paged,
+					'total'     => $total_pages,
+					'type'      => 'list',
+					'prev_text' => '&larr; ' . esc_html__( 'Previous', 'edu-consultancy' ),
+					'next_text' => esc_html__( 'Next', 'edu-consultancy' ) . ' &rarr;',
+				)
+			);
+
+			if ( $pagination ) {
+				echo '<nav class="edu-job-search__pagination edu-job-pagination" aria-label="' . esc_attr__( 'Jobs pagination', 'edu-consultancy' ) . '">';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $pagination;
+				echo '</nav>';
+			}
 		}
 	}
 }
