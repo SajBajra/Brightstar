@@ -4,6 +4,23 @@
 // Keep this minimal. Use Elementor for most front-end interactions.
 
 document.addEventListener('DOMContentLoaded', function () {
+	// Header nav toggle (mobile menu).
+	var navToggle = document.querySelector('.site-header__toggle');
+	var navPanel = document.getElementById('site-header-nav');
+	if (navToggle && navPanel) {
+		navToggle.addEventListener('click', function () {
+			var open = navPanel.classList.toggle('is-open');
+			navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+		});
+		// Close when clicking a link (for anchor or same-page nav).
+		navPanel.addEventListener('click', function (e) {
+			if (e.target.closest('a') && !e.target.closest('.menu-item-has-children > a')) {
+				navPanel.classList.remove('is-open');
+				navToggle.setAttribute('aria-expanded', 'false');
+			}
+		});
+	}
+
 	// Example: FAQ toggle for elements using .edu-faq-item.
 	document.querySelectorAll('.edu-faq-question').forEach(function (trigger) {
 		trigger.addEventListener('click', function () {
