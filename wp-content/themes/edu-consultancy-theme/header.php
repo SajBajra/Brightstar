@@ -70,6 +70,34 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 			<a class="site-header__link" href="<?php echo esc_url( $blog_url ); ?>">
 				<?php esc_html_e( 'Blog', 'edu-consultancy' ); ?>
 			</a>
+			<?php
+			$about_page = get_page_by_path( 'about-us' );
+			$contact_page = get_page_by_path( 'contact' );
+			if ( $about_page ) :
+				?>
+			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $about_page ) ); ?>">
+				<?php esc_html_e( 'About Us', 'edu-consultancy' ); ?>
+			</a>
+			<?php endif; ?>
+			<?php if ( $contact_page ) : ?>
+			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $contact_page ) ); ?>">
+				<?php esc_html_e( 'Contact', 'edu-consultancy' ); ?>
+			</a>
+			<?php endif; ?>
+			<?php
+			$placement_page = get_page_by_path( 'placement' );
+			$jrp_page        = get_page_by_path( 'jrp' );
+			if ( $placement_page ) :
+				?>
+			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $placement_page ) ); ?>">
+				<?php esc_html_e( 'Placement', 'edu-consultancy' ); ?>
+			</a>
+			<?php endif; ?>
+			<?php if ( $jrp_page ) : ?>
+			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $jrp_page ) ); ?>">
+				<?php esc_html_e( 'JRP', 'edu-consultancy' ); ?>
+			</a>
+			<?php endif; ?>
 		</div>
 
 		<div class="site-header__actions">

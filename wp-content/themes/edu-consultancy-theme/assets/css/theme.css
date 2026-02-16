@@ -1520,6 +1520,309 @@
 	background-image: url("https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80");
 }
 
+/* About Us & Contact page heroes (same structure, different images) */
+.edu-about-hero {
+	background-image: url("https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80");
+}
+
+.edu-contact-hero {
+	background-image: url("https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80");
+}
+
+/* About Us content: two columns (text + image) */
+.edu-about-content {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--edu-spacing-xl);
+	align-items: start;
+	margin-top: var(--edu-spacing-lg);
+	margin-bottom: var(--edu-spacing-xl);
+}
+
+.edu-about-content__heading {
+	margin: 0 0 1rem;
+	font-size: 1.75rem;
+	font-weight: 700;
+	color: var(--edu-heading-color, #0f172a);
+}
+
+.edu-about-content__text {
+	margin-bottom: var(--edu-spacing-lg);
+}
+
+.edu-about-content__text p {
+	margin: 0 0 1rem;
+	line-height: 1.6;
+	color: #475569;
+}
+
+.edu-about-content__subheading {
+	margin: 0 0 0.5rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--edu-heading-color, #0f172a);
+}
+
+.edu-about-content__list {
+	margin: 0;
+	padding-left: 1.5rem;
+	line-height: 1.8;
+	color: #475569;
+}
+
+.edu-about-content__image {
+	margin: 0;
+}
+
+.edu-about-content__image img {
+	width: 100%;
+	height: auto;
+	border-radius: var(--edu-radius-base);
+	box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+@media (max-width: 767px) {
+	.edu-about-content {
+		grid-template-columns: 1fr;
+	}
+	.edu-about-content__image {
+		order: -1;
+	}
+}
+
+/* Contact page: form + side (image + phone) */
+.edu-contact-content {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: var(--edu-spacing-xl);
+	align-items: start;
+	margin-top: var(--edu-spacing-lg);
+	margin-bottom: var(--edu-spacing-xl);
+}
+
+.edu-contact-form__row {
+	margin: 0 0 1.25rem;
+}
+
+.edu-contact-form__row label {
+	display: block;
+	margin-bottom: 0.35rem;
+	font-weight: 500;
+	color: #334155;
+}
+
+.edu-contact-form__row .required {
+	color: #dc2626;
+}
+
+.edu-contact-form__input {
+	width: 100%;
+	max-width: 100%;
+	padding: 0.6rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border: 1px solid #cbd5e1;
+	border-radius: var(--edu-radius-base);
+	background: #fff;
+}
+
+.edu-contact-form__input:focus {
+	outline: none;
+	border-color: var(--edu-primary, #1e3a5f);
+	box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.15);
+}
+
+.edu-contact-form__textarea {
+	min-height: 120px;
+	resize: vertical;
+}
+
+.edu-contact-form__submit {
+	margin-top: 1rem;
+	margin-bottom: 0;
+}
+
+.edu-contact-message {
+	padding: 1rem 1.25rem;
+	margin-bottom: var(--edu-spacing-md);
+	border-radius: var(--edu-radius-base);
+	font-size: 0.9375rem;
+}
+
+.edu-contact-message--success {
+	background: #ecfdf5;
+	border: 1px solid #a7f3d0;
+	color: #065f46;
+}
+
+.edu-contact-message--error {
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	color: #991b1b;
+}
+
+.edu-contact-content__image {
+	margin: 0 0 1.5rem;
+}
+
+.edu-contact-content__image img {
+	width: 100%;
+	height: auto;
+	border-radius: var(--edu-radius-base);
+	box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.edu-contact-content__info-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--edu-heading-color, #0f172a);
+}
+
+.edu-contact-content__info-text {
+	margin: 0 0 0.25rem;
+	font-size: 0.9375rem;
+	color: #64748b;
+}
+
+.edu-contact-content__info-phone {
+	margin: 0;
+	font-size: 1.125rem;
+	font-weight: 600;
+}
+
+.edu-contact-content__info-phone a {
+	color: var(--edu-primary, #1e3a5f);
+	text-decoration: none;
+}
+
+.edu-contact-content__info-phone a:hover {
+	text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+	.edu-contact-content {
+		grid-template-columns: 1fr;
+	}
+	.edu-contact-content__side {
+		order: -1;
+	}
+}
+
+/* Placement & JRP page heroes */
+.edu-placement-hero {
+	background-image: url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80");
+}
+
+.edu-jrp-hero {
+	background-image: url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80");
+}
+
+/* Shared page content (Placement, JRP) */
+.edu-page-content {
+	margin-top: var(--edu-spacing-lg);
+	margin-bottom: var(--edu-spacing-xl);
+	max-width: 48rem;
+}
+
+.edu-page-content__heading {
+	margin: 0 0 0.75rem;
+	font-size: 1.5rem;
+	font-weight: 700;
+	color: var(--edu-heading-color, #0f172a);
+}
+
+.edu-page-content__subheading {
+	margin: 1.25rem 0 0.5rem;
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: var(--edu-heading-color, #0f172a);
+}
+
+.edu-page-content__list {
+	margin: 0 0 1rem;
+	padding-left: 1.5rem;
+	line-height: 1.7;
+	color: #475569;
+}
+
+.edu-page-content__list li {
+	margin-bottom: 0.35rem;
+}
+
+.edu-placement-content .edu-page-content__heading,
+.edu-jrp-content .edu-page-content__heading {
+	margin-top: 1.5rem;
+}
+
+.edu-placement-content .edu-page-content__heading:first-child,
+.edu-jrp-content .edu-page-content__heading:first-child {
+	margin-top: 0;
+}
+
+.edu-placement-intro p,
+.edu-placement-section p,
+.edu-jrp-intro p,
+.edu-jrp-section p {
+	margin: 0 0 1rem;
+	line-height: 1.6;
+	color: #475569;
+}
+
+.edu-placement-intro__cta,
+.edu-placement-section__cta,
+.edu-jrp-intro__cta,
+.edu-jrp-section__cta {
+	margin: 1.25rem 0 0;
+}
+
+.edu-placement-intro__list,
+.edu-jrp-intro__list {
+	margin-bottom: 1.25rem;
+}
+
+.edu-jrp-industries li {
+	margin-bottom: 0.75rem;
+}
+
+.edu-jrp-faq {
+	border-top: 1px solid #e2e8f0;
+	padding-top: 1.5rem;
+	margin-top: 2rem;
+}
+
+.edu-jrp-faq__item {
+	margin-bottom: 1.5rem;
+}
+
+.edu-jrp-faq__q {
+	margin: 0 0 0.5rem;
+	font-size: 1.0625rem;
+	font-weight: 600;
+	color: var(--edu-heading-color, #0f172a);
+}
+
+.edu-jrp-faq__a {
+	margin: 0;
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: #475569;
+}
+
+.edu-jrp-faq__cta {
+	margin: 1rem 0 0;
+	font-size: 0.9375rem;
+}
+
+.edu-jrp-faq__cta a {
+	color: var(--edu-primary, #1e3a5f);
+	text-decoration: none;
+}
+
+.edu-jrp-faq__cta a:hover {
+	text-decoration: underline;
+}
+
 /* Blog archive list (no search) */
 .edu-blog-list {
 	margin-top: var(--edu-spacing-lg);
