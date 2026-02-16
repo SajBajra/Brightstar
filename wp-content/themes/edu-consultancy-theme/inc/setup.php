@@ -20,7 +20,11 @@ class Edu_Theme_Setup {
 		add_action( 'after_setup_theme', array( __CLASS__, 'theme_supports' ) );
 		add_action( 'after_setup_theme', array( __CLASS__, 'register_menus' ) );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_blog_page' ) );
+		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_about_contact_pages' ) );
+		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_placement_jrp_pages' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_blog_page_once' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_create_about_contact_pages_once' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_create_placement_jrp_pages_once' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'disable_gutenberg_styles' ), 100 );
 		add_action( 'init', array( __CLASS__, 'cleanup_wp_head' ) );
@@ -84,6 +88,122 @@ class Edu_Theme_Setup {
 		self::create_blog_page_if_missing();
 		if ( get_page_by_path( 'blog' ) ) {
 			update_option( 'edu_blog_page_created', true );
+		}
+	}
+
+	/**
+	 * Create About Us and Contact pages on theme activation.
+	 *
+	 * @return void
+	 */
+	public static function maybe_create_about_contact_pages() {
+		self::create_about_contact_pages_if_missing();
+	}
+
+	/**
+	 * Create About Us and Contact pages once (for existing installs).
+	 *
+	 * @return void
+	 */
+	public static function maybe_create_about_contact_pages_once() {
+		if ( get_option( 'edu_about_contact_pages_created', false ) ) {
+			return;
+		}
+		self::create_about_contact_pages_if_missing();
+		if ( get_page_by_path( 'about-us' ) && get_page_by_path( 'contact' ) ) {
+			update_option( 'edu_about_contact_pages_created', true );
+		}
+	}
+
+	/**
+	 * Create About Us and Contact pages if they don't exist.
+	 *
+	 * @return void
+	 */
+	private static function create_about_contact_pages_if_missing() {
+		$pages = array(
+			array(
+				'slug'  => 'about-us',
+				'title' => _x( 'About Us', 'Page title', 'edu-consultancy' ),
+			),
+			array(
+				'slug'  => 'contact',
+				'title' => _x( 'Contact', 'Page title', 'edu-consultancy' ),
+			),
+		);
+		foreach ( $pages as $page ) {
+			if ( get_page_by_path( $page['slug'] ) ) {
+				continue;
+			}
+			wp_insert_post(
+				array(
+					'post_title'   => $page['title'],
+					'post_name'    => $page['slug'],
+					'post_status'  => 'publish',
+					'post_type'    => 'page',
+					'post_author'  => 1,
+					'post_content' => '',
+				),
+				true
+			);
+		}
+	}
+
+	/**
+	 * Create Placement and JRP pages on theme activation.
+	 *
+	 * @return void
+	 */
+	public static function maybe_create_placement_jrp_pages() {
+		self::create_placement_jrp_pages_if_missing();
+	}
+
+	/**
+	 * Create Placement and JRP pages once (for existing installs).
+	 *
+	 * @return void
+	 */
+	public static function maybe_create_placement_jrp_pages_once() {
+		if ( get_option( 'edu_placement_jrp_pages_created', false ) ) {
+			return;
+		}
+		self::create_placement_jrp_pages_if_missing();
+		if ( get_page_by_path( 'placement' ) && get_page_by_path( 'jrp' ) ) {
+			update_option( 'edu_placement_jrp_pages_created', true );
+		}
+	}
+
+	/**
+	 * Create Placement and JRP pages if they don't exist.
+	 *
+	 * @return void
+	 */
+	private static function create_placement_jrp_pages_if_missing() {
+		$pages = array(
+			array(
+				'slug'  => 'placement',
+				'title' => _x( 'Placement', 'Page title', 'edu-consultancy' ),
+			),
+			array(
+				'slug'  => 'jrp',
+				'title' => _x( 'Job Ready Program (JRP)', 'Page title', 'edu-consultancy' ),
+			),
+		);
+		foreach ( $pages as $page ) {
+			if ( get_page_by_path( $page['slug'] ) ) {
+				continue;
+			}
+			wp_insert_post(
+				array(
+					'post_title'   => $page['title'],
+					'post_name'    => $page['slug'],
+					'post_status'  => 'publish',
+					'post_type'    => 'page',
+					'post_author'  => 1,
+					'post_content' => '',
+				),
+				true
+			);
 		}
 	}
 
