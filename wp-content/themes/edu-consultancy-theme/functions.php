@@ -109,3 +109,56 @@ add_action(
 	}
 );
 
+/**
+ * Rewrite hardcoded uploads URLs to current site domain.
+ *
+ * This helps when migrating a database between domains/subdomains where Elementor
+ * (or other builders) stored absolute image URLs (e.g. background images) that
+ * still point to the old domain.
+ *
+ * We only rewrite URLs that point into the uploads base path.
+ *
+ * @param mixed $content HTML content.
+ * @return mixed
+ */
+function edu_theme_rewrite_upload_urls_to_current_domain( $content ) {
+	if ( is_admin() || ! is_string( $content ) || '' === $content ) {
+		return $content;
+	}
+
+	$uploads = wp_get_upload_dir();
+	$uploads_baseurl = isset( $uploads['baseurl'] ) ? (string) $uploads['baseurl'] : '';
+	$uploads_basepath = wp_parse_url( $uploads_baseurl, PHP_URL_PATH );
+
+	// Fallback for unusual setups.
+	if ( ! $uploads_basepath ) {
+		$uploads_basepath = '/wp-content/uploads';
+	}
+
+	$home      = home_url();
+	$scheme    = wp_parse_url( $home, PHP_URL_SCHEME );
+	$host      = wp_parse_url( $home, PHP_URL_HOST );
+	$port      = wp_parse_url( $home, PHP_URL_PORT );
+	$origin    = $scheme && $host ? $scheme . '://' . $host : '';
+	$origin   .= $origin && $port ? ':' . $port : '';
+
+	if ( '' === $origin ) {
+		return $content;
+	}
+
+	// Replace any absolute or protocol-relative URL host that points into uploads.
+	$pattern = '~(?:(?:https?:)?//)[^"\'\s]+(?=' . preg_quote( $uploads_basepath, '~' ) . ')~i';
+
+	return preg_replace( $pattern, $origin, $content );
+}
+
+// Frontend content (classic editor + builder output).
+add_filter( 'the_content', 'edu_theme_rewrite_upload_urls_to_current_domain', 20 );
+
+// Elementor frontend rendered content.
+add_filter( 'elementor/frontend/the_content', 'edu_theme_rewrite_upload_urls_to_current_domain', 20 );
+
+// Text widgets / shortcodes.
+add_filter( 'widget_text', 'edu_theme_rewrite_upload_urls_to_current_domain', 20 );
+add_filter( 'widget_text_content', 'edu_theme_rewrite_upload_urls_to_current_domain', 20 );
+
