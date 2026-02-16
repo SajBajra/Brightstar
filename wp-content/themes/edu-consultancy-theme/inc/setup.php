@@ -255,11 +255,7 @@ class Edu_Theme_Setup {
 	 * @return void
 	 */
 	public static function maybe_populate_primary_menu_once() {
-		if ( get_option( 'edu_primary_menu_populated', false ) ) {
-			return;
-		}
 		self::populate_primary_menu_if_needed();
-		update_option( 'edu_primary_menu_populated', true );
 	}
 
 	/**
@@ -291,9 +287,12 @@ class Edu_Theme_Setup {
 				$children[ $item->menu_item_parent ][] = $item;
 				continue;
 			}
-			$url  = trailingslashit( $item->url );
-			$slug = '';
-			if ( $jobs_url && $url === trailingslashit( $jobs_url ) ) {
+			$url       = trailingslashit( $item->url );
+			$slug      = '';
+			$title_lower = strtolower( trim( $item->title ) );
+			if ( $jobs_url && ( $url === trailingslashit( $jobs_url ) || untrailingslashit( $item->url ) === untrailingslashit( $jobs_url ) ) ) {
+				$slug = 'find-jobs';
+			} elseif ( 'find jobs' === $title_lower && ( ! $jobs_url || strpos( $item->url, 'jobs' ) !== false ) ) {
 				$slug = 'find-jobs';
 			} elseif ( $blog_id && (int) $item->object_id === $blog_id ) {
 				$slug = 'blog';
@@ -339,13 +338,22 @@ class Edu_Theme_Setup {
 			set_theme_mod( 'nav_menu_locations', $locations );
 		}
 
-		$menu_items = wp_get_nav_menu_items( $menu_id );
-		$existing  = array();
+		$menu_items    = wp_get_nav_menu_items( $menu_id );
+		$existing     = array();
+		$has_find_jobs_by_title = false;
 		if ( $menu_items ) {
 			foreach ( $menu_items as $item ) {
+				if ( (int) $item->menu_item_parent !== 0 ) {
+					continue;
+				}
 				$existing[ $item->url ] = true;
+				$existing[ trailingslashit( $item->url ) ] = true;
+				$existing[ untrailingslashit( $item->url ) ] = true;
 				if ( 'post_type' === $item->type && 'page' === $item->object ) {
 					$existing[ 'page:' . $item->object_id ] = true;
+				}
+				if ( strtolower( trim( $item->title ) ) === 'find jobs' ) {
+					$has_find_jobs_by_title = true;
 				}
 			}
 		}
@@ -371,7 +379,11 @@ class Edu_Theme_Setup {
 
 		// 2. Find Jobs
 		$jobs_url = get_post_type_archive_link( 'jobs' );
-		if ( $jobs_url && empty( $existing[ $jobs_url ] ) ) {
+		if ( ! $jobs_url ) {
+			$jobs_url = home_url( '/jobs/' );
+		}
+		$has_find_jobs = $has_find_jobs_by_title || ( $jobs_url && ( ! empty( $existing[ $jobs_url ] ) || ! empty( $existing[ trailingslashit( $jobs_url ) ] ) || ! empty( $existing[ untrailingslashit( $jobs_url ) ] ) ) );
+		if ( $jobs_url && ! $has_find_jobs ) {
 			wp_update_nav_menu_item(
 				$menu_id,
 				0,
