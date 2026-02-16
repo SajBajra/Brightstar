@@ -241,20 +241,20 @@
 	padding-inline: 1rem;
 }
 
-/* Mobile nav: show toggle, collapse center into drawer */
+/* Mobile nav: show toggle on right, collapse center into drawer */
 @media (max-width: 991px) {
-	.site-header__toggle {
-		display: flex;
-		order: 1;
-	}
-
 	.site-header__brand {
-		order: 2;
+		order: 1;
 		flex: 1;
-		justify-content: center;
+		justify-content: flex-start;
 	}
 
 	.site-header__actions {
+		order: 2;
+	}
+
+	.site-header__toggle {
+		display: flex;
 		order: 3;
 	}
 
