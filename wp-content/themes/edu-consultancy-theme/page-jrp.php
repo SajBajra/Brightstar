@@ -86,31 +86,8 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 					<h2 class="edu-page-content__heading"><?php esc_html_e( 'Job Ready Program for International Graduates in Australia', 'edu-consultancy' ); ?></h2>
 					<p><?php esc_html_e( 'Turn your Australian education into a thriving career and a clear path to permanent residency. We offer a comprehensive Job Ready Program (JRP) designed specifically for international graduates. We bridge the gap between your academic qualifications and the demands of the Australian job market, providing you with the practical skills, industry connections, and personalized migration guidance needed for long-term success.', 'edu-consultancy' ); ?></p>
 				</div>
-				<div class="edu-page-block__media edu-jrp-image-carousel" aria-label="<?php esc_attr_e( 'Program images', 'edu-consultancy' ); ?>">
-					<div class="edu-jrp-image-carousel__track">
-						<?php
-						$jrp_carousel_images = array(
-							array( 'url' => 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'alt' => __( 'Students and graduation', 'edu-consultancy' ) ),
-							array( 'url' => 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'alt' => __( 'Graduate career success', 'edu-consultancy' ) ),
-							array( 'url' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'alt' => __( 'Diverse professionals', 'edu-consultancy' ) ),
-							array( 'url' => 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'alt' => __( 'Mentorship and teamwork', 'edu-consultancy' ) ),
-						);
-						foreach ( $jrp_carousel_images as $img ) :
-							?>
-							<div class="edu-jrp-image-carousel__slide">
-								<img src="<?php echo esc_url( $img['url'] ); ?>" alt="<?php echo esc_attr( $img['alt'] ); ?>" loading="lazy" />
-							</div>
-						<?php endforeach; ?>
-					</div>
-					<nav class="edu-jrp-image-carousel__nav" aria-label="<?php esc_attr_e( 'Image carousel', 'edu-consultancy' ); ?>">
-						<button type="button" class="edu-jrp-image-carousel__prev" aria-label="<?php esc_attr_e( 'Previous', 'edu-consultancy' ); ?>">&larr;</button>
-						<div class="edu-jrp-image-carousel__dots" role="tablist">
-							<?php foreach ( array_keys( $jrp_carousel_images ) as $i ) : ?>
-								<button type="button" class="edu-jrp-image-carousel__dot<?php echo 0 === $i ? ' is-active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Go to slide %d', 'edu-consultancy' ), $i + 1 ) ); ?>" data-index="<?php echo (int) $i; ?>" role="tab"></button>
-							<?php endforeach; ?>
-						</div>
-						<button type="button" class="edu-jrp-image-carousel__next" aria-label="<?php esc_attr_e( 'Next', 'edu-consultancy' ); ?>">&rarr;</button>
-					</nav>
+				<div class="edu-page-block__media">
+					<img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="<?php esc_attr_e( 'Students and graduation', 'edu-consultancy' ); ?>" loading="lazy" />
 				</div>
 			</section>
 
@@ -133,42 +110,63 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 			<section id="jrp-industries" class="edu-jrp-section edu-jrp-industries-section">
 				<h2 class="edu-page-content__heading"><?php esc_html_e( 'Supported Industries for Your Career Success', 'edu-consultancy' ); ?></h2>
 				<p><?php esc_html_e( 'We specialize in high-demand sectors with strong employment prospects and clear migration pathways. Our JRP offers dedicated support and mentorship in the following fields:', 'edu-consultancy' ); ?></p>
-				<div class="edu-jrp-industries-grid">
-					<div class="edu-jrp-industry-card">
-						<div class="edu-jrp-industry-card__img">
-							<img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+				<div class="edu-jrp-industries-carousel" aria-label="<?php esc_attr_e( 'Industry cards carousel', 'edu-consultancy' ); ?>">
+					<div class="edu-jrp-industries-carousel__track">
+						<div class="edu-jrp-industries-carousel__slide">
+							<div class="edu-jrp-industry-card">
+								<div class="edu-jrp-industry-card__img">
+									<img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+								</div>
+								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Disability Support', 'edu-consultancy' ); ?></h3>
+								<p><?php esc_html_e( 'Start a career in disability care with practical training and job placement support in Australia\'s growing support sector.', 'edu-consultancy' ); ?></p>
+							</div>
 						</div>
-						<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Disability Support', 'edu-consultancy' ); ?></h3>
-						<p><?php esc_html_e( 'Start a career in disability care with practical training and job placement support in Australia\'s growing support sector.', 'edu-consultancy' ); ?></p>
-					</div>
-					<div class="edu-jrp-industry-card">
-						<div class="edu-jrp-industry-card__img">
-							<img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+						<div class="edu-jrp-industries-carousel__slide">
+							<div class="edu-jrp-industry-card">
+								<div class="edu-jrp-industry-card__img">
+									<img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+								</div>
+								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Hospitality', 'edu-consultancy' ); ?></h3>
+								<p><?php esc_html_e( 'Gain job-ready hospitality skills with hands-on training, work placements, and pathways to management roles in Australia.', 'edu-consultancy' ); ?></p>
+							</div>
 						</div>
-						<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Hospitality', 'edu-consultancy' ); ?></h3>
-						<p><?php esc_html_e( 'Gain job-ready hospitality skills with hands-on training, work placements, and pathways to management roles in Australia.', 'edu-consultancy' ); ?></p>
-					</div>
-					<div class="edu-jrp-industry-card">
-						<div class="edu-jrp-industry-card__img">
-							<img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+						<div class="edu-jrp-industries-carousel__slide">
+							<div class="edu-jrp-industry-card">
+								<div class="edu-jrp-industry-card__img">
+									<img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+								</div>
+								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Nursing & Aged Care', 'edu-consultancy' ); ?></h3>
+								<p><?php esc_html_e( 'Prepare for a rewarding healthcare career with real-world training and job opportunities in nursing and aged care.', 'edu-consultancy' ); ?></p>
+							</div>
 						</div>
-						<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Nursing & Aged Care', 'edu-consultancy' ); ?></h3>
-						<p><?php esc_html_e( 'Prepare for a rewarding healthcare career with real-world training and job opportunities in nursing and aged care.', 'edu-consultancy' ); ?></p>
-					</div>
-					<div class="edu-jrp-industry-card">
-						<div class="edu-jrp-industry-card__img">
-							<img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+						<div class="edu-jrp-industries-carousel__slide">
+							<div class="edu-jrp-industry-card">
+								<div class="edu-jrp-industry-card__img">
+									<img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+								</div>
+								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Engineering', 'edu-consultancy' ); ?></h3>
+								<p><?php esc_html_e( 'Build a job-ready foundation in civil, mechanical, or software engineering with Australian industry connections and internships.', 'edu-consultancy' ); ?></p>
+							</div>
 						</div>
-						<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Engineering', 'edu-consultancy' ); ?></h3>
-						<p><?php esc_html_e( 'Build a job-ready foundation in civil, mechanical, or software engineering with Australian industry connections and internships.', 'edu-consultancy' ); ?></p>
-					</div>
-					<div class="edu-jrp-industry-card">
-						<div class="edu-jrp-industry-card__img">
-							<img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+						<div class="edu-jrp-industries-carousel__slide">
+							<div class="edu-jrp-industry-card">
+								<div class="edu-jrp-industry-card__img">
+									<img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+								</div>
+								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Information Technology', 'edu-consultancy' ); ?></h3>
+								<p><?php esc_html_e( 'Get job-ready in Australia\'s fast-growing tech sector. Learn essential IT skills, earn certifications, and gain career support.', 'edu-consultancy' ); ?></p>
+							</div>
 						</div>
-						<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Information Technology', 'edu-consultancy' ); ?></h3>
-						<p><?php esc_html_e( 'Get job-ready in Australia\'s fast-growing tech sector. Learn essential IT skills, earn certifications, and gain career support.', 'edu-consultancy' ); ?></p>
 					</div>
+					<nav class="edu-jrp-industries-carousel__nav" aria-label="<?php esc_attr_e( 'Carousel navigation', 'edu-consultancy' ); ?>">
+						<button type="button" class="edu-jrp-industries-carousel__prev" aria-label="<?php esc_attr_e( 'Previous', 'edu-consultancy' ); ?>">&larr;</button>
+						<div class="edu-jrp-industries-carousel__dots" role="tablist">
+							<?php for ( $i = 0; $i < 5; $i++ ) : ?>
+								<button type="button" class="edu-jrp-industries-carousel__dot<?php echo 0 === $i ? ' is-active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Go to slide %d', 'edu-consultancy' ), $i + 1 ) ); ?>" data-index="<?php echo (int) $i; ?>" role="tab"></button>
+							<?php endfor; ?>
+						</div>
+						<button type="button" class="edu-jrp-industries-carousel__next" aria-label="<?php esc_attr_e( 'Next', 'edu-consultancy' ); ?>">&rarr;</button>
+					</nav>
 				</div>
 			</section>
 
@@ -284,16 +282,16 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 
 <script>
 (function() {
-	// JRP image carousel (one at a time, pagination dots)
-	var carousel = document.querySelector('.edu-jrp-image-carousel');
-	if (carousel) {
-		var track = carousel.querySelector('.edu-jrp-image-carousel__track');
-		var prev = carousel.querySelector('.edu-jrp-image-carousel__prev');
-		var next = carousel.querySelector('.edu-jrp-image-carousel__next');
-		var dots = carousel.querySelectorAll('.edu-jrp-image-carousel__dot');
+	// JRP industries cards carousel (one card at a time, dots + arrows)
+	var industriesCarousel = document.querySelector('.edu-jrp-industries-carousel');
+	if (industriesCarousel) {
+		var track = industriesCarousel.querySelector('.edu-jrp-industries-carousel__track');
+		var prev = industriesCarousel.querySelector('.edu-jrp-industries-carousel__prev');
+		var next = industriesCarousel.querySelector('.edu-jrp-industries-carousel__next');
+		var dots = industriesCarousel.querySelectorAll('.edu-jrp-industries-carousel__dot');
 		var total = track ? track.children.length : 0;
 		var current = 0;
-		function updateCarousel() {
+		function updateIndustriesCarousel() {
 			if (!track) return;
 			track.style.transform = 'translateX(-' + (current * 100) + '%)';
 			dots.forEach(function(dot, i) {
@@ -302,12 +300,12 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 		}
 		function go(n) {
 			current = (current + n + total) % total;
-			updateCarousel();
+			updateIndustriesCarousel();
 		}
 		if (prev) prev.addEventListener('click', function() { go(-1); });
 		if (next) next.addEventListener('click', function() { go(1); });
 		dots.forEach(function(dot, i) {
-			dot.addEventListener('click', function() { current = i; updateCarousel(); });
+			dot.addEventListener('click', function() { current = i; updateIndustriesCarousel(); });
 		});
 	}
 	// JRP FAQ accordion
