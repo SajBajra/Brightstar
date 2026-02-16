@@ -41,6 +41,7 @@ class Edu_Theme_Elementor_Widgets {
 		require_once __DIR__ . '/elementor/class-edu-widget-jobs-carousel.php';
 		require_once __DIR__ . '/elementor/class-edu-widget-services-carousel.php';
 		require_once __DIR__ . '/elementor/class-edu-widget-consultation-booking.php';
+		require_once __DIR__ . '/elementor/class-edu-widget-testimonials.php';
 
 		$widgets_manager->register( new \Edu_Elementor_Widget_Job_Grid() );
 		$widgets_manager->register( new \Edu_Elementor_Widget_Featured_Jobs() );
@@ -51,6 +52,7 @@ class Edu_Theme_Elementor_Widgets {
 		$widgets_manager->register( new \Edu_Elementor_Widget_Jobs_Carousel() );
 		$widgets_manager->register( new \Edu_Elementor_Widget_Services_Carousel() );
 		$widgets_manager->register( new \Edu_Elementor_Widget_Consultation_Booking() );
+		$widgets_manager->register( new \Edu_Elementor_Widget_Testimonials() );
 	}
 }
 
