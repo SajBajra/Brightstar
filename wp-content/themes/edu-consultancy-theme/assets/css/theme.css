@@ -4005,7 +4005,7 @@ body.edu-modal-open {
 }
 
 .edu-consultation-booking__row--submit {
-	text-align: center;
+	text-align: left;
 	margin-top: var(--edu-spacing-md);
 }
 
