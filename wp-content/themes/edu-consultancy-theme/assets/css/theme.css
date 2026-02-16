@@ -827,12 +827,12 @@
 
 .edu-hero__jobs::before {
 	top: 0;
-	background: linear-gradient(to bottom, rgba(239, 246, 255, 1), rgba(239, 246, 255, 0));
+	background: linear-gradient(to bottom, rgba(37, 36, 123, 0.08), rgba(37, 36, 123, 0));
 }
 
 .edu-hero__jobs::after {
 	bottom: 0;
-	background: linear-gradient(to top, rgba(239, 246, 255, 1), rgba(239, 246, 255, 0));
+	background: linear-gradient(to top, rgba(37, 36, 123, 0.08), rgba(37, 36, 123, 0));
 }
 
 .edu-section__header {
@@ -1066,7 +1066,7 @@
 	font-weight: 700;
 	letter-spacing: 0.02em;
 	text-transform: uppercase;
-	box-shadow: 0 2px 8px rgba(27, 115, 232, 0.35);
+	box-shadow: 0 2px 8px rgba(37, 36, 123, 0.35);
 }
 
 /* Single job page */
@@ -1160,7 +1160,7 @@
 	font-size: 0.8rem;
 	font-weight: 600;
 	color: var(--edu-color-primary);
-	background-color: rgba(27, 115, 232, 0.1);
+	background-color: rgba(37, 36, 123, 0.1);
 	border-radius: 6px;
 }
 
@@ -1496,7 +1496,7 @@
 .edu-job-application-form__textarea:focus {
 	outline: none;
 	border-color: var(--edu-color-primary);
-	box-shadow: 0 0 0 3px rgba(27, 115, 232, 0.12);
+	box-shadow: 0 0 0 3px rgba(37, 36, 123, 0.12);
 }
 
 .edu-job-application-form__textarea {
@@ -1525,7 +1525,7 @@
 .edu-job-application-form__file-wrap:focus-within {
 	outline: none;
 	border-color: var(--edu-color-primary);
-	box-shadow: 0 0 0 3px rgba(27, 115, 232, 0.12);
+	box-shadow: 0 0 0 3px rgba(37, 36, 123, 0.12);
 }
 
 .edu-job-application-form__file-input {
@@ -3218,7 +3218,7 @@
 .edu-job-search__select:focus {
 	outline: none;
 	border-color: var(--edu-color-primary);
-	box-shadow: 0 0 0 3px rgba(27, 115, 232, 0.15);
+	box-shadow: 0 0 0 3px rgba(37, 36, 123, 0.15);
 }
 
 .edu-job-search__input::placeholder {
