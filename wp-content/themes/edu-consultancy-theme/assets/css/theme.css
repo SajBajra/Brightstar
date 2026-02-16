@@ -124,10 +124,41 @@
 	text-decoration: none;
 	font-size: 0.95rem;
 	display: inline-block;
+	position: relative;
+	padding-bottom: 0.25rem;
+	transition: color 0.2s ease;
+}
+
+.site-header__nav .primary-menu a::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background-color: var(--edu-color-primary);
+	transition: width 0.3s ease;
 }
 
 .site-header__nav .primary-menu a:hover {
 	color: var(--edu-color-primary);
+}
+
+.site-header__nav .primary-menu a:hover::after {
+	width: 100%;
+}
+
+/* Active menu item */
+.site-header__nav .primary-menu .current-menu-item > a,
+.site-header__nav .primary-menu .current_page_item > a,
+.site-header__nav .primary-menu a.current {
+	color: var(--edu-color-primary);
+}
+
+.site-header__nav .primary-menu .current-menu-item > a::after,
+.site-header__nav .primary-menu .current_page_item > a::after,
+.site-header__nav .primary-menu a.current::after {
+	width: 100%;
 }
 
 /* Dropdown submenus */
