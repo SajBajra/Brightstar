@@ -847,18 +847,23 @@
 
 .edu-hero__jobs::before,
 .edu-hero__jobs::after {
-	/* Remove top/bottom blur/gradient overlays */
-	content: none;
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 24px;
+	pointer-events: none;
+	z-index: 2;
 }
 
 .edu-hero__jobs::before {
 	top: 0;
-	background: none;
+	background: linear-gradient(to bottom, rgba(37, 36, 123, 0.08), rgba(37, 36, 123, 0));
 }
 
 .edu-hero__jobs::after {
 	bottom: 0;
-	background: none;
+	background: linear-gradient(to top, rgba(37, 36, 123, 0.08), rgba(37, 36, 123, 0));
 }
 
 .edu-section__header {
