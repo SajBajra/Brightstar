@@ -114,5 +114,41 @@ class Edu_Theme_Helpers {
 
 		echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+
+	/**
+	 * Get site logo URL: custom logo if set, otherwise fallback Favicon.png from uploads.
+	 *
+	 * @return string Logo image URL.
+	 */
+	public static function get_site_logo_url() {
+		$logo_id = get_theme_mod( 'custom_logo' );
+		if ( $logo_id ) {
+			$src = wp_get_attachment_image_src( $logo_id, 'full' );
+			if ( $src && isset( $src[0] ) ) {
+				return $src[0];
+			}
+		}
+		return content_url( 'uploads/2026/02/Favicon.png' );
+	}
+
+	/**
+	 * Output site logo markup (link + img) for header or footer.
+	 *
+	 * @param string $img_class CSS class for the image.
+	 * @return void
+	 */
+	public static function render_site_logo( $img_class = 'site-logo-img' ) {
+		$logo_id = get_theme_mod( 'custom_logo' );
+		$url     = self::get_site_logo_url();
+		$alt     = get_bloginfo( 'name' );
+		$home    = home_url( '/' );
+		echo '<a href="' . esc_url( $home ) . '" class="site-logo-link" rel="home">';
+		if ( $logo_id ) {
+			echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => esc_attr( $img_class ), 'alt' => esc_attr( $alt ) ) );
+		} else {
+			echo '<img src="' . esc_url( $url ) . '" alt="' . esc_attr( $alt ) . '" class="' . esc_attr( $img_class ) . '" loading="eager" />';
+		}
+		echo '</a>';
+	}
 }
 
