@@ -37,6 +37,9 @@ require_once EDU_THEME_DIR . '/inc/applications.php';
 require_once EDU_THEME_DIR . '/inc/job-search.php';
 require_once EDU_THEME_DIR . '/inc/dashboards.php';
 require_once EDU_THEME_DIR . '/inc/elementor-widgets.php';
+require_once EDU_THEME_DIR . '/inc/contact-form.php';
+require_once EDU_THEME_DIR . '/inc/auth-modals.php';
+require_once EDU_THEME_DIR . '/inc/consultation-booking.php';
 
 /**
  * Initialise theme components.
@@ -90,6 +93,18 @@ add_action(
 
 		if ( class_exists( 'Edu_Theme_Elementor_Widgets' ) ) {
 			Edu_Theme_Elementor_Widgets::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Contact_Form' ) ) {
+			Edu_Theme_Contact_Form::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Auth_Modals' ) ) {
+			Edu_Theme_Auth_Modals::init();
+		}
+
+		if ( class_exists( 'Edu_Theme_Consultation_Booking' ) ) {
+			Edu_Theme_Consultation_Booking::init();
 		}
 	}
 );
