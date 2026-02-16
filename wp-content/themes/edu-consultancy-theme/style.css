@@ -15,9 +15,10 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 :root {
-	--edu-color-primary: #1b73e8;
-	--edu-color-secondary: #2563eb;
-	--edu-color-accent: #1d4ed8;
+	--edu-primary: #25247b;
+	--edu-color-primary: #25247b;
+	--edu-color-secondary: #25247b;
+	--edu-color-accent: #1a1a5e;
 	--edu-color-dark: #0f172a;
 	--edu-color-light: #f9fafb;
 	--edu-font-base: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
