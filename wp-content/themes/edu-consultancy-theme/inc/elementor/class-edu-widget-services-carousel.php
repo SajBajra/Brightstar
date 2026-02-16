@@ -240,10 +240,12 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 		if ( empty( $services ) ) {
 			return;
 		}
+		$total_slides = count( $services );
 		?>
-		<section class="edu-services-carousel" id="<?php echo esc_attr( $widget_id ); ?>">
+		<section class="edu-services-carousel edu-services-carousel--redesign" id="<?php echo esc_attr( $widget_id ); ?>">
 			<div class="edu-container">
 				<?php if ( $title ) : ?>
+					<p class="edu-services-carousel__eyebrow"><?php esc_html_e( 'How we help', 'edu-consultancy' ); ?></p>
 					<h2 class="edu-services-carousel__title"><?php echo esc_html( $title ); ?></h2>
 				<?php endif; ?>
 				<div class="edu-services-carousel__wrap">
@@ -260,12 +262,23 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 							?>
 							<div class="edu-services-carousel__slide">
 								<div class="edu-services-carousel__card<?php echo $img_url ? '' : ' edu-services-carousel__card--no-image'; ?>">
-									<div class="edu-services-carousel__card-body">
-										<?php if ( ! $img_url && ! empty( $item['icon']['value'] ) ) : ?>
-											<div class="edu-services-carousel__icon">
-												<?php \Elementor\Icons_Manager::render_icon( $item['icon'], array( 'aria-hidden' => 'true' ) ); ?>
+									<div class="edu-services-carousel__card-image-wrap">
+										<?php if ( $img_url ) : ?>
+											<div class="edu-services-carousel__card-image">
+												<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>" loading="lazy" />
 											</div>
+										<?php elseif ( ! empty( $item['icon']['value'] ) ) : ?>
+											<div class="edu-services-carousel__card-image edu-services-carousel__card-image--icon">
+												<div class="edu-services-carousel__icon"><?php \Elementor\Icons_Manager::render_icon( $item['icon'], array( 'aria-hidden' => 'true' ) ); ?></div>
+											</div>
+										<?php else : ?>
+											<div class="edu-services-carousel__card-image edu-services-carousel__card-image--placeholder"></div>
 										<?php endif; ?>
+										<?php if ( $show_badge ) : ?>
+											<span class="edu-services-carousel__badge"><?php esc_html_e( 'Personalized', 'edu-consultancy' ); ?></span>
+										<?php endif; ?>
+									</div>
+									<div class="edu-services-carousel__card-body">
 										<h3 class="edu-services-carousel__card-title"><?php echo esc_html( $item['title'] ); ?></h3>
 										<p class="edu-services-carousel__card-desc"><?php echo esc_html( $item['description'] ); ?></p>
 										<?php
@@ -273,22 +286,19 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 										$btn_text = isset( $item['button_text'] ) ? $item['button_text'] : __( 'Learn More', 'edu-consultancy' );
 										?>
 										<a href="<?php echo esc_url( $btn_url ); ?>" class="edu-services-carousel__btn"><?php echo esc_html( $btn_text ); ?> &rarr;</a>
-										<?php if ( $show_badge ) : ?>
-											<span class="edu-services-carousel__badge"><?php esc_html_e( 'Personalized', 'edu-consultancy' ); ?></span>
-										<?php endif; ?>
 									</div>
-									<?php if ( $img_url ) : ?>
-										<div class="edu-services-carousel__card-image">
-											<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>" loading="lazy" />
-										</div>
-									<?php endif; ?>
 								</div>
 							</div>
 						<?php endforeach; ?>
 					</div>
 					<nav class="edu-services-carousel__nav" aria-label="<?php esc_attr_e( 'Carousel navigation', 'edu-consultancy' ); ?>">
-						<button type="button" class="edu-services-carousel__prev" aria-label="<?php esc_attr_e( 'Previous', 'edu-consultancy' ); ?>"><?php esc_html_e( 'Previous Slide', 'edu-consultancy' ); ?></button>
-						<button type="button" class="edu-services-carousel__next" aria-label="<?php esc_attr_e( 'Next', 'edu-consultancy' ); ?>"><?php esc_html_e( 'Next Slide', 'edu-consultancy' ); ?></button>
+						<button type="button" class="edu-services-carousel__prev edu-pagination-btn" aria-label="<?php esc_attr_e( 'Previous', 'edu-consultancy' ); ?>"><?php esc_html_e( '← Previous', 'edu-consultancy' ); ?></button>
+						<div class="edu-services-carousel__pages" role="tablist">
+							<?php for ( $i = 0; $i < $total_slides; $i++ ) : ?>
+								<button type="button" class="edu-services-carousel__page edu-pagination-btn<?php echo 0 === $i ? ' is-active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Page %d', 'edu-consultancy' ), $i + 1 ) ); ?>" data-index="<?php echo (int) $i; ?>" role="tab"><?php echo (int) ( $i + 1 ); ?></button>
+							<?php endfor; ?>
+						</div>
+						<button type="button" class="edu-services-carousel__next edu-pagination-btn" aria-label="<?php esc_attr_e( 'Next', 'edu-consultancy' ); ?>"><?php esc_html_e( 'Next →', 'edu-consultancy' ); ?></button>
 					</nav>
 				</div>
 			</div>
@@ -303,14 +313,16 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 				var total = track.children.length;
 				var current = 0;
 				function getVisible() {
-					return 1;
+					return window.innerWidth <= 767 ? 1 : 3;
 				}
 				function update() {
 					var visible = getVisible();
 					var maxStep = Math.max(0, total - visible);
 					if (current > maxStep) current = maxStep;
-					var percent = total > 0 ? (current * (100 / total)) : 0;
+					var percent = total > 0 ? (current * 100 / total) : 0;
 					track.style.transform = 'translateX(-' + percent + '%)';
+					var pages = el.querySelectorAll('.edu-services-carousel__page');
+					pages.forEach(function(p, i) { p.classList.toggle('is-active', i === current); });
 				}
 				function go(n) {
 					var visible = getVisible();
@@ -322,6 +334,15 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 				}
 				prev.addEventListener('click', function(){ go(-1); });
 				next.addEventListener('click', function(){ go(1); });
+				el.querySelectorAll('.edu-services-carousel__page').forEach(function(btn) {
+					var i = parseInt(btn.getAttribute('data-index'), 10);
+					btn.addEventListener('click', function() {
+						var visible = getVisible();
+						var maxStep = Math.max(0, total - visible);
+						current = Math.min(i, maxStep);
+						update();
+					});
+				});
 				window.addEventListener('resize', update);
 				update();
 			})();
