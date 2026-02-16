@@ -22,6 +22,12 @@ class Edu_Theme_Admin {
 			add_action( 'add_meta_boxes', array( __CLASS__, 'add_consultation_meta_boxes' ) );
 			add_action( 'save_post_consultations', array( __CLASS__, 'save_consultation_meta' ) );
 			add_action( 'admin_post_edu_export_consultations', array( __CLASS__, 'export_consultations_csv' ) );
+			add_action( 'add_meta_boxes', array( __CLASS__, 'add_contact_submission_meta_boxes' ) );
+			add_filter( 'manage_contact_submission_posts_columns', array( __CLASS__, 'contact_submission_columns' ) );
+			add_action( 'manage_contact_submission_posts_custom_column', array( __CLASS__, 'contact_submission_column_content' ), 10, 2 );
+			add_action( 'add_meta_boxes', array( __CLASS__, 'add_consultation_booking_meta_boxes' ) );
+			add_filter( 'manage_consultation_booking_posts_columns', array( __CLASS__, 'consultation_booking_columns' ) );
+			add_action( 'manage_consultation_booking_posts_custom_column', array( __CLASS__, 'consultation_booking_column_content' ), 10, 2 );
 		}
 	}
 
@@ -247,6 +253,168 @@ class Edu_Theme_Admin {
 
 		fclose( $output );
 		exit;
+	}
+
+	/**
+	 * Add meta box to display contact submission details (read-only).
+	 *
+	 * @return void
+	 */
+	public static function add_contact_submission_meta_boxes() {
+		add_meta_box(
+			'edu-contact-submission-details',
+			esc_html__( 'Submission Details', 'edu-consultancy' ),
+			array( __CLASS__, 'render_contact_submission_meta_box' ),
+			'contact_submission',
+			'normal',
+			'high'
+		);
+	}
+
+	/**
+	 * Render contact submission details.
+	 *
+	 * @param WP_Post $post Post object.
+	 *
+	 * @return void
+	 */
+	public static function render_contact_submission_meta_box( $post ) {
+		$name    = get_post_meta( $post->ID, 'edu_contact_name', true );
+		$email   = get_post_meta( $post->ID, 'edu_contact_email', true );
+		$phone   = get_post_meta( $post->ID, 'edu_contact_phone', true );
+		$message = get_post_meta( $post->ID, 'edu_contact_message', true );
+		?>
+		<table class="form-table">
+			<tr>
+				<th><?php esc_html_e( 'Name', 'edu-consultancy' ); ?></th>
+				<td><?php echo esc_html( $name ); ?></td>
+			</tr>
+			<tr>
+				<th><?php esc_html_e( 'Email', 'edu-consultancy' ); ?></th>
+				<td><a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></td>
+			</tr>
+			<tr>
+				<th><?php esc_html_e( 'Phone Number', 'edu-consultancy' ); ?></th>
+				<td><?php echo esc_html( $phone ); ?></td>
+			</tr>
+			<tr>
+				<th><?php esc_html_e( 'Message', 'edu-consultancy' ); ?></th>
+				<td><?php echo nl2br( esc_html( $message ) ); ?></td>
+			</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Add columns to contact submission list table.
+	 *
+	 * @param array $columns Existing columns.
+	 * @return array
+	 */
+	public static function contact_submission_columns( $columns ) {
+		$new = array();
+		$new['cb']    = $columns['cb'];
+		$new['title'] = $columns['title'];
+		$new['edu_contact_email'] = esc_html__( 'Email', 'edu-consultancy' );
+		$new['edu_contact_phone'] = esc_html__( 'Phone', 'edu-consultancy' );
+		$new['date'] = $columns['date'];
+		return $new;
+	}
+
+	/**
+	 * Output custom column content for contact submissions.
+	 *
+	 * @param string $column  Column key.
+	 * @param int    $post_id Post ID.
+	 *
+	 * @return void
+	 */
+	public static function contact_submission_column_content( $column, $post_id ) {
+		if ( 'edu_contact_email' === $column ) {
+			echo esc_html( get_post_meta( $post_id, 'edu_contact_email', true ) );
+		}
+		if ( 'edu_contact_phone' === $column ) {
+			echo esc_html( get_post_meta( $post_id, 'edu_contact_phone', true ) );
+		}
+	}
+
+	/**
+	 * Meta box for consultation booking details.
+	 *
+	 * @return void
+	 */
+	public static function add_consultation_booking_meta_boxes() {
+		add_meta_box(
+			'edu-consultation-booking-details',
+			esc_html__( 'Booking Details', 'edu-consultancy' ),
+			array( __CLASS__, 'render_consultation_booking_meta_box' ),
+			'consultation_booking',
+			'normal',
+			'high'
+		);
+	}
+
+	/**
+	 * Render consultation booking meta box.
+	 *
+	 * @param WP_Post $post Post object.
+	 *
+	 * @return void
+	 */
+	public static function render_consultation_booking_meta_box( $post ) {
+		$fields = array(
+			'edu_booking_first_name'   => __( 'First Name', 'edu-consultancy' ),
+			'edu_booking_last_name'    => __( 'Last Name', 'edu-consultancy' ),
+			'edu_booking_email'        => __( 'Email', 'edu-consultancy' ),
+			'edu_booking_phone'        => __( 'Phone', 'edu-consultancy' ),
+			'edu_booking_type'         => __( 'Consultation Type', 'edu-consultancy' ),
+			'edu_booking_duration'     => __( 'Duration', 'edu-consultancy' ),
+			'edu_booking_date'         => __( 'Available Date', 'edu-consultancy' ),
+			'edu_booking_method'       => __( 'Preferred Method', 'edu-consultancy' ),
+			'edu_booking_branch'       => __( 'Preferred Branch', 'edu-consultancy' ),
+			'edu_booking_time'         => __( 'Visit Time', 'edu-consultancy' ),
+			'edu_booking_message'      => __( 'Message', 'edu-consultancy' ),
+			'edu_booking_tab'          => __( 'Tab', 'edu-consultancy' ),
+		);
+		echo '<table class="form-table"><tbody>';
+		foreach ( $fields as $key => $label ) {
+			$value = get_post_meta( $post->ID, $key, true );
+			if ( (string) $value !== '' ) {
+				echo '<tr><th>' . esc_html( $label ) . '</th><td>' . esc_html( $value ) . '</td></tr>';
+			}
+		}
+		echo '</tbody></table>';
+	}
+
+	/**
+	 * Columns for consultation booking list.
+	 *
+	 * @param array $columns Columns.
+	 * @return array
+	 */
+	public static function consultation_booking_columns( $columns ) {
+		$new = array();
+		$new['cb'] = $columns['cb'];
+		$new['title'] = $columns['title'];
+		$new['edu_booking_email'] = esc_html__( 'Email', 'edu-consultancy' );
+		$new['edu_booking_type']  = esc_html__( 'Type', 'edu-consultancy' );
+		$new['edu_booking_date']  = esc_html__( 'Date', 'edu-consultancy' );
+		$new['date'] = $columns['date'];
+		return $new;
+	}
+
+	/**
+	 * Consultation booking column content.
+	 *
+	 * @param string $column  Column.
+	 * @param int    $post_id Post ID.
+	 *
+	 * @return void
+	 */
+	public static function consultation_booking_column_content( $column, $post_id ) {
+		if ( in_array( $column, array( 'edu_booking_email', 'edu_booking_type', 'edu_booking_date' ), true ) ) {
+			echo esc_html( get_post_meta( $post_id, $column, true ) );
+		}
 	}
 }
 
