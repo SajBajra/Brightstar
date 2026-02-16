@@ -366,7 +366,7 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	color: #334155;
-	margin-top: var(--edu-spacing-lg);
+	margin-top: 0;
 	padding-block: var(--edu-spacing-md);
 }
 
@@ -2049,9 +2049,20 @@
 	gap: 0.5rem;
 }
 
-.edu-placement-highlights__icon {
-	font-size: 0.5rem;
-	opacity: 0.9;
+.edu-placement-highlights__counter {
+	display: block;
+	font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+	font-weight: 700;
+	line-height: 1.2;
+	color: #fff;
+	opacity: 0.98;
+	letter-spacing: -0.02em;
+}
+
+.edu-placement-highlights__counter .edu-placement-highlights__suffix {
+	font-size: 0.6em;
+	vertical-align: super;
+	margin-left: 0.05em;
 }
 
 .edu-placement-highlights__label {
@@ -2061,7 +2072,7 @@
 }
 
 .edu-placement-page .edu-page-content {
-	margin-top: var(--edu-spacing-xl);
+	margin-top: var(--edu-spacing-md);
 }
 
 .edu-placement-heading {
@@ -2103,7 +2114,7 @@
 	background: #f8fafc;
 	margin-left: calc(-50vw + 50%);
 	margin-right: calc(-50vw + 50%);
-	padding: var(--edu-spacing-xl) calc(50vw - 50% + var(--edu-spacing-md));
+	padding: var(--edu-spacing-lg) calc(50vw - 50% + var(--edu-spacing-md));
 	border-top: 1px solid #e2e8f0;
 	border-bottom: 1px solid #e2e8f0;
 }
@@ -2114,18 +2125,18 @@
 }
 
 .edu-placement-page .edu-placement-intro.edu-placement-section--light {
-	padding-top: var(--edu-spacing-xl);
+	padding-top: var(--edu-spacing-lg);
 }
 
 /* Placement: card sections (For Employers / For Skilled Workers) */
 .edu-placement-card-section {
-	margin-bottom: var(--edu-spacing-xl);
+	margin-bottom: var(--edu-spacing-lg);
 }
 
 .edu-placement-card {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: var(--edu-spacing-xl);
+	gap: var(--edu-spacing-lg);
 	align-items: center;
 	background: #fff;
 	border-radius: 12px;
@@ -2172,7 +2183,7 @@
 
 /* Placement: Hiring Process steps */
 .edu-placement-process {
-	margin-bottom: var(--edu-spacing-xl);
+	margin-bottom: var(--edu-spacing-lg);
 	text-align: center;
 }
 
@@ -2183,7 +2194,7 @@
 
 .edu-placement-process__intro {
 	max-width: 40rem;
-	margin: 0 auto 2rem;
+	margin: 0 auto 1.25rem;
 	line-height: 1.65;
 	color: #475569;
 	font-size: 1rem;
@@ -2193,7 +2204,7 @@
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	gap: var(--edu-spacing-lg);
-	margin-bottom: 2rem;
+	margin-bottom: 1.25rem;
 	text-align: left;
 }
 
@@ -2245,7 +2256,7 @@
 
 /* Placement: partner block (two-column) */
 .edu-placement-partner {
-	margin-bottom: var(--edu-spacing-xl);
+	margin-bottom: var(--edu-spacing-lg);
 }
 
 .edu-placement-partner .edu-placement-heading {
@@ -2258,7 +2269,7 @@
 	color: #fff;
 	text-align: center;
 	padding: var(--edu-spacing-xl) var(--edu-spacing-md);
-	margin: 0 calc(-50vw + 50%) var(--edu-spacing-xl);
+	margin: 0 calc(-50vw + 50%) 0;
 	padding-left: calc(50vw - 50% + var(--edu-spacing-md));
 	padding-right: calc(50vw - 50% + var(--edu-spacing-md));
 }
@@ -2542,6 +2553,82 @@
 	line-height: 1.6;
 }
 
+/* JRP industries carousel (cards in carousel mode) */
+.edu-jrp-industries-carousel {
+	position: relative;
+	overflow: hidden;
+}
+
+.edu-jrp-industries-carousel__track {
+	display: flex;
+	transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.edu-jrp-industries-carousel__slide {
+	flex: 0 0 100%;
+	width: 100%;
+	min-width: 0;
+	padding: 0 var(--edu-spacing-sm);
+	box-sizing: border-box;
+}
+
+.edu-jrp-industries-carousel__nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75rem;
+	margin-top: var(--edu-spacing-lg);
+}
+
+.edu-jrp-industries-carousel__prev,
+.edu-jrp-industries-carousel__next {
+	width: 2.5rem;
+	height: 2.5rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #cbd5e1;
+	background: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+	color: #334155;
+	font-size: 1.1rem;
+	transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.edu-jrp-industries-carousel__prev:hover,
+.edu-jrp-industries-carousel__next:hover {
+	background: #f8fafc;
+	border-color: var(--edu-primary, #1e3a5f);
+	color: var(--edu-primary, #1e3a5f);
+}
+
+.edu-jrp-industries-carousel__dots {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.edu-jrp-industries-carousel__dot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 50%;
+	border: none;
+	background: #cbd5e1;
+	cursor: pointer;
+	padding: 0;
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.edu-jrp-industries-carousel__dot.is-active {
+	background: var(--edu-primary, #1e3a5f);
+	transform: scale(1.25);
+}
+
+.edu-jrp-industries-carousel__dot:hover:not(.is-active) {
+	background: #94a3b8;
+}
+
 .edu-jrp-industries-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -2679,7 +2766,7 @@
 	color: #fff;
 	text-align: center;
 	padding: var(--edu-spacing-xl) var(--edu-spacing-md);
-	margin: 0 calc(-50vw + 50%) var(--edu-spacing-xl);
+	margin: 0 calc(-50vw + 50%) 0;
 	padding-left: calc(50vw - 50% + var(--edu-spacing-md));
 	padding-right: calc(50vw - 50% + var(--edu-spacing-md));
 }
@@ -2796,18 +2883,21 @@
 	transform: scale(1.25);
 }
 
+/* JRP: People Also Ask – accordion FAQ */
 .edu-jrp-faq {
-	background: #f8fafc;
+	background: #fff;
 	border: 1px solid #e2e8f0;
-	border-radius: 12px;
+	border-radius: 16px;
 	padding: var(--edu-spacing-xl);
 	margin-top: var(--edu-spacing-xl);
 	margin-bottom: var(--edu-spacing-xl);
+	box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 }
 
 .edu-jrp-faq .edu-page-content__heading {
 	margin-top: 0;
-	margin-bottom: 1.25rem;
+	margin-bottom: 1.5rem;
+	font-size: clamp(1.35rem, 2vw, 1.5rem);
 }
 
 .edu-jrp-faq__list {
@@ -2823,11 +2913,23 @@
 	border-bottom: none;
 }
 
+.edu-jrp-faq__item:has(.edu-jrp-faq__q[aria-expanded="true"]) {
+	background: linear-gradient(90deg, rgba(30, 58, 95, 0.05) 0%, transparent 100%);
+	border-radius: 0 0 12px 12px;
+}
+
+.edu-jrp-faq__item:first-of-type:has(.edu-jrp-faq__q[aria-expanded="true"]) {
+	border-radius: 12px 12px 0 0;
+}
+
 .edu-jrp-faq__q {
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
 	width: 100%;
 	margin: 0;
-	padding: 1rem 0;
+	padding: 1.125rem 0;
 	font-size: 1.0625rem;
 	font-weight: 600;
 	color: var(--edu-heading-color, #0f172a);
@@ -2836,7 +2938,6 @@
 	border: none;
 	cursor: pointer;
 	position: relative;
-	padding-right: 2rem;
 	transition: color 0.2s ease;
 }
 
@@ -2844,59 +2945,88 @@
 	color: var(--edu-primary, #1e3a5f);
 }
 
+.edu-jrp-faq__q:focus-visible {
+	outline: 2px solid var(--edu-primary, #1e3a5f);
+	outline-offset: 2px;
+	border-radius: 6px;
+}
+
+/* Expand/collapse icon: circle with + that becomes − when open */
 .edu-jrp-faq__q::after {
 	content: "+";
-	position: absolute;
-	right: 0;
-	top: 50%;
-	transform: translateY(-50%);
-	font-size: 1.25rem;
-	font-weight: 400;
+	flex-shrink: 0;
+	width: 1.75rem;
+	height: 1.75rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #f1f5f9;
+	color: var(--edu-primary, #1e3a5f);
+	font-size: 1.125rem;
+	font-weight: 600;
 	line-height: 1;
+	border-radius: 50%;
+	transition: background 0.2s ease, color 0.2s ease, transform 0.25s ease;
+}
+
+.edu-jrp-faq__q:hover::after {
+	background: var(--edu-primary, #1e3a5f);
+	color: #fff;
 }
 
 .edu-jrp-faq--accordion .edu-jrp-faq__item[data-faq-item] .edu-jrp-faq__q[aria-expanded="true"]::after {
 	content: "−";
+	background: var(--edu-primary, #1e3a5f);
+	color: #fff;
 }
 
 .edu-jrp-faq__a-wrap {
-	overflow: hidden;
-	max-height: 0;
-	transition: max-height 0.3s ease;
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.35s ease;
 }
 
 .edu-jrp-faq__a-wrap.is-open {
-	max-height: 500px;
+	grid-template-rows: 1fr;
+}
+
+.edu-jrp-faq__a-wrap > * {
+	overflow: hidden;
+	min-height: 0;
 }
 
 .edu-jrp-faq__a {
-	margin: 0 0 1rem;
-	padding: 0 0 1rem;
+	margin: 0;
+	padding: 0 0 1.25rem;
 	font-size: 0.9375rem;
-	line-height: 1.6;
+	line-height: 1.65;
 	color: #475569;
 }
 
 .edu-jrp-faq__item .edu-jrp-faq__a-wrap .edu-jrp-faq__a {
 	margin-top: 0;
+	padding-top: 0;
 }
 
 .edu-jrp-faq__cta {
-	margin: 1rem 0 0;
+	margin: 1.5rem 0 0;
+	padding: 1rem 1.25rem;
+	background: #f8fafc;
+	border-radius: 10px;
 	font-size: 0.9375rem;
-}
-
-.edu-jrp-faq__cta {
-	margin: 1rem 0 0;
-	font-size: 0.9375rem;
+	color: #475569;
+	border: 1px solid #e2e8f0;
 }
 
 .edu-jrp-faq__cta a {
 	color: var(--edu-primary, #1e3a5f);
+	font-weight: 600;
 	text-decoration: none;
+	transition: color 0.2s ease, text-decoration 0.2s ease;
 }
 
 .edu-jrp-faq__cta a:hover {
+	color: #0f172a;
 	text-decoration: underline;
 }
 
@@ -3496,6 +3626,8 @@ body.edu-modal-open {
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
+	min-height: 0;
+	overflow-y: auto;
 }
 
 .edu-services-carousel__card-image {
