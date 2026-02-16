@@ -315,18 +315,27 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 				function getVisible() {
 					return window.innerWidth <= 767 ? 1 : 3;
 				}
+				function getNumPages() {
+					var v = getVisible();
+					return Math.max(1, Math.ceil(total / v));
+				}
 				function update() {
 					var visible = getVisible();
-					var maxStep = Math.max(0, total - visible);
+					var numPages = getNumPages();
+					var maxStep = numPages - 1;
 					if (current > maxStep) current = maxStep;
-					var percent = total > 0 ? (current * 100 / total) : 0;
+					// Jump by full page: each page shows `visible` cards
+					var percent = total > 0 ? (current * visible * (100 / total)) : 0;
 					track.style.transform = 'translateX(-' + percent + '%)';
 					var pages = el.querySelectorAll('.edu-services-carousel__page');
-					pages.forEach(function(p, i) { p.classList.toggle('is-active', i === current); });
+					pages.forEach(function(p, i) {
+						p.classList.toggle('is-active', i === current);
+						p.style.display = i < numPages ? '' : 'none';
+					});
 				}
 				function go(n) {
-					var visible = getVisible();
-					var maxStep = Math.max(0, total - visible);
+					var numPages = getNumPages();
+					var maxStep = numPages - 1;
 					current = current + n;
 					if (current < 0) current = 0;
 					if (current > maxStep) current = maxStep;
@@ -337,8 +346,8 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 				el.querySelectorAll('.edu-services-carousel__page').forEach(function(btn) {
 					var i = parseInt(btn.getAttribute('data-index'), 10);
 					btn.addEventListener('click', function() {
-						var visible = getVisible();
-						var maxStep = Math.max(0, total - visible);
+						var numPages = getNumPages();
+						var maxStep = numPages - 1;
 						current = Math.min(i, maxStep);
 						update();
 					});
