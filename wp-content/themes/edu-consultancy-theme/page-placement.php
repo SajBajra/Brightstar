@@ -35,23 +35,23 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 		</div>
 	</section>
 
-	<div class="edu-placement-highlights">
+	<div class="edu-placement-highlights" id="edu-placement-highlights">
 		<div class="edu-container">
 			<div class="edu-placement-highlights__grid">
 				<div class="edu-placement-highlights__item">
-					<span class="edu-placement-highlights__icon" aria-hidden="true">&#9679;</span>
+					<span class="edu-placement-highlights__counter" data-target="500" data-suffix="+">0</span>
 					<span class="edu-placement-highlights__label"><?php esc_html_e( 'Pre-screened candidates', 'edu-consultancy' ); ?></span>
 				</div>
 				<div class="edu-placement-highlights__item">
-					<span class="edu-placement-highlights__icon" aria-hidden="true">&#9679;</span>
+					<span class="edu-placement-highlights__counter" data-target="200" data-suffix="+">0</span>
 					<span class="edu-placement-highlights__label"><?php esc_html_e( 'Verified employers', 'edu-consultancy' ); ?></span>
 				</div>
 				<div class="edu-placement-highlights__item">
-					<span class="edu-placement-highlights__icon" aria-hidden="true">&#9679;</span>
+					<span class="edu-placement-highlights__counter" data-target="100" data-suffix="+">0</span>
 					<span class="edu-placement-highlights__label"><?php esc_html_e( 'Visa & sponsorship support', 'edu-consultancy' ); ?></span>
 				</div>
 				<div class="edu-placement-highlights__item">
-					<span class="edu-placement-highlights__icon" aria-hidden="true">&#9679;</span>
+					<span class="edu-placement-highlights__counter" data-target="98" data-suffix="%">0</span>
 					<span class="edu-placement-highlights__label"><?php esc_html_e( 'End-to-end placement', 'edu-consultancy' ); ?></span>
 				</div>
 			</div>
@@ -163,6 +163,46 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 		</div>
 	</div>
 </main>
+
+<script>
+(function() {
+	var section = document.getElementById('edu-placement-highlights');
+	if (!section) return;
+	var counters = section.querySelectorAll('.edu-placement-highlights__counter');
+	var duration = 1500;
+	var started = false;
+
+	function animateCounter(el) {
+		var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+		var suffix = el.getAttribute('data-suffix') || '';
+		var start = 0;
+		var startTime = null;
+
+		function step(timestamp) {
+			if (!startTime) startTime = timestamp;
+			var progress = Math.min((timestamp - startTime) / duration, 1);
+			var easeOut = 1 - Math.pow(1 - progress, 2);
+			var current = Math.round(start + (target - start) * easeOut);
+			el.textContent = current + suffix;
+			if (progress < 1) requestAnimationFrame(step);
+		}
+		requestAnimationFrame(step);
+	}
+
+	function runCounters() {
+		if (started) return;
+		started = true;
+		counters.forEach(animateCounter);
+	}
+
+	var observer = new IntersectionObserver(function(entries) {
+		entries.forEach(function(entry) {
+			if (entry.isIntersecting) runCounters();
+		});
+	}, { threshold: 0.2, rootMargin: '0px' });
+	observer.observe(section);
+})();
+</script>
 
 <?php
 get_footer();
