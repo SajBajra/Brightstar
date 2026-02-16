@@ -27,9 +27,9 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 		<div class="site-footer__card">
 			<div class="site-footer__top">
 				<div class="site-footer__col site-footer__brand">
-					<h3 class="site-footer__title">
-						<?php echo esc_html( get_bloginfo( 'name' ) ); ?>
-					</h3>
+					<div class="site-footer__logo">
+						<?php Edu_Theme_Helpers::render_site_logo( 'site-footer__logo-img' ); ?>
+					</div>
 					<p class="site-footer__text">
 						<?php esc_html_e( 'Your trusted education & migration partner for study, work and PR pathways abroad.', 'edu-consultancy' ); ?>
 					</p>
