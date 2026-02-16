@@ -19,12 +19,15 @@ class Edu_Theme_Setup {
 	public static function init() {
 		add_action( 'after_setup_theme', array( __CLASS__, 'theme_supports' ) );
 		add_action( 'after_setup_theme', array( __CLASS__, 'register_menus' ) );
+		add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'reorder_primary_menu' ), 10, 2 );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_blog_page' ) );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_about_contact_pages' ) );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_placement_jrp_pages' ) );
+		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_populate_primary_menu' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_blog_page_once' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_about_contact_pages_once' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_placement_jrp_pages_once' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_populate_primary_menu_once' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'disable_gutenberg_styles' ), 100 );
 		add_action( 'init', array( __CLASS__, 'cleanup_wp_head' ) );
@@ -235,6 +238,220 @@ class Edu_Theme_Setup {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Populate Primary menu with key pages on theme activation.
+	 *
+	 * @return void
+	 */
+	public static function maybe_populate_primary_menu() {
+		self::populate_primary_menu_if_needed();
+	}
+
+	/**
+	 * Populate Primary menu once (for existing installs).
+	 *
+	 * @return void
+	 */
+	public static function maybe_populate_primary_menu_once() {
+		if ( get_option( 'edu_primary_menu_populated', false ) ) {
+			return;
+		}
+		self::populate_primary_menu_if_needed();
+		update_option( 'edu_primary_menu_populated', true );
+	}
+
+	/**
+	 * Reorder primary menu items: About, Find Jobs, JRP, Placement, Blog, Contact.
+	 *
+	 * @param array    $items Menu items.
+	 * @param stdClass $args  Nav menu args.
+	 * @return array
+	 */
+	public static function reorder_primary_menu( $items, $args ) {
+		if ( empty( $items ) || ! isset( $args->theme_location ) || $args->theme_location !== 'primary' ) {
+			return $items;
+		}
+		$jobs_url  = get_post_type_archive_link( 'jobs' );
+		$blog_id   = (int) get_option( 'page_for_posts' );
+		$blog_url  = $blog_id ? get_permalink( $blog_id ) : home_url( '/' );
+		$order_map = array(
+			'about-us'  => 1,
+			'find-jobs' => 2,
+			'jrp'       => 3,
+			'placement' => 4,
+			'blog'      => 5,
+			'contact'   => 6,
+		);
+		$top_level = array();
+		$children  = array();
+		foreach ( $items as $item ) {
+			if ( (int) $item->menu_item_parent !== 0 ) {
+				$children[ $item->menu_item_parent ][] = $item;
+				continue;
+			}
+			$url  = trailingslashit( $item->url );
+			$slug = '';
+			if ( $jobs_url && $url === trailingslashit( $jobs_url ) ) {
+				$slug = 'find-jobs';
+			} elseif ( $blog_id && (int) $item->object_id === $blog_id ) {
+				$slug = 'blog';
+			} elseif ( $blog_url && $item->type === 'custom' && $url === trailingslashit( $blog_url ) ) {
+				$slug = 'blog';
+			} elseif ( 'page' === $item->object ) {
+				$page = get_post( $item->object_id );
+				$slug = $page ? $page->post_name : '';
+			}
+			$item->primary_order = isset( $order_map[ $slug ] ) ? $order_map[ $slug ] : 99;
+			$top_level[]        = $item;
+		}
+		usort( $top_level, function( $a, $b ) {
+			return $a->primary_order - $b->primary_order;
+		} );
+		$ordered = array();
+		foreach ( $top_level as $item ) {
+			$ordered[] = $item;
+			if ( ! empty( $children[ $item->ID ] ) ) {
+				foreach ( $children[ $item->ID ] as $child ) {
+					$ordered[] = $child;
+				}
+			}
+		}
+		return $ordered;
+	}
+
+	/**
+	 * Get or create Primary menu and add items in order: About, Find Jobs, JRP, Placement, Blog, Contact.
+	 *
+	 * @return void
+	 */
+	private static function populate_primary_menu_if_needed() {
+		$locations = get_nav_menu_locations();
+		$menu_id   = isset( $locations['primary'] ) ? (int) $locations['primary'] : 0;
+
+		if ( ! $menu_id ) {
+			$menu_id = wp_create_nav_menu( __( 'Primary Menu', 'edu-consultancy' ) );
+			if ( is_wp_error( $menu_id ) ) {
+				return;
+			}
+			$locations['primary'] = $menu_id;
+			set_theme_mod( 'nav_menu_locations', $locations );
+		}
+
+		$menu_items = wp_get_nav_menu_items( $menu_id );
+		$existing  = array();
+		if ( $menu_items ) {
+			foreach ( $menu_items as $item ) {
+				$existing[ $item->url ] = true;
+				if ( 'post_type' === $item->type && 'page' === $item->object ) {
+					$existing[ 'page:' . $item->object_id ] = true;
+				}
+			}
+		}
+
+		$position = 1;
+
+		// 1. About Us
+		$page = get_page_by_path( 'about-us' );
+		if ( $page && empty( $existing[ 'page:' . $page->ID ] ) ) {
+			wp_update_nav_menu_item(
+				$menu_id,
+				0,
+				array(
+					'menu-item-type'        => 'post_type',
+					'menu-item-object'     => 'page',
+					'menu-item-object-id'  => $page->ID,
+					'menu-item-title'      => $page->post_title,
+					'menu-item-status'     => 'publish',
+					'menu-item-position'   => $position++,
+				)
+			);
+		}
+
+		// 2. Find Jobs
+		$jobs_url = get_post_type_archive_link( 'jobs' );
+		if ( $jobs_url && empty( $existing[ $jobs_url ] ) ) {
+			wp_update_nav_menu_item(
+				$menu_id,
+				0,
+				array(
+					'menu-item-type'      => 'custom',
+					'menu-item-title'     => __( 'Find Jobs', 'edu-consultancy' ),
+					'menu-item-url'       => $jobs_url,
+					'menu-item-status'    => 'publish',
+					'menu-item-position'  => $position++,
+				)
+			);
+		}
+
+		// 3. JRP
+		$page = get_page_by_path( 'jrp' );
+		if ( $page && empty( $existing[ 'page:' . $page->ID ] ) ) {
+			wp_update_nav_menu_item(
+				$menu_id,
+				0,
+				array(
+					'menu-item-type'       => 'post_type',
+					'menu-item-object'    => 'page',
+					'menu-item-object-id' => $page->ID,
+					'menu-item-title'     => $page->post_title,
+					'menu-item-status'    => 'publish',
+					'menu-item-position'  => $position++,
+				)
+			);
+		}
+
+		// 4. Placement
+		$page = get_page_by_path( 'placement' );
+		if ( $page && empty( $existing[ 'page:' . $page->ID ] ) ) {
+			wp_update_nav_menu_item(
+				$menu_id,
+				0,
+				array(
+					'menu-item-type'       => 'post_type',
+					'menu-item-object'    => 'page',
+					'menu-item-object-id' => $page->ID,
+					'menu-item-title'     => $page->post_title,
+					'menu-item-status'    => 'publish',
+					'menu-item-position'  => $position++,
+				)
+			);
+		}
+
+		// 5. Blog
+		$blog_page_id = (int) get_option( 'page_for_posts' );
+		if ( $blog_page_id && empty( $existing[ 'page:' . $blog_page_id ] ) ) {
+			wp_update_nav_menu_item(
+				$menu_id,
+				0,
+				array(
+					'menu-item-type'       => 'post_type',
+					'menu-item-object'     => 'page',
+					'menu-item-object-id'  => $blog_page_id,
+					'menu-item-title'      => get_the_title( $blog_page_id ),
+					'menu-item-status'     => 'publish',
+					'menu-item-position'   => $position++,
+				)
+			);
+		}
+
+		// 6. Contact
+		$page = get_page_by_path( 'contact' );
+		if ( $page && empty( $existing[ 'page:' . $page->ID ] ) ) {
+			wp_update_nav_menu_item(
+				$menu_id,
+				0,
+				array(
+					'menu-item-type'       => 'post_type',
+					'menu-item-object'     => 'page',
+					'menu-item-object-id'  => $page->ID,
+					'menu-item-title'     => $page->post_title,
+					'menu-item-status'    => 'publish',
+					'menu-item-position'  => $position++,
+				)
+			);
+		}
 	}
 
 	/**
