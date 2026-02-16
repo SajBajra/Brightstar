@@ -33,21 +33,20 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 
 <header class="site-header">
 	<div class="edu-container site-header__inner">
+		<button type="button" class="site-header__toggle" aria-expanded="false" aria-controls="site-header-nav" aria-label="<?php esc_attr_e( 'Toggle menu', 'edu-consultancy' ); ?>">
+			<span class="site-header__toggle-icon" aria-hidden="true"></span>
+		</button>
 		<div class="site-header__brand">
 			<?php
 			if ( has_custom_logo() ) {
 				the_custom_logo();
 			} else {
-				?>
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__title">
-					<?php echo esc_html( get_bloginfo( 'name' ) ); ?>
-				</a>
-				<?php
+				Edu_Theme_Helpers::render_site_logo( 'site-header__logo-img' );
 			}
 			?>
 		</div>
 
-		<div class="site-header__center">
+		<div class="site-header__center" id="site-header-nav">
 			<nav class="site-header__nav" aria-label="<?php esc_attr_e( 'Primary Menu', 'edu-consultancy' ); ?>">
 				<?php
 				wp_nav_menu(
@@ -60,44 +59,6 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 				);
 				?>
 			</nav>
-			<?php
-			$blog_page_id = (int) get_option( 'page_for_posts' );
-			$blog_url     = $blog_page_id ? get_permalink( $blog_page_id ) : home_url( '/' );
-			?>
-			<a class="site-header__link" href="<?php echo esc_url( get_post_type_archive_link( 'jobs' ) ); ?>">
-				<?php esc_html_e( 'Find Jobs', 'edu-consultancy' ); ?>
-			</a>
-			<a class="site-header__link" href="<?php echo esc_url( $blog_url ); ?>">
-				<?php esc_html_e( 'Blog', 'edu-consultancy' ); ?>
-			</a>
-			<?php
-			$about_page = get_page_by_path( 'about-us' );
-			$contact_page = get_page_by_path( 'contact' );
-			if ( $about_page ) :
-				?>
-			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $about_page ) ); ?>">
-				<?php esc_html_e( 'About Us', 'edu-consultancy' ); ?>
-			</a>
-			<?php endif; ?>
-			<?php if ( $contact_page ) : ?>
-			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $contact_page ) ); ?>">
-				<?php esc_html_e( 'Contact', 'edu-consultancy' ); ?>
-			</a>
-			<?php endif; ?>
-			<?php
-			$placement_page = get_page_by_path( 'placement' );
-			$jrp_page        = get_page_by_path( 'jrp' );
-			if ( $placement_page ) :
-				?>
-			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $placement_page ) ); ?>">
-				<?php esc_html_e( 'Placement', 'edu-consultancy' ); ?>
-			</a>
-			<?php endif; ?>
-			<?php if ( $jrp_page ) : ?>
-			<a class="site-header__link" href="<?php echo esc_url( get_permalink( $jrp_page ) ); ?>">
-				<?php esc_html_e( 'JRP', 'edu-consultancy' ); ?>
-			</a>
-			<?php endif; ?>
 		</div>
 
 		<div class="site-header__actions">
@@ -106,10 +67,10 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 					<?php esc_html_e( 'Logout', 'edu-consultancy' ); ?>
 				</a>
 			<?php else : ?>
-				<a class="edu-btn-outline site-header__btn" href="<?php echo esc_url( wp_login_url() ); ?>">
+				<a class="edu-btn-outline site-header__btn edu-modal-trigger" href="#" data-modal="login" aria-haspopup="dialog">
 					<?php esc_html_e( 'Login', 'edu-consultancy' ); ?>
 				</a>
-				<a class="edu-btn-primary site-header__btn" href="<?php echo esc_url( wp_registration_url() ); ?>">
+				<a class="edu-btn-primary site-header__btn edu-modal-trigger" href="#" data-modal="register" aria-haspopup="dialog">
 					<?php esc_html_e( 'Register', 'edu-consultancy' ); ?>
 				</a>
 			<?php endif; ?>
