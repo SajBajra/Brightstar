@@ -144,7 +144,7 @@ get_header();
 								<?php if ( $salary_range ) : ?>
 									<li class="edu-single-job__overview-item">
 										<span class="edu-single-job__overview-label"><?php esc_html_e( 'Salary', 'edu-consultancy' ); ?></span>
-										<span class="edu-single-job__overview-value"><?php echo esc_html( $salary_range ); ?></span>
+										<span class="edu-single-job__overview-value">RS <?php echo esc_html( $salary_range ); ?></span>
 									</li>
 								<?php endif; ?>
 								<?php if ( ! empty( $job_type_labels ) ) : ?>

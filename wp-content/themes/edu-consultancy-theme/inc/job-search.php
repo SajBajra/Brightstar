@@ -385,7 +385,7 @@ class Edu_Theme_Job_Search {
 
 					<?php if ( $salary_range ) : ?>
 						<div class="edu-job-card__salary">
-							<?php echo esc_html( $salary_range ); ?>
+							RS <?php echo esc_html( $salary_range ); ?>
 						</div>
 					<?php endif; ?>
 

@@ -82,7 +82,7 @@ if ( $is_featured ) {
 			<div class="edu-job-card__location"><?php echo esc_html( $location ); ?></div>
 		<?php endif; ?>
 		<?php if ( $salary_range ) : ?>
-			<div class="edu-job-card__salary"><?php echo esc_html( $salary_range ); ?></div>
+			<div class="edu-job-card__salary">RS <?php echo esc_html( $salary_range ); ?></div>
 		<?php endif; ?>
 		<?php if ( ! empty( $job_type_labels ) ) : ?>
 			<div class="edu-job-card__type"><?php echo esc_html( implode( ', ', $job_type_labels ) ); ?></div>
