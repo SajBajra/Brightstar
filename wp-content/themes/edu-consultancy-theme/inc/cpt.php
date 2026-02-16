@@ -31,6 +31,8 @@ class Edu_Theme_CPT {
 		self::register_universities_cpt();
 		self::register_testimonials_cpt();
 		self::register_consultations_cpt();
+		self::register_contact_submissions_cpt();
+		self::register_consultation_booking_cpt();
 	}
 
 	/**
@@ -232,6 +234,80 @@ class Edu_Theme_CPT {
 		);
 
 		register_post_type( 'consultations', $args );
+	}
+
+	/**
+	 * Contact form submissions CPT (admin only, for Contact page).
+	 *
+	 * @return void
+	 */
+	private static function register_contact_submissions_cpt() {
+		$labels = array(
+			'name'               => esc_html__( 'Contact Submissions', 'edu-consultancy' ),
+			'singular_name'      => esc_html__( 'Contact Submission', 'edu-consultancy' ),
+			'add_new'            => esc_html__( 'Add New', 'edu-consultancy' ),
+			'add_new_item'       => esc_html__( 'Add New Submission', 'edu-consultancy' ),
+			'edit_item'          => esc_html__( 'View Submission', 'edu-consultancy' ),
+			'new_item'           => esc_html__( 'New Submission', 'edu-consultancy' ),
+			'view_item'          => esc_html__( 'View Submission', 'edu-consultancy' ),
+			'search_items'       => esc_html__( 'Search Submissions', 'edu-consultancy' ),
+			'not_found'          => esc_html__( 'No contact submissions found', 'edu-consultancy' ),
+			'not_found_in_trash' => esc_html__( 'No contact submissions found in Trash', 'edu-consultancy' ),
+			'menu_name'          => esc_html__( 'Contact Submissions', 'edu-consultancy' ),
+		);
+
+		$args = array(
+			'labels'              => $labels,
+			'public'              => false,
+			'exclude_from_search' => true,
+			'publicly_queryable'  => false,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_rest'        => false,
+			'has_archive'         => false,
+			'hierarchical'        => false,
+			'menu_icon'           => 'dashicons-email-alt',
+			'supports'            => array( 'title', 'custom-fields' ),
+			'rewrite'             => false,
+			'query_var'           => false,
+			'capability_type'     => 'post',
+			'map_meta_cap'        => true,
+		);
+
+		register_post_type( 'contact_submission', $args );
+	}
+
+	/**
+	 * Consultation booking CPT (for "Start Your Application" form).
+	 *
+	 * @return void
+	 */
+	private static function register_consultation_booking_cpt() {
+		$labels = array(
+			'name'               => esc_html__( 'Consultation Bookings', 'edu-consultancy' ),
+			'singular_name'      => esc_html__( 'Consultation Booking', 'edu-consultancy' ),
+			'menu_name'          => esc_html__( 'Consultation Bookings', 'edu-consultancy' ),
+			'add_new_item'       => esc_html__( 'Add Booking', 'edu-consultancy' ),
+			'edit_item'          => esc_html__( 'View Booking', 'edu-consultancy' ),
+			'view_item'          => esc_html__( 'View Booking', 'edu-consultancy' ),
+			'search_items'       => esc_html__( 'Search Bookings', 'edu-consultancy' ),
+			'not_found'          => esc_html__( 'No consultation bookings found', 'edu-consultancy' ),
+			'not_found_in_trash' => esc_html__( 'No consultation bookings in Trash', 'edu-consultancy' ),
+		);
+
+		$args = array(
+			'labels'              => $labels,
+			'public'              => false,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'menu_icon'           => 'dashicons-calendar-alt',
+			'supports'            => array( 'title', 'custom-fields' ),
+			'rewrite'             => false,
+			'capability_type'     => 'post',
+			'map_meta_cap'        => true,
+		);
+
+		register_post_type( 'consultation_booking', $args );
 	}
 }
 
