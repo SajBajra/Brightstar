@@ -260,27 +260,28 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 							?>
 							<div class="edu-services-carousel__slide">
 								<div class="edu-services-carousel__card">
+									<div class="edu-services-carousel__card-body">
+										<?php if ( ! $img_url && ! empty( $item['icon']['value'] ) ) : ?>
+											<div class="edu-services-carousel__icon">
+												<?php \Elementor\Icons_Manager::render_icon( $item['icon'], array( 'aria-hidden' => 'true' ) ); ?>
+											</div>
+										<?php endif; ?>
+										<h3 class="edu-services-carousel__card-title"><?php echo esc_html( $item['title'] ); ?></h3>
+										<p class="edu-services-carousel__card-desc"><?php echo esc_html( $item['description'] ); ?></p>
+										<?php
+										$btn_url = isset( $item['button_url']['url'] ) ? $item['button_url']['url'] : '#';
+										$btn_text = isset( $item['button_text'] ) ? $item['button_text'] : __( 'Learn More', 'edu-consultancy' );
+										?>
+										<a href="<?php echo esc_url( $btn_url ); ?>" class="edu-services-carousel__btn"><?php echo esc_html( $btn_text ); ?> &rarr;</a>
+										<?php if ( $show_badge ) : ?>
+											<span class="edu-services-carousel__badge"><?php esc_html_e( 'Personalized', 'edu-consultancy' ); ?></span>
+										<?php endif; ?>
+									</div>
 									<?php if ( $img_url ) : ?>
 										<div class="edu-services-carousel__card-image">
 											<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( isset( $item['title'] ) ? $item['title'] : '' ); ?>" loading="lazy" />
 										</div>
-									<?php elseif ( ! empty( $item['icon']['value'] ) ) : ?>
-										<div class="edu-services-carousel__icon">
-											<?php \Elementor\Icons_Manager::render_icon( $item['icon'], array( 'aria-hidden' => 'true' ) ); ?>
-										</div>
 									<?php endif; ?>
-									<div class="edu-services-carousel__card-body">
-										<h3 class="edu-services-carousel__card-title"><?php echo esc_html( $item['title'] ); ?></h3>
-									<p class="edu-services-carousel__card-desc"><?php echo esc_html( $item['description'] ); ?></p>
-									<?php
-									$btn_url = isset( $item['button_url']['url'] ) ? $item['button_url']['url'] : '#';
-									$btn_text = isset( $item['button_text'] ) ? $item['button_text'] : __( 'Learn More', 'edu-consultancy' );
-									?>
-									<a href="<?php echo esc_url( $btn_url ); ?>" class="edu-services-carousel__btn"><?php echo esc_html( $btn_text ); ?> &rarr;</a>
-									<?php if ( $show_badge ) : ?>
-										<span class="edu-services-carousel__badge"><?php esc_html_e( 'Personalized', 'edu-consultancy' ); ?></span>
-									<?php endif; ?>
-									</div>
 								</div>
 							</div>
 						<?php endforeach; ?>
@@ -301,12 +302,29 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 				if (!track || !prev || !next) return;
 				var total = track.children.length;
 				var current = 0;
+				function getVisible() {
+					var w = window.innerWidth;
+					return w < 768 ? 1 : (w < 1024 ? 2 : 3);
+				}
+				function update() {
+					var visible = getVisible();
+					var maxStep = Math.max(0, total - visible);
+					if (current > maxStep) current = maxStep;
+					var percent = total > 0 ? (current * (100 / total)) : 0;
+					track.style.transform = 'translateX(-' + percent + '%)';
+				}
 				function go(n) {
-					current = (current + n + total) % total;
-					track.style.transform = 'translateX(-' + (current * 100) + '%)';
+					var visible = getVisible();
+					var maxStep = Math.max(0, total - visible);
+					current = current + n;
+					if (current < 0) current = 0;
+					if (current > maxStep) current = maxStep;
+					update();
 				}
 				prev.addEventListener('click', function(){ go(-1); });
 				next.addEventListener('click', function(){ go(1); });
+				window.addEventListener('resize', update);
+				update();
 			})();
 			</script>
 		</section>
