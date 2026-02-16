@@ -87,7 +87,7 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 					<p><?php esc_html_e( 'Turn your Australian education into a thriving career and a clear path to permanent residency. We offer a comprehensive Job Ready Program (JRP) designed specifically for international graduates. We bridge the gap between your academic qualifications and the demands of the Australian job market, providing you with the practical skills, industry connections, and personalized migration guidance needed for long-term success.', 'edu-consultancy' ); ?></p>
 				</div>
 				<div class="edu-page-block__media">
-					<img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="<?php esc_attr_e( 'Students and graduation', 'edu-consultancy' ); ?>" loading="lazy" />
+					<img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80" alt="<?php esc_attr_e( 'Students and graduation', 'edu-consultancy' ); ?>" loading="lazy" />
 				</div>
 			</section>
 
@@ -159,13 +159,13 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 						</div>
 					</div>
 					<nav class="edu-jrp-industries-carousel__nav" aria-label="<?php esc_attr_e( 'Carousel navigation', 'edu-consultancy' ); ?>">
-						<button type="button" class="edu-jrp-industries-carousel__prev" aria-label="<?php esc_attr_e( 'Previous', 'edu-consultancy' ); ?>">&larr;</button>
-						<div class="edu-jrp-industries-carousel__dots" role="tablist">
+						<button type="button" class="edu-jrp-industries-carousel__prev edu-pagination-btn" aria-label="<?php esc_attr_e( 'Previous', 'edu-consultancy' ); ?>"><?php esc_html_e( '← Previous', 'edu-consultancy' ); ?></button>
+						<div class="edu-jrp-industries-carousel__pages" role="tablist">
 							<?php for ( $i = 0; $i < 5; $i++ ) : ?>
-								<button type="button" class="edu-jrp-industries-carousel__dot<?php echo 0 === $i ? ' is-active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Go to slide %d', 'edu-consultancy' ), $i + 1 ) ); ?>" data-index="<?php echo (int) $i; ?>" role="tab"></button>
+								<button type="button" class="edu-jrp-industries-carousel__page edu-pagination-btn<?php echo 0 === $i ? ' is-active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Page %d', 'edu-consultancy' ), $i + 1 ) ); ?>" data-index="<?php echo (int) $i; ?>" role="tab"><?php echo (int) ( $i + 1 ); ?></button>
 							<?php endfor; ?>
 						</div>
-						<button type="button" class="edu-jrp-industries-carousel__next" aria-label="<?php esc_attr_e( 'Next', 'edu-consultancy' ); ?>">&rarr;</button>
+						<button type="button" class="edu-jrp-industries-carousel__next edu-pagination-btn" aria-label="<?php esc_attr_e( 'Next', 'edu-consultancy' ); ?>"><?php esc_html_e( 'Next →', 'edu-consultancy' ); ?></button>
 					</nav>
 				</div>
 			</section>
@@ -282,31 +282,47 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 
 <script>
 (function() {
-	// JRP industries cards carousel (one card at a time, dots + arrows)
+	// JRP industries cards carousel (3 cards visible, pagination Previous / 1 2 3 / Next)
 	var industriesCarousel = document.querySelector('.edu-jrp-industries-carousel');
 	if (industriesCarousel) {
 		var track = industriesCarousel.querySelector('.edu-jrp-industries-carousel__track');
 		var prev = industriesCarousel.querySelector('.edu-jrp-industries-carousel__prev');
 		var next = industriesCarousel.querySelector('.edu-jrp-industries-carousel__next');
-		var dots = industriesCarousel.querySelectorAll('.edu-jrp-industries-carousel__dot');
 		var total = track ? track.children.length : 0;
 		var current = 0;
+		function getVisible() {
+			return window.innerWidth <= 767 ? 1 : 3;
+		}
 		function updateIndustriesCarousel() {
 			if (!track) return;
-			track.style.transform = 'translateX(-' + (current * 100) + '%)';
-			dots.forEach(function(dot, i) {
-				dot.classList.toggle('is-active', i === current);
-			});
+			var visible = getVisible();
+			var maxStep = Math.max(0, total - visible);
+			if (current > maxStep) current = maxStep;
+			var movePercent = total > 0 ? (current * 100 / total) : 0;
+			track.style.transform = 'translateX(-' + movePercent + '%)';
+			var pages = industriesCarousel.querySelectorAll('.edu-jrp-industries-carousel__page');
+			pages.forEach(function(p, i) { p.classList.toggle('is-active', i === current); });
 		}
 		function go(n) {
-			current = (current + n + total) % total;
+			var visible = getVisible();
+			var maxStep = Math.max(0, total - visible);
+			current = current + n;
+			if (current < 0) current = 0;
+			if (current > maxStep) current = maxStep;
 			updateIndustriesCarousel();
 		}
 		if (prev) prev.addEventListener('click', function() { go(-1); });
 		if (next) next.addEventListener('click', function() { go(1); });
-		dots.forEach(function(dot, i) {
-			dot.addEventListener('click', function() { current = i; updateIndustriesCarousel(); });
+		industriesCarousel.querySelectorAll('.edu-jrp-industries-carousel__page').forEach(function(btn) {
+			var i = parseInt(btn.getAttribute('data-index'), 10);
+			btn.addEventListener('click', function() {
+				var visible = getVisible();
+				var maxStep = Math.max(0, total - visible);
+				current = Math.min(i, maxStep);
+				updateIndustriesCarousel();
+			});
 		});
+		window.addEventListener('resize', updateIndustriesCarousel);
 	}
 	// JRP FAQ accordion
 	document.querySelectorAll('[data-faq-trigger]').forEach(function(btn) {
