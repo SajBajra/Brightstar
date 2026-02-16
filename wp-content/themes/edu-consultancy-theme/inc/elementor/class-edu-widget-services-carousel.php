@@ -259,7 +259,7 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 							$img_url = isset( $item['image']['url'] ) && $item['image']['url'] ? $item['image']['url'] : ( isset( $default_images[ $index ] ) ? $default_images[ $index ] : '' );
 							?>
 							<div class="edu-services-carousel__slide">
-								<div class="edu-services-carousel__card">
+								<div class="edu-services-carousel__card<?php echo $img_url ? '' : ' edu-services-carousel__card--no-image'; ?>">
 									<div class="edu-services-carousel__card-body">
 										<?php if ( ! $img_url && ! empty( $item['icon']['value'] ) ) : ?>
 											<div class="edu-services-carousel__icon">
@@ -303,8 +303,7 @@ class Edu_Elementor_Widget_Services_Carousel extends Widget_Base {
 				var total = track.children.length;
 				var current = 0;
 				function getVisible() {
-					var w = window.innerWidth;
-					return w < 768 ? 1 : (w < 1024 ? 2 : 3);
+					return 1;
 				}
 				function update() {
 					var visible = getVisible();
