@@ -416,12 +416,12 @@ class Edu_Elementor_Widget_Gallery extends Widget_Base {
 				'range'      => array(
 					'px' => array(
 						'min' => 0,
-						'max' => 50,
+						'max' => 999,
 					),
 				),
 				'default'    => array(
 					'unit' => 'px',
-					'size' => 8,
+					'size' => 999,
 				),
 				'selectors'  => array(
 					'{{WRAPPER}} .edu-gallery__category' => 'border-radius: {{SIZE}}{{UNIT}};',

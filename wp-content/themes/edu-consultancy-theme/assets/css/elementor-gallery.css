@@ -48,7 +48,7 @@
 	color: #64748b;
 	background-color: transparent;
 	border: 1px solid #d1d5db;
-	border-radius: 999px; /* Pill shape */
+	border-radius: 999px !important; /* Force capsule shape (override Elementor saved styles) */
 	cursor: pointer;
 	transition: all 0.3s ease;
 	text-decoration: none;
