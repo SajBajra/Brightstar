@@ -15,9 +15,9 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 :root {
-	--edu-primary: #25247b;
-	--edu-color-primary: #25247b;
-	--edu-color-secondary: #25247b;
+	--edu-primary: #25247B;
+	--edu-color-primary: #25247B;
+	--edu-color-secondary: #25247B;
 	--edu-color-accent: #1a1a5e;
 	--edu-color-dark: #0f172a;
 	--edu-color-light: #f9fafb;
@@ -29,6 +29,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	--edu-spacing-lg: 2rem;
 	--edu-spacing-xl: 2.5rem;
 	--edu-container-width: 1920px;
+	/* Elementor global color compatibility */
+	--e-global-color-primary: #25247B;
 }
 
 body {

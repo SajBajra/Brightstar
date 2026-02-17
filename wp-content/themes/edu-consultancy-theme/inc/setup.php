@@ -35,6 +35,10 @@ class Edu_Theme_Setup {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'disable_gutenberg_styles' ), 100 );
 		add_action( 'init', array( __CLASS__, 'cleanup_wp_head' ) );
+		add_filter( 'elementor/kit/items/system_colors', array( __CLASS__, 'set_elementor_global_colors' ), 10, 1 );
+		add_filter( 'elementor/kit/items/default', array( __CLASS__, 'set_elementor_kit_defaults' ), 10, 2 );
+		add_action( 'elementor/kit/register_tabs', array( __CLASS__, 'register_elementor_global_colors' ), 10, 1 );
+		add_action( 'elementor/init', array( __CLASS__, 'update_elementor_primary_color' ), 20 );
 	}
 
 	/**
@@ -577,6 +581,133 @@ class Edu_Theme_Setup {
 				'footer'  => esc_html__( 'Footer Menu', 'edu-consultancy' ),
 			)
 		);
+	}
+
+	/**
+	 * Register Elementor global colors tab (if needed).
+	 *
+	 * @param \Elementor\Core\Kits\Documents\Kit $kit Kit instance.
+	 * @return void
+	 */
+	public static function register_elementor_global_colors( $kit ) {
+		// This hook allows registering custom tabs if needed.
+		// Global colors are handled via the filter below.
+	}
+
+	/**
+	 * Set default Elementor global colors so #25247B appears in Elementor color picker.
+	 * Filters system_colors default values in Elementor Kit.
+	 *
+	 * @param array $colors System colors array from Elementor Kit.
+	 * @return array
+	 */
+	public static function set_elementor_global_colors( $colors ) {
+		if ( ! is_array( $colors ) ) {
+			$colors = array();
+		}
+		// Find and update primary color to #25247B.
+		$primary_found = false;
+		foreach ( $colors as $index => $color ) {
+			if ( isset( $color['_id'] ) && 'primary' === $color['_id'] ) {
+				$colors[ $index ]['color'] = '#25247B';
+				$primary_found = true;
+				break;
+			}
+		}
+		// If primary color doesn't exist, add it.
+		if ( ! $primary_found ) {
+			$colors[] = array(
+				'_id'   => 'primary',
+				'title' => esc_html__( 'Primary', 'edu-consultancy' ),
+				'color' => '#25247B',
+			);
+		}
+		return $colors;
+	}
+
+	/**
+	 * Set Elementor Kit default settings to include #25247B as primary color.
+	 *
+	 * @param array  $default_settings Default Kit settings.
+	 * @param string $item_id          Item ID (e.g. 'system_colors').
+	 * @return array
+	 */
+	public static function set_elementor_kit_defaults( $default_settings, $item_id ) {
+		if ( 'system_colors' === $item_id ) {
+			if ( ! is_array( $default_settings ) ) {
+				$default_settings = array();
+			}
+			// Update primary color in defaults.
+			foreach ( $default_settings as $index => $color ) {
+				if ( isset( $color['_id'] ) && 'primary' === $color['_id'] ) {
+					$default_settings[ $index ]['color'] = '#25247B';
+					return $default_settings;
+				}
+			}
+			// If primary not found, add it.
+			$default_settings[] = array(
+				'_id'   => 'primary',
+				'title' => esc_html__( 'Primary', 'edu-consultancy' ),
+				'color' => '#25247B',
+			);
+		}
+		return $default_settings;
+	}
+
+	/**
+	 * Update Elementor Kit primary color to #25247B on init (ensures it's set even if Kit already exists).
+	 *
+	 * @return void
+	 */
+	public static function update_elementor_primary_color() {
+		if ( ! class_exists( '\Elementor\Plugin' ) || ! did_action( 'elementor/loaded' ) ) {
+			return;
+		}
+		$kit = \Elementor\Plugin::$instance->kits_manager->get_active_kit();
+		if ( ! $kit ) {
+			return;
+		}
+		$system_colors = $kit->get_settings( 'system_colors' );
+		if ( ! is_array( $system_colors ) || empty( $system_colors ) ) {
+			// If no system colors exist, set defaults with our primary color.
+			$system_colors = array(
+				array(
+					'_id'   => 'primary',
+					'title' => esc_html__( 'Primary', 'edu-consultancy' ),
+					'color' => '#25247B',
+				),
+				array(
+					'_id'   => 'secondary',
+					'title' => esc_html__( 'Secondary', 'edu-consultancy' ),
+					'color' => '#54595F',
+				),
+				array(
+					'_id'   => 'text',
+					'title' => esc_html__( 'Text', 'edu-consultancy' ),
+					'color' => '#7A7A7A',
+				),
+				array(
+					'_id'   => 'accent',
+					'title' => esc_html__( 'Accent', 'edu-consultancy' ),
+					'color' => '#61CE70',
+				),
+			);
+			$kit->update_settings( array( 'system_colors' => $system_colors ) );
+			return;
+		}
+		$needs_update = false;
+		foreach ( $system_colors as $index => $color ) {
+			if ( isset( $color['_id'] ) && 'primary' === $color['_id'] ) {
+				if ( ! isset( $color['color'] ) || '#25247B' !== $color['color'] ) {
+					$system_colors[ $index ]['color'] = '#25247B';
+					$needs_update = true;
+				}
+				break;
+			}
+		}
+		if ( $needs_update ) {
+			$kit->update_settings( array( 'system_colors' => $system_colors ) );
+		}
 	}
 
 	/**
