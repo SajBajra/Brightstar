@@ -1,5 +1,7 @@
 # Brightstar
 
+
+
 WordPress site with **Edu Consultancy Theme** — education & migration consultancy with a job portal.
 
 ## Requirements
