@@ -89,7 +89,12 @@ define( 'WP_DEBUG', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
-
+/**
+ * Force correct site URL so all links point to this installation, not XAMPP dashboard.
+ * Remove or update these when moving to another domain/host.
+ */
+define( 'WP_HOME', 'http://localhost/brightstar' );
+define( 'WP_SITEURL', 'http://localhost/brightstar' );
 
 /* That's all, stop editing! Happy publishing. */
 

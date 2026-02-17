@@ -18,6 +18,19 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 	<?php
 	return;
 }
+
+// Resolve footer links to designated pages/archives.
+$edu_about_page   = get_page_by_path( 'about-us' );
+$edu_contact_page = get_page_by_path( 'contact' );
+$edu_services_url = get_post_type_archive_link( 'services' ) ?: home_url( '/services/' );
+$edu_countries_url = get_post_type_archive_link( 'countries' ) ?: home_url( '/countries/' );
+$edu_jobs_url     = get_post_type_archive_link( 'jobs' ) ?: home_url( '/jobs/' );
+$edu_about_url    = $edu_about_page ? get_permalink( $edu_about_page ) : home_url( '/' );
+$edu_contact_url  = $edu_contact_page ? get_permalink( $edu_contact_page ) : home_url( '/' );
+$edu_privacy_page = get_page_by_path( 'privacy-policy' );
+$edu_terms_page   = get_page_by_path( 'terms' );
+$edu_privacy_url  = $edu_privacy_page ? get_permalink( $edu_privacy_page ) : home_url( '/privacy-policy/' );
+$edu_terms_url    = $edu_terms_page ? get_permalink( $edu_terms_page ) : home_url( '/terms/' );
 ?>
 
 <footer class="site-footer">
@@ -38,20 +51,20 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 				<div class="site-footer__col">
 					<h4 class="site-footer__heading"><?php esc_html_e( 'Services', 'edu-consultancy' ); ?></h4>
 					<ul class="site-footer__links">
-						<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"><?php esc_html_e( 'Study Abroad', 'edu-consultancy' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"><?php esc_html_e( 'Student Visa', 'edu-consultancy' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"><?php esc_html_e( 'PR / Skilled Migration', 'edu-consultancy' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>"><?php esc_html_e( 'Family & Partner Visa', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_services_url ); ?>"><?php esc_html_e( 'Study Abroad', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_services_url ); ?>"><?php esc_html_e( 'Student Visa', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_services_url ); ?>"><?php esc_html_e( 'PR / Skilled Migration', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_services_url ); ?>"><?php esc_html_e( 'Family & Partner Visa', 'edu-consultancy' ); ?></a></li>
 					</ul>
 				</div>
 
 				<div class="site-footer__col">
 					<h4 class="site-footer__heading"><?php esc_html_e( 'Company', 'edu-consultancy' ); ?></h4>
 					<ul class="site-footer__links">
-						<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php esc_html_e( 'About Us', 'edu-consultancy' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/countries/' ) ); ?>"><?php esc_html_e( 'Countries', 'edu-consultancy' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/jobs/' ) ); ?>"><?php esc_html_e( 'Jobs', 'edu-consultancy' ); ?></a></li>
-						<li><a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Contact', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_about_url ); ?>"><?php esc_html_e( 'About Us', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_countries_url ); ?>"><?php esc_html_e( 'Countries', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_jobs_url ); ?>"><?php esc_html_e( 'Jobs', 'edu-consultancy' ); ?></a></li>
+						<li><a href="<?php echo esc_url( $edu_contact_url ); ?>"><?php esc_html_e( 'Contact', 'edu-consultancy' ); ?></a></li>
 					</ul>
 				</div>
 
@@ -73,11 +86,11 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 			<div class="site-footer__bottom">
 				<div class="site-footer__bottom-inner">
 					<div class="site-footer__bottom-links">
-						<a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'edu-consultancy' ); ?></a>
+						<a href="<?php echo esc_url( $edu_privacy_url ); ?>"><?php esc_html_e( 'Privacy Policy', 'edu-consultancy' ); ?></a>
 						<span>•</span>
-						<a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'Terms', 'edu-consultancy' ); ?></a>
+						<a href="<?php echo esc_url( $edu_terms_url ); ?>"><?php esc_html_e( 'Terms', 'edu-consultancy' ); ?></a>
 						<span>•</span>
-						<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Contact', 'edu-consultancy' ); ?></a>
+						<a href="<?php echo esc_url( $edu_contact_url ); ?>"><?php esc_html_e( 'Contact', 'edu-consultancy' ); ?></a>
 					</div>
 					<p class="site-footer__copy">
 						<?php

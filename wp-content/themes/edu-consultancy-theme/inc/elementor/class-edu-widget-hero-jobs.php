@@ -96,12 +96,13 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 			)
 		);
 
+		$jobs_placeholder = get_post_type_archive_link( 'jobs' ) ?: home_url( '/jobs/' );
 		$this->add_control(
 			'primary_button_url',
 			array(
 				'label'       => esc_html__( 'Primary Button URL', 'edu-consultancy' ),
 				'type'        => Controls_Manager::URL,
-				'placeholder' => esc_url( home_url( '/jobs/' ) ),
+				'placeholder' => esc_url( $jobs_placeholder ),
 			)
 		);
 
@@ -114,12 +115,14 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 			)
 		);
 
+		$contact_page = get_page_by_path( 'contact' );
+		$contact_placeholder = $contact_page ? get_permalink( $contact_page ) : home_url( '/contact/' );
 		$this->add_control(
 			'secondary_button_url',
 			array(
 				'label'       => esc_html__( 'Secondary Button URL', 'edu-consultancy' ),
 				'type'        => Controls_Manager::URL,
-				'placeholder' => esc_url( home_url( '/free-consultation/' ) ),
+				'placeholder' => esc_url( $contact_placeholder ),
 			)
 		);
 
@@ -319,9 +322,12 @@ class Edu_Elementor_Widget_Hero_Jobs extends Widget_Base {
 		$title                = isset( $settings['title'] ) ? $settings['title'] : '';
 		$subtitle             = isset( $settings['subtitle'] ) ? $settings['subtitle'] : '';
 		$primary_button_text  = isset( $settings['primary_button_text'] ) ? $settings['primary_button_text'] : '';
-		$primary_button_url   = ( isset( $settings['primary_button_url']['url'] ) && $settings['primary_button_url']['url'] ) ? $settings['primary_button_url']['url'] : home_url( '/jobs/' );
+		$jobs_archive_url     = get_post_type_archive_link( 'jobs' ) ?: home_url( '/jobs/' );
+		$primary_button_url   = ( isset( $settings['primary_button_url']['url'] ) && $settings['primary_button_url']['url'] ) ? $settings['primary_button_url']['url'] : $jobs_archive_url;
 		$secondary_button_text = isset( $settings['secondary_button_text'] ) ? $settings['secondary_button_text'] : '';
-		$secondary_button_url = ( isset( $settings['secondary_button_url']['url'] ) && $settings['secondary_button_url']['url'] ) ? $settings['secondary_button_url']['url'] : home_url( '/free-consultation/' );
+		$contact_page         = get_page_by_path( 'contact' );
+		$contact_url          = $contact_page ? get_permalink( $contact_page ) : home_url( '/' );
+		$secondary_button_url = ( isset( $settings['secondary_button_url']['url'] ) && $settings['secondary_button_url']['url'] ) ? $settings['secondary_button_url']['url'] : $contact_url;
 
 		$per_page      = isset( $settings['jobs_per_page'] ) ? (int) $settings['jobs_per_page'] : 6;
 		$featured_only = ( isset( $settings['featured_only'] ) && 'yes' === $settings['featured_only'] );

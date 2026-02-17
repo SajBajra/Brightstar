@@ -60,21 +60,6 @@ if ( function_exists( 'elementor_theme_do_location' ) && elementor_theme_do_loca
 				?>
 			</nav>
 		</div>
-
-		<div class="site-header__actions">
-			<?php if ( is_user_logged_in() ) : ?>
-				<a class="edu-btn-outline site-header__btn" href="<?php echo esc_url( wp_logout_url( get_permalink() ) ); ?>">
-					<?php esc_html_e( 'Logout', 'edu-consultancy' ); ?>
-				</a>
-			<?php else : ?>
-				<a class="edu-btn-outline site-header__btn edu-modal-trigger" href="#" data-modal="login" aria-haspopup="dialog">
-					<?php esc_html_e( 'Login', 'edu-consultancy' ); ?>
-				</a>
-				<a class="edu-btn-primary site-header__btn edu-modal-trigger" href="#" data-modal="register" aria-haspopup="dialog">
-					<?php esc_html_e( 'Register', 'edu-consultancy' ); ?>
-				</a>
-			<?php endif; ?>
-		</div>
 	</div>
 </header>
 

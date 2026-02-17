@@ -30,8 +30,8 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 					</li>
 				</ol>
 			</nav>
-			<h1 class="edu-find-jobs-hero__title edu-jrp-hero__title"><?php esc_html_e( 'Job Ready Program', 'edu-consultancy' ); ?></h1>
-			<p class="edu-find-jobs-hero__description edu-jrp-hero__description"><?php esc_html_e( 'Turn your Australian education into a thriving career and a clear path to permanent residency.', 'edu-consultancy' ); ?></p>
+			<h1 class="edu-find-jobs-hero__title edu-jrp-hero__title"><?php esc_html_e( 'Graduated in Australia in 2025? Launch Your Career with Our Job Ready Program', 'edu-consultancy' ); ?></h1>
+			<p class="edu-find-jobs-hero__description edu-jrp-hero__description"><?php esc_html_e( "Interlace Studies’ Job Ready Program helps international graduates turn their Australian qualifications into successful careers and permanent residency. Whether you’ve just completed your degree or are on a graduate visa, we provide expert mentorship, guaranteed internships, and personalized migration support to make your career goals a reality.", 'edu-consultancy' ); ?></p>
 			<p class="edu-jrp-hero__cta">
 				<a href="<?php echo esc_url( $contact_url ); ?>" class="edu-btn-primary edu-btn-primary--hero"><?php esc_html_e( 'Start Your JRP Journey', 'edu-consultancy' ); ?></a>
 			</p>
@@ -65,12 +65,12 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 		<div class="edu-page-content edu-jrp-content">
 			<section id="jrp-intro" class="edu-page-block edu-jrp-intro edu-jrp-section--light">
 				<div class="edu-page-block__text">
-					<h2 class="edu-page-content__heading"><?php esc_html_e( 'Launch Your Career with Our Job Ready Program', 'edu-consultancy' ); ?></h2>
+					<h2 class="edu-page-content__heading"><?php esc_html_e( 'Completed Your Studies in Australia? Launch Your Career with Our Job Ready Program', 'edu-consultancy' ); ?></h2>
 					<p><?php esc_html_e( "Our Job Ready Program helps international graduates turn their Australian qualifications into successful careers and permanent residency. Whether you've just completed your degree or are on a graduate visa, we provide expert mentorship, guaranteed internships, and personalized migration support to make your career goals a reality.", 'edu-consultancy' ); ?></p>
 					<ul class="edu-page-content__list edu-jrp-intro__list">
-						<li><?php esc_html_e( 'Gain Australian work experience through guaranteed internship placement', 'edu-consultancy' ); ?></li>
-						<li><?php esc_html_e( 'Receive one-on-one mentorship from industry professionals', 'edu-consultancy' ); ?></li>
 						<li><?php esc_html_e( 'Get expert guidance on your PR pathway and skills assessment', 'edu-consultancy' ); ?></li>
+						<li><?php esc_html_e( 'Receive one-on-one mentorship from industry professionals', 'edu-consultancy' ); ?></li>
+						<li><?php esc_html_e( 'Gain Australian work experience through guaranteed internship placement', 'edu-consultancy' ); ?></li>
 					</ul>
 					<p class="edu-jrp-intro__cta">
 						<a href="<?php echo esc_url( $contact_url ); ?>" class="edu-btn-primary"><?php esc_html_e( 'Start Your Job Ready Program Journey Today', 'edu-consultancy' ); ?></a>
@@ -96,10 +96,10 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 					<h2 class="edu-page-content__heading"><?php esc_html_e( 'Who Is It For?', 'edu-consultancy' ); ?></h2>
 					<p><?php esc_html_e( 'Our Job Ready Program is ideal for international students or graduates who have:', 'edu-consultancy' ); ?></p>
 					<ul class="edu-page-content__list">
-						<li><?php esc_html_e( 'Completed a Diploma, Advanced Diploma, Bachelor\'s, or Master\'s degree from an Australian institution', 'edu-consultancy' ); ?></li>
-						<li><?php esc_html_e( 'Currently hold or are applying for a Temporary Graduate Visa (Subclass 485)', 'edu-consultancy' ); ?></li>
-						<li><?php esc_html_e( 'A strong desire to build a professional career and migrate through skilled or state-nominated pathways', 'edu-consultancy' ); ?></li>
 						<li><?php esc_html_e( 'Commitment to developing their professional skills and workplace communication', 'edu-consultancy' ); ?></li>
+						<li><?php esc_html_e( 'A strong desire to build a professional career and migrate through skilled or state-nominated pathways', 'edu-consultancy' ); ?></li>
+						<li><?php esc_html_e( 'Currently hold or are applying for a Temporary Graduate Visa (Subclass 485)', 'edu-consultancy' ); ?></li>
+						<li><?php esc_html_e( 'Completed a Diploma, Advanced Diploma, Bachelor\'s, or Master\'s degree from an Australian institution', 'edu-consultancy' ); ?></li>
 					</ul>
 				</div>
 				<div class="edu-page-block__media">
@@ -115,7 +115,7 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 						<div class="edu-jrp-industries-carousel__slide">
 							<div class="edu-jrp-industry-card">
 								<div class="edu-jrp-industry-card__img">
-									<img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+									<img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php esc_attr_e( 'Disability support career', 'edu-consultancy' ); ?>" loading="lazy" />
 								</div>
 								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Disability Support', 'edu-consultancy' ); ?></h3>
 								<p><?php esc_html_e( 'Start a career in disability care with practical training and job placement support in Australia\'s growing support sector.', 'edu-consultancy' ); ?></p>
@@ -124,7 +124,7 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 						<div class="edu-jrp-industries-carousel__slide">
 							<div class="edu-jrp-industry-card">
 								<div class="edu-jrp-industry-card__img">
-									<img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+									<img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php esc_attr_e( 'Hospitality industry', 'edu-consultancy' ); ?>" loading="lazy" />
 								</div>
 								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Hospitality', 'edu-consultancy' ); ?></h3>
 								<p><?php esc_html_e( 'Gain job-ready hospitality skills with hands-on training, work placements, and pathways to management roles in Australia.', 'edu-consultancy' ); ?></p>
@@ -133,7 +133,7 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 						<div class="edu-jrp-industries-carousel__slide">
 							<div class="edu-jrp-industry-card">
 								<div class="edu-jrp-industry-card__img">
-									<img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+									<img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php esc_attr_e( 'Nursing and aged care', 'edu-consultancy' ); ?>" loading="lazy" />
 								</div>
 								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Nursing & Aged Care', 'edu-consultancy' ); ?></h3>
 								<p><?php esc_html_e( 'Prepare for a rewarding healthcare career with real-world training and job opportunities in nursing and aged care.', 'edu-consultancy' ); ?></p>
@@ -142,7 +142,7 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 						<div class="edu-jrp-industries-carousel__slide">
 							<div class="edu-jrp-industry-card">
 								<div class="edu-jrp-industry-card__img">
-									<img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+									<img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php esc_attr_e( 'Engineering career', 'edu-consultancy' ); ?>" loading="lazy" />
 								</div>
 								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Engineering', 'edu-consultancy' ); ?></h3>
 								<p><?php esc_html_e( 'Build a job-ready foundation in civil, mechanical, or software engineering with Australian industry connections and internships.', 'edu-consultancy' ); ?></p>
@@ -151,7 +151,7 @@ $contact_url  = $contact_page ? get_permalink( $contact_page ) : home_url( '/' )
 						<div class="edu-jrp-industries-carousel__slide">
 							<div class="edu-jrp-industry-card">
 								<div class="edu-jrp-industry-card__img">
-									<img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="" loading="lazy" />
+									<img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="<?php esc_attr_e( 'Information technology sector', 'edu-consultancy' ); ?>" loading="lazy" />
 								</div>
 								<h3 class="edu-jrp-industry-card__title"><?php esc_html_e( 'Information Technology', 'edu-consultancy' ); ?></h3>
 								<p><?php esc_html_e( 'Get job-ready in Australia\'s fast-growing tech sector. Learn essential IT skills, earn certifications, and gain career support.', 'edu-consultancy' ); ?></p>

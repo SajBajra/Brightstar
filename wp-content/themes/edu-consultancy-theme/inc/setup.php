@@ -19,14 +19,18 @@ class Edu_Theme_Setup {
 	public static function init() {
 		add_action( 'after_setup_theme', array( __CLASS__, 'theme_supports' ) );
 		add_action( 'after_setup_theme', array( __CLASS__, 'register_menus' ) );
+		add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'fix_nav_menu_item_urls' ), 5, 2 );
 		add_filter( 'wp_nav_menu_objects', array( __CLASS__, 'reorder_primary_menu' ), 10, 2 );
+		add_filter( 'redirect_canonical', array( __CLASS__, 'prevent_redirect_to_dashboard' ), 10, 2 );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_blog_page' ) );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_about_contact_pages' ) );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_create_placement_jrp_pages' ) );
 		add_action( 'after_switch_theme', array( __CLASS__, 'maybe_populate_primary_menu' ) );
+		add_action( 'init', array( __CLASS__, 'fix_siteurl_if_dashboard' ), 0 );
 		add_action( 'init', array( __CLASS__, 'maybe_create_blog_page_once' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_about_contact_pages_once' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_create_placement_jrp_pages_once' ) );
+		add_action( 'init', array( __CLASS__, 'maybe_create_home_2_page_once' ) );
 		add_action( 'init', array( __CLASS__, 'maybe_populate_primary_menu_once' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'disable_gutenberg_styles' ), 100 );
@@ -250,12 +254,107 @@ class Edu_Theme_Setup {
 	}
 
 	/**
+	 * Create "Home 2" page with Interlace replica template once.
+	 *
+	 * @return void
+	 */
+	public static function maybe_create_home_2_page_once() {
+		if ( get_option( 'edu_home_2_page_created', false ) ) {
+			return;
+		}
+		$slug = 'home-2';
+		if ( get_page_by_path( $slug ) ) {
+			update_option( 'edu_home_2_page_created', true );
+			return;
+		}
+		$page_id = wp_insert_post(
+			array(
+				'post_title'   => _x( 'Home 2', 'Page title', 'edu-consultancy' ),
+				'post_name'    => $slug,
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_author'  => 1,
+				'post_content' => '',
+			),
+			true
+		);
+		if ( ! is_wp_error( $page_id ) && $page_id > 0 ) {
+			update_post_meta( $page_id, '_wp_page_template', 'page-home-2.php' );
+			update_option( 'edu_home_2_page_created', true );
+		}
+	}
+
+	/**
 	 * Populate Primary menu once (for existing installs).
 	 *
 	 * @return void
 	 */
 	public static function maybe_populate_primary_menu_once() {
 		self::populate_primary_menu_if_needed();
+	}
+
+	/**
+	 * If the database has siteurl/home pointing to localhost/dashboard, update them so redirects and links use the real site URL.
+	 *
+	 * @return void
+	 */
+	public static function fix_siteurl_if_dashboard() {
+		global $wpdb;
+		if ( ! isset( $wpdb->options ) || wp_installing() ) {
+			return;
+		}
+		$home_raw = $wpdb->get_var( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1", 'home' ) );
+		if ( ! is_string( $home_raw ) || strpos( $home_raw, 'localhost/dashboard' ) === false ) {
+			return;
+		}
+		$correct_url = defined( 'WP_HOME' ) && WP_HOME ? untrailingslashit( WP_HOME ) : 'http://localhost/brightstar';
+		update_option( 'home', $correct_url );
+		update_option( 'siteurl', $correct_url );
+	}
+
+	/**
+	 * Rewrite menu item URLs that point to the wrong base (e.g. localhost/dashboard) to the correct site URL.
+	 *
+	 * @param array    $items Menu items.
+	 * @param stdClass $args  Nav menu args.
+	 * @return array
+	 */
+	public static function fix_nav_menu_item_urls( $items, $args ) {
+		if ( empty( $items ) || ! is_array( $items ) ) {
+			return $items;
+		}
+		$wrong_bases = array(
+			'http://localhost/dashboard',
+			'https://localhost/dashboard',
+		);
+		$home = home_url( '/' );
+		foreach ( $items as $item ) {
+			if ( empty( $item->url ) ) {
+				continue;
+			}
+			foreach ( $wrong_bases as $base ) {
+				if ( strpos( $item->url, $base ) === 0 ) {
+					$path = substr( $item->url, strlen( $base ) );
+					$item->url = ( $path === '' || $path === '/' ) ? $home : home_url( $path );
+					break;
+				}
+			}
+		}
+		return $items;
+	}
+
+	/**
+	 * Prevent canonical redirect if the redirect URL would send the user to localhost/dashboard.
+	 *
+	 * @param string $redirect_url  The redirect URL.
+	 * @param string $requested_url The requested URL.
+	 * @return string|false The redirect URL, or false to prevent redirect.
+	 */
+	public static function prevent_redirect_to_dashboard( $redirect_url, $requested_url ) {
+		if ( is_string( $redirect_url ) && strpos( $redirect_url, 'localhost/dashboard' ) !== false ) {
+			return false;
+		}
+		return $redirect_url;
 	}
 
 	/**
